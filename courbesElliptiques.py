@@ -125,3 +125,14 @@ class Infini(Point):
 
    def __neg__(self):
        return self
+
+
+
+def find_points(c):
+   l = []
+   for x in range(c.o):
+       for y in range(c.o):
+           try:
+               p = Point(x,y,c)
+               l.append(p)
+
