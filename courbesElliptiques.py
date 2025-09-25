@@ -112,7 +112,7 @@ class Point:
 
 class Infini(Point):
    def __init__(self, courbe_el):
-       super().__init__(float("inf"), float("inf"), courbe_el)
+       super().__init__(float("inf"), float("inf"), courbe_el) # x = 0
 
 
    def etoile(self, other):
