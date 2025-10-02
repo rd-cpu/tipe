@@ -1,6 +1,5 @@
 from random import randint
 
-
 def bezout_fct(a, b):
    if b == 0:
        return 1, 0
@@ -44,6 +43,11 @@ def est_premier(n):
            return False
    return True
 
+def trouve_premier():
+    i = randint(200,2000)
+    while not est_premier(i):
+        i+=1
+    return i
 
 
 def inv_mod(e, p):
