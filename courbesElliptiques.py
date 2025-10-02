@@ -132,7 +132,8 @@ def find_points(c):
    l = []
    for x in range(c.o):
        for y in range(c.o):
-           try:
+            try:
                p = Point(x,y,c)
                l.append(p)
-
+            except:
+                continue
