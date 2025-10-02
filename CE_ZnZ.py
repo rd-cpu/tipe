@@ -231,3 +231,59 @@ def find_points(c):
            except:
                pass
    return l
+
+
+
+# Définir la liste
+ma_liste = ["Pomme", "Banane", "Cerise", "Orange"]
+
+# Nom du fichier de sortie
+nom_fichier = "ma_liste.txt"
+
+# Écriture dans le fichier
+with open(nom_fichier, "w", encoding="utf-8") as fichier:
+    for element in ma_liste:
+        fichier.write(str(element) + "\n")  # chaque élément sur une nouvelle ligne
+
+print(f"✅ La liste a été sauvegardée dans '{nom_fichier}'")
+
+
+
+
+
+
+import string
+
+# Nom du fichier à lire
+nom_fichier = "ma_liste.txt"
+
+# Lecture des éléments du fichier
+with open(nom_fichier, "r", encoding="utf-8") as fichier:
+    elements = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
+
+# Alphabet en minuscules
+alphabet = string.ascii_lowercase
+
+# Création du dictionnaire réciproque : lettre -> élément
+dico = {}
+for i, element in enumerate(elements):
+    if i < len(alphabet):  # si on a moins de 26 éléments
+        dico[alphabet[i]] = element
+    else:
+        dico[f"_{i}"] = element  # identifiant alternatif si plus de 26
+
+# Affichage du dictionnaire
+print("📘 Dictionnaire réciproque créé :")
+print(dico)
+
+
+
+
+def text_to_pts(str):
+    l = []
+    for e in str:
+        if e in dico :
+            l.append(dico[e])            
+    return l
+
+
