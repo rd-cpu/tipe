@@ -21,7 +21,7 @@ def generate_PK(cle_secrete, P, CE):
 def cryptage(cle_publique, message):
    CE, P, B = cle_publique
    k = randint(1, CE.o - 1)
-   y1 = k*B
+   y1 = k*P
    y2 = message + k*B
    return y1, y2
 
