@@ -1,7 +1,5 @@
 from random import randint
 
-CEstand = CourbeElliptique(2,0,2,1193)
-
 def bezout_fct(a, b):
    if b == 0:
        return 1, 0

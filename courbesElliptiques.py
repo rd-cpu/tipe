@@ -137,3 +137,5 @@ def find_points(c):
                l.append(p)
             except:
                 continue
+
+CEstand = CourbeElliptique(2,0,2,1193)
