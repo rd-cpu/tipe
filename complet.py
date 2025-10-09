@@ -361,6 +361,7 @@ def lire_message_crypte(nom_fichier, courbe_elliptique):
             y2 = str_to_point(y2_str, courbe_elliptique)
             message_crypte.append((y1, y2))
     return message_crypte
+    
 
    
 message_trad = text_to_pts("hello world",dico)

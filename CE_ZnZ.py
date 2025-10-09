@@ -232,35 +232,85 @@ def find_points(c):
 
 
 
-# Définir la liste
-ma_liste = ["Pomme", "Banane", "Cerise", "Orange"]
+
+import string
+import random
+
+def text_to_pts(texte, dico):
+    pts = []
+    for e in texte:
+        if e in dico:
+            pts.append(dico[e])
+    return pts
+
+def pts_to_text(l, dico):
+    texte = ''
+    for e in l:
+        if e in dico:
+            texte += dico[e]
+    return texte
+
+
+def str_to_point(s, CE):
+    s = s.strip()
+    if not s.startswith("("):
+        raise ValueError(f"Format invalide pour un point : {s}")
+    coords = s.split(")")[0].replace("(", "").split(",")
+    x, y = int(coords[0]), int(coords[1])
+    return Point(x, y, CE)
+
+def point_to_str(point):
+    if not isinstance(point, Point):
+        raise TypeError(f"Un objet de type Point est attendu, pas {type(point)}")
+    return f"({point.x}, {point.y}) from {point.courbe_el}"
+
+
+def cryptage_liste(message_pts, cle_publique):
+    message_chiffre = []
+    for pt in message_pts:
+        message_chiffre.append(cryptage(cle_publique, pt))
+    return message_chiffre
+
+
+
+def decryptage_liste(message_chiffre, cle_secrete):
+    message_dechiffre = []
+    for couple in message_chiffre:
+        message_dechiffre.append(decryptage(couple, cle_secrete))
+    return message_dechiffre
+
+
+
+CEstand = CourbeElliptique(2,0,2,1193)
+
+cle_secrete = 1789
+l = find_points(CEstand)
+P= l[random.randint(0,len(l))]
+#P=(911, 905) from Courbe elliptique : y² = x³ + 2x² + 2 mod 1193
+cle_publique = generate_PK(cle_secrete, P, CEstand)
+
+
 
 # Nom du fichier de sortie
-nom_fichier = "ma_liste.txt"
+nom_fichier = "points_CEstand.txt"
 
 # Écriture dans le fichier
 with open(nom_fichier, "w", encoding="utf-8") as fichier:
-    for element in ma_liste:
+    for element in l:
         fichier.write(str(element) + "\n")  # chaque élément sur une nouvelle ligne
 
 print(f"✅ La liste a été sauvegardée dans '{nom_fichier}'")
 
 
-
-
-
-
-import string
-
 # Nom du fichier à lire
-nom_fichier = "ma_liste.txt"
+nom_fichier = "points_CEstand.txt"
 
 # Lecture des éléments du fichier
 with open(nom_fichier, "r", encoding="utf-8") as fichier:
     elements = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
 
 # Alphabet en minuscules
-alphabet = string.ascii_lowercase
+alphabet = string.ascii_lowercase + string.digits + " .,!?;:'\""
 
 # Création du dictionnaire réciproque : lettre -> élément
 dico = {}
@@ -271,17 +321,42 @@ for i, element in enumerate(elements):
         dico[f"_{i}"] = element  # identifiant alternatif si plus de 26
 
 # Affichage du dictionnaire
-print("📘 Dictionnaire réciproque créé :")
-print(dico)
 
+#print("Dictionnaire crée")
+#print(dico)
 
+def dico_reciproque(dico):
+    return {valeur: cle for cle, valeur in dico.items()}
 
+def sauvegarder_message_crypte(message_crypte, nom_fichier="message_crypte.txt"):
+    with open(nom_fichier, "w", encoding="utf-8") as fichier:
+        for couple in message_crypte:
+            y1, y2 = couple
+            fichier.write(f"{point_to_str(y1)},{point_to_str(y2)}\n")
+    print(f"✅ Le message crypté a été sauvegardé dans '{nom_fichier}'")
 
-def text_to_pts(str):
-    l = []
-    for e in str:
-        if e in dico :
-            l.append(dico[e])            
-    return l
+def lire_message_crypte(nom_fichier, courbe_elliptique):
+    message_crypte = []
+    with open(nom_fichier, "r", encoding="utf-8") as fichier:
+        for ligne in fichier:
+            y1_str, y2_str = ligne.strip().split(",")
+            y1 = str_to_point(y1_str, courbe_elliptique)
+            y2 = str_to_point(y2_str, courbe_elliptique)
+            message_crypte.append((y1, y2))
+    return message_crypte
 
+   
+message_trad = text_to_pts("hello world",dico)
+print(f"✅ Le message a été converti en points")
+message_pts = [str_to_point(s, CEstand) for s in message_trad]
+message_crypte = cryptage_liste(message_pts, cle_publique)
+print(f"✅ Le message a été encrypté")
 
+#sauvegarder_message_crypte(message_crypte, nom_fichier="message_crypte_file.txt")
+#message_crypte = lire_message_crypte("message_crypte_file.txt", CEstand)
+
+message_decrypte = decryptage_liste(message_crypte, cle_secrete)
+print(f"✅ Le message a été décrypté")
+message_str = [str(p) for p in message_decrypte]
+message = pts_to_text(message_str, dico_reciproque(dico))
+print(f"✅ Le message a été traduit en language naturel")
