@@ -400,7 +400,7 @@ def sauvegarder_message_crypte(message_crypte, nom_fichier="message_crypte.txt")
             fichier.write(f"{point_to_str(y1)},{point_to_str(y2)}\n")
     print(f"✅ Le message crypté a été sauvegardé dans '{nom_fichier}'")
 
-def lire_message_crypte(nom_fichier, courbe_elliptique):
+'''def lire_message_crypte(nom_fichier, courbe_elliptique):
     message_crypte = []
     with open(nom_fichier, "r", encoding="utf-8") as fichier:
         for ligne in fichier:
@@ -408,8 +408,43 @@ def lire_message_crypte(nom_fichier, courbe_elliptique):
             y1 = str_to_point(y1_str, courbe_elliptique)
             y2 = str_to_point(y2_str, courbe_elliptique)
             message_crypte.append((y1, y2))
-    return message_crypte
+    return message_crypte'''
 
+def lire_message_crypte(nom_fichier, CE):
+    """
+    Lit un message crypté depuis un fichier texte et reconstruit 
+    la liste des couples de points (y1, y2).
+    """
+    message_crypte = []
+
+    with open(nom_fichier, "r", encoding="utf-8") as fichier:
+        for ligne in fichier:
+            ligne = ligne.strip()
+            if not ligne:
+                continue
+
+            # Trouver la position du second point "(" (celui de y2)
+            pos = ligne.find(") from Courbe elliptique")
+            if pos == -1:
+                raise ValueError(f"Ligne invalide (pas de point elliptique détecté) : {ligne}")
+
+            # On cherche le début du deuxième point après le premier
+            pos2 = ligne.find("(", pos + 1)
+            if pos2 == -1:
+                raise ValueError(f"Ligne invalide (2e point manquant) : {ligne}")
+
+            y1_str = ligne[:pos + len(") from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193")]
+            y2_str = ligne[pos2:]
+
+            try:
+                y1 = str_to_point(y1_str, CE)
+                y2 = str_to_point(y2_str, CE)
+                message_crypte.append((y1, y2))
+            except Exception as e:
+                print(f"⚠️ Erreur lors du décodage d'une ligne : {e}\n{ligne}")
+
+    print(f"✅ Le message crypté a été chargé depuis '{nom_fichier}'")
+    return message_crypte
 
 
 #sauvegarder_dictionnaire(dico,"dico_direct.txt")
@@ -434,8 +469,19 @@ print(f"✅ Le message a été traduit en language naturel")
 
 '''
 m2 = cryptage_liste(text_to_pts("hello world",dico2), cle_publique)
+sauvegarder_message_crypte(m2, nom_fichier="message_crypte_file.txt")
 
-#sauvegarder_message_crypte(m2, nom_fichier="message_crypte_file.txt")
-#message_crypte = lire_message_crypte("message_crypte_file.txt", CEstand)
+message_crypte = lire_message_crypte("message_crypte_file.txt", CEstand)
 
-m4 = pts_to_text([str(p) for p in decryptage_liste(m2,cle_secrete)], dico_recip2)
+m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip2)
+
+
+def envoyeur(message,cle_publique,dico):
+    m2 = cryptage_liste(text_to_pts(message,dico), cle_publique)
+    sauvegarder_message_crypte(m2, nom_fichier="message_crypte_file.txt")
+
+
+def receveur(message_reçu,CEstand,):
+    message_crypte = lire_message_crypte(message_reçu, CEstand)
+    m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip2)
+    print(m4)
