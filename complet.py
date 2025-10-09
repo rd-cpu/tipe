@@ -303,7 +303,7 @@ CEstand = CourbeElliptique(2,0,2,1193)
 cle_secrete = 1789
 l = find_points(CEstand)
 #P= l[random.randint(0,len(l))]
-P=Point(7,321,CEstand)
+P=Point(3,380,CEstand)
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
 
@@ -401,8 +401,11 @@ def lire_message_crypte(nom_fichier, courbe_elliptique):
 sauvegarder_dictionnaire(dico,"dico_direct.txt")
 sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
 
-   
-message_trad = text_to_pts("hello world",dico)
+#dico = lire_dictionnaire("dico_direct.txt", CEstand)
+#dico_recip = lire_dictionnaire("dico_récip.txt", CEstand)
+
+
+"""message_trad = text_to_pts("hello world",dico)
 print(f"✅ Le message a été converti en points")
 message_pts = [str_to_point(s, CEstand) for s in message_trad]
 message_crypte = cryptage_liste(message_pts, cle_publique)
@@ -414,5 +417,6 @@ print(f"✅ Le message a été encrypté")
 message_decrypte = decryptage_liste(message_crypte, cle_secrete)
 print(f"✅ Le message a été décrypté")
 message_str = [str(p) for p in message_decrypte]
-message = pts_to_text(message_str, dico_reciproque(dico))
+message = pts_to_text(message_str, dico_recip)
 print(f"✅ Le message a été traduit en language naturel")
+"""
