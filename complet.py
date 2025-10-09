@@ -400,21 +400,8 @@ def sauvegarder_message_crypte(message_crypte, nom_fichier="message_crypte.txt")
             fichier.write(f"{point_to_str(y1)},{point_to_str(y2)}\n")
     print(f"✅ Le message crypté a été sauvegardé dans '{nom_fichier}'")
 
-'''def lire_message_crypte(nom_fichier, courbe_elliptique):
-    message_crypte = []
-    with open(nom_fichier, "r", encoding="utf-8") as fichier:
-        for ligne in fichier:
-            y1_str, y2_str = ligne.strip().split(",")
-            y1 = str_to_point(y1_str, courbe_elliptique)
-            y2 = str_to_point(y2_str, courbe_elliptique)
-            message_crypte.append((y1, y2))
-    return message_crypte'''
 
 def lire_message_crypte(nom_fichier, CE):
-    """
-    Lit un message crypté depuis un fichier texte et reconstruit 
-    la liste des couples de points (y1, y2).
-    """
     message_crypte = []
 
     with open(nom_fichier, "r", encoding="utf-8") as fichier:
@@ -454,20 +441,6 @@ dico2 = lire_dictionnaire("dico_direct.txt", CEstand)
 dico_recip2 = lire_dictionnaire("dico_récip.txt", CEstand)
 
 
-'''message_trad = text_to_pts("hello world",dico)
-print(f"✅ Le message a été converti en points")
-message_pts = [str_to_point(s, CEstand) for s in message_trad]
-message_crypte = cryptage_liste(message_pts, cle_publique)
-print(f"✅ Le message a été encrypté")
-
-
-message_decrypte = decryptage_liste(message_crypte, cle_secrete)
-print(f"✅ Le message a été décrypté")
-message_str = [str(p) for p in message_decrypte]
-message = pts_to_text(message_str, dico_reciproque(dico))
-print(f"✅ Le message a été traduit en language naturel")
-
-'''
 m2 = cryptage_liste(text_to_pts("hello world",dico2), cle_publique)
 sauvegarder_message_crypte(m2, nom_fichier="message_crypte_file.txt")
 
