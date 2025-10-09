@@ -188,13 +188,26 @@ class Point:
        return self + (-other)
 
 
-   def ordre(self):
-       k = 1
-       inf = Infini(self.courbe_el)
-       while self*k != inf:
-           k += 1
-       return k
+   def ordre(self):  
+        inf = Infini(self.courbe_el)
+        if self == inf:
+            return 0
+        k = 1
+        while self*k != inf:
+            k += 1
+        return k
 
+def point_ordre_max(l,CE):
+    point = Infini(CE)
+    ordre_point = 0
+    for p in l:
+        print("etude du point",p)
+        if ordre_point == CE.o: return point
+        ordretemp = p.ordre()
+        if ordretemp > ordre_point: 
+            point = p
+            ordre_point = ordretemp
+    return point
 
 
 
@@ -405,7 +418,7 @@ sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
 #dico_recip = lire_dictionnaire("dico_récip.txt", CEstand)
 
 
-"""message_trad = text_to_pts("hello world",dico)
+message_trad = text_to_pts("hello world",dico)
 print(f"✅ Le message a été converti en points")
 message_pts = [str_to_point(s, CEstand) for s in message_trad]
 message_crypte = cryptage_liste(message_pts, cle_publique)
@@ -419,4 +432,3 @@ print(f"✅ Le message a été décrypté")
 message_str = [str(p) for p in message_decrypte]
 message = pts_to_text(message_str, dico_recip)
 print(f"✅ Le message a été traduit en language naturel")
-"""
