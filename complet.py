@@ -302,8 +302,8 @@ CEstand = CourbeElliptique(2,0,2,1193)
 
 cle_secrete = 1789
 l = find_points(CEstand)
-P= l[random.randint(0,len(l))]
-#P=(911, 905) from Courbe elliptique : y² = x³ + 2x² + 2 mod 1193
+#P= l[random.randint(0,len(l))]
+P=(7, 321) from Courbe elliptique : y² = x³ + 2x² + 2 mod 1193
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
 
@@ -329,7 +329,6 @@ with open(nom_fichier, "r", encoding="utf-8") as fichier:
 # Alphabet en minuscules
 alphabet = string.ascii_lowercase + string.digits + " .,!?;:'\""
 
-# Création du dictionnaire réciproque : lettre -> élément
 dico = {}
 for i, element in enumerate(elements):
     if i < len(alphabet):  # si on a moins de 26 éléments
@@ -344,6 +343,41 @@ for i, element in enumerate(elements):
 
 def dico_reciproque(dico):
     return {valeur: cle for cle, valeur in dico.items()}
+
+def sauvegarder_dictionnaire(dico, nom_fichier):
+    try:
+        with open(nom_fichier, "w", encoding="utf-8") as fichier:
+            for cle, valeur in dico.items():
+                fichier.write(f"{cle}:{valeur}\n")  # Format clé:valeur par ligne
+        print(f"✅ Le dictionnaire a été sauvegardé dans '{nom_fichier}'")
+    except Exception as e:
+        print(f"Erreur lors de la sauvegarde du dictionnaire : {e}")
+
+
+def lire_dictionnaire(nom_fichier, courbe_elliptique):
+    dico = {}
+    try:
+        with open(nom_fichier, "r", encoding="utf-8") as fichier:
+            for ligne in fichier:
+                ligne = ligne.strip()
+                if ligne:  # Ignorer les lignes vides
+                    cle, valeur = ligne.split(":", 1)  # Séparer sur le premier ':'
+                    point = str_to_point(valeur, courbe_elliptique)  # Convertir la valeur en Point
+                    dico[cle] = point
+        print(f"✅ Le dictionnaire a été chargé depuis '{nom_fichier}'")
+        return dico
+    except FileNotFoundError:
+        print(f"Erreur : le fichier '{nom_fichier}' n'existe pas")
+        return None
+    except ValueError as e:
+        print(f"Erreur : format invalide dans le fichier '{nom_fichier}' : {e}")
+        return None
+    except Exception as e:
+        print(f"Erreur lors de la lecture du dictionnaire : {e}")
+        return None
+    
+
+
 
 def sauvegarder_message_crypte(message_crypte, nom_fichier="message_crypte.txt"):
     with open(nom_fichier, "w", encoding="utf-8") as fichier:
@@ -361,7 +395,11 @@ def lire_message_crypte(nom_fichier, courbe_elliptique):
             y2 = str_to_point(y2_str, courbe_elliptique)
             message_crypte.append((y1, y2))
     return message_crypte
-    
+
+
+
+sauvegarder_dictionnaire(dico,"dico_direct.txt")
+sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
 
    
 message_trad = text_to_pts("hello world",dico)
