@@ -188,13 +188,26 @@ class Point:
        return self + (-other)
 
 
-   def ordre(self):
-       k = 1
-       inf = Infini(self.courbe_el)
-       while self*k != inf:
-           k += 1
-       return k
+   def ordre(self):  
+        inf = Infini(self.courbe_el)
+        if self == inf:
+            return 0
+        k = 1
+        while self*k != inf:
+            k += 1
+        return k
 
+def point_ordre_max(l,CE):
+    point = Infini(CE)
+    ordre_point = 0
+    for p in l:
+        print("etude du point",p)
+        if ordre_point == CE.o: return point
+        ordretemp = p.ordre()
+        if ordretemp > ordre_point: 
+            point = p
+            ordre_point = ordretemp
+    return point
 
 
 
