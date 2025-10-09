@@ -476,12 +476,18 @@ message_crypte = lire_message_crypte("message_crypte_file.txt", CEstand)
 m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip2)
 
 
-def envoyeur(message,cle_publique,dico):
+def envoyeur(message,cle_publique,nom_dico,nom_fichier):
+    dico = lire_dictionnaire(nom_dico, CEstand)
     m2 = cryptage_liste(text_to_pts(message,dico), cle_publique)
-    sauvegarder_message_crypte(m2, nom_fichier="message_crypte_file.txt")
+    sauvegarder_message_crypte(m2, nom_fichier)
 
 
-def receveur(message_reçu,CEstand,):
+def receveur(message_reçu,CEstand,nom_dico_recip):
+    dico_recip = lire_dictionnaire(nom_dico_recip, CEstand)
     message_crypte = lire_message_crypte(message_reçu, CEstand)
-    m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip2)
-    print(m4)
+    m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip)
+    return m4
+
+envoyeur("coucou bg",cle_publique,"dico_direct.txt","mc.txt")
+
+receveur("mc.txt",CEstand,"dico_récip.txt")
