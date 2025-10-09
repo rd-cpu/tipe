@@ -85,7 +85,7 @@ class CourbeElliptique:
 
 
    def __repr__(self):
-       return "Courbe elliptique : y² = x³" + \
+       return "Courbe elliptique  y² = x³" + \
            (
                "" if self.a == 0 else " + x²" if self.a == 1 else " - x²" if self.a == -1 else f" + {self.a}x²" if self.a > 0 else f" - {-self.a}x²") + \
            ("" if self.b == 0 else " + x" if self.b == 1 else " - x" if self.b == -1 else f" + {self.b}x" if self.b > 0 else f" - {-self.b}x") + \
@@ -320,6 +320,7 @@ P=Point(3,380,CEstand)
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
 
+'''# enlever les commentaires pour créer un nouveau fichier point et des nouveaux dico 
 
 # Nom du fichier de sortie
 nom_fichier = "points_CEstand.txt"
@@ -353,6 +354,8 @@ for i, element in enumerate(elements):
 
 #print("Dictionnaire crée")
 #print(dico)
+'''
+
 
 def dico_reciproque(dico):
     return {valeur: cle for cle, valeur in dico.items()}
@@ -367,28 +370,26 @@ def sauvegarder_dictionnaire(dico, nom_fichier):
         print(f"Erreur lors de la sauvegarde du dictionnaire : {e}")
 
 
-def lire_dictionnaire(nom_fichier, courbe_elliptique):
+
+def lire_dictionnaire(nom_fichier, CE=None):
     dico = {}
-    try:
-        with open(nom_fichier, "r", encoding="utf-8") as fichier:
-            for ligne in fichier:
-                ligne = ligne.strip()
-                if ligne:  # Ignorer les lignes vides
-                    cle, valeur = ligne.split(":", 1)  # Séparer sur le premier ':'
-                    point = str_to_point(valeur, courbe_elliptique)  # Convertir la valeur en Point
-                    dico[cle] = point
-        print(f"✅ Le dictionnaire a été chargé depuis '{nom_fichier}'")
-        return dico
-    except FileNotFoundError:
-        print(f"Erreur : le fichier '{nom_fichier}' n'existe pas")
-        return None
-    except ValueError as e:
-        print(f"Erreur : format invalide dans le fichier '{nom_fichier}' : {e}")
-        return None
-    except Exception as e:
-        print(f"Erreur lors de la lecture du dictionnaire : {e}")
-        return None
-    
+    with open(nom_fichier, "r", encoding="utf-8") as fichier:
+        for ligne in fichier:
+            if ":" not in ligne:
+                continue
+            cle, valeur = ligne.strip().split(":", 1)
+            cle = cle.strip()
+            valeur = valeur.strip()
+            
+            # Si la valeur semble être un point "(x, y)"
+            if valeur.startswith("(") and CE is not None:
+                try:
+                    valeur = str_to_point(valeur, CE)
+                except Exception:
+                    pass  # Si ce n’est pas un vrai point, on garde la chaîne
+            dico[cle] = valeur
+    print(f"✅ Le dictionnaire a été chargé depuis '{nom_fichier}'")
+    return dico
 
 
 
@@ -411,24 +412,30 @@ def lire_message_crypte(nom_fichier, courbe_elliptique):
 
 
 
-sauvegarder_dictionnaire(dico,"dico_direct.txt")
-sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
+#sauvegarder_dictionnaire(dico,"dico_direct.txt")
+#sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
 
-#dico = lire_dictionnaire("dico_direct.txt", CEstand)
-#dico_recip = lire_dictionnaire("dico_récip.txt", CEstand)
+dico2 = lire_dictionnaire("dico_direct.txt", CEstand)
+dico_recip2 = lire_dictionnaire("dico_récip.txt", CEstand)
 
 
-message_trad = text_to_pts("hello world",dico)
+'''message_trad = text_to_pts("hello world",dico)
 print(f"✅ Le message a été converti en points")
 message_pts = [str_to_point(s, CEstand) for s in message_trad]
 message_crypte = cryptage_liste(message_pts, cle_publique)
 print(f"✅ Le message a été encrypté")
 
-#sauvegarder_message_crypte(message_crypte, nom_fichier="message_crypte_file.txt")
-#message_crypte = lire_message_crypte("message_crypte_file.txt", CEstand)
 
 message_decrypte = decryptage_liste(message_crypte, cle_secrete)
 print(f"✅ Le message a été décrypté")
 message_str = [str(p) for p in message_decrypte]
-message = pts_to_text(message_str, dico_recip)
+message = pts_to_text(message_str, dico_reciproque(dico))
 print(f"✅ Le message a été traduit en language naturel")
+
+'''
+m2 = cryptage_liste(text_to_pts("hello world",dico2), cle_publique)
+
+#sauvegarder_message_crypte(m2, nom_fichier="message_crypte_file.txt")
+#message_crypte = lire_message_crypte("message_crypte_file.txt", CEstand)
+
+m4 = pts_to_text([str(p) for p in decryptage_liste(m2,cle_secrete)], dico_recip2)
