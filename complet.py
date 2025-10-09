@@ -303,7 +303,7 @@ CEstand = CourbeElliptique(2,0,2,1193)
 cle_secrete = 1789
 l = find_points(CEstand)
 #P= l[random.randint(0,len(l))]
-P=(7, 321) from Courbe elliptique : y² = x³ + 2x² + 2 mod 1193
+P=Point(7,321,CEstand)
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
 
