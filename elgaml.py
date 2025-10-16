@@ -26,7 +26,7 @@ def generate_PK(cle_secrete, n):
     H = range(1, n)
     g = randint(2, n - 1)
     A = expo_discrete_rapide(g,cle_secrete,n)
-       return H, n, g, A
+    return H, n, g, A
 
 
 def cryptage(cle_publique, message):
@@ -55,13 +55,12 @@ def is_prime(n):
 def crack_log_discret(a,b,p):
     #On veut k tel que b^k = a mod p
     k = 1
-    A = b
-    while b**k % p!= a % p:
-        if A % p!= a % p:
-            A = (A*b)%p
-            k+=1
+    X = b
+    while X != a % p:
         if k >= p:
            return None
+        X = (X*b)%p
+        k+=1
     return k
 
 def crack(pk):
