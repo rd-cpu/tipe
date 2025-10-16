@@ -61,6 +61,7 @@ def crack_log_discret(a,b,p):
            return None
         X = (X*b)%p
         k+=1
+        print(k)
     return k
 
 def crack(pk):
