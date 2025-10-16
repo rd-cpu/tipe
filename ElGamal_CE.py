@@ -1,6 +1,5 @@
 from random import randint
-from courbe_elliptique import *
-
+from modules.CE_ZnZ import *
 
 def bezout_fct(a, b):
    if b == 0:
