@@ -1,7 +1,7 @@
 import string
 import random
-from el_gamal import *
-from courbe_el_final import *
+from module.el_gamal import *
+from module.courbe_el_final import *
 
 def text_to_pts(texte, dico):
     pts = []
