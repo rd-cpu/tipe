@@ -1,0 +1,10 @@
+(176, 681) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(920, 796) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(284, 726) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(140, 301) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(925, 734) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(2, 272) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(1086, 553) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(728, 381) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(380, 134) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(1162, 644) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(203, 865) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(739, 225) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(944, 914) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(393, 688) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(447, 931) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(701, 691) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(424, 471) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(852, 998) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(630, 539) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(713, 443) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193

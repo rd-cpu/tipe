@@ -198,6 +198,6 @@ def receveur(message_reçu,CEstand,nom_dico_recip,cle_secrete):
     m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip)
     return m4
 
-envoyeur("coucou bg",cle_publique,"dico_direct.txt","mc.txt")
+envoyeur("helloWorld!",cle_publique,"dico_direct.txt","mc.txt")
 
 receveur("mc.txt",CEstand,"dico_récip.txt",cle_secrete)
