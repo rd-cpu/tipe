@@ -51,12 +51,12 @@ def decryptage_liste(message_chiffre, cle_secrete):
 CEstand = CourbeElliptique(2,0,2,49993) # Changer ordre et dico avec o = 49993,1193
 
 cle_secrete = 1789
-l = find_points(CEstand)
-P= l[random.randint(0,len(l))]
+#l = find_points(CEstand)
+#P= l[random.randint(0,len(l))]
 P=Point(98, 29352,CEstand)
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
-
+'''
 # enlever les commentaires pour créer un nouveau fichier point et des nouveaux dico 
 
 # Nom du fichier de sortie
@@ -88,10 +88,12 @@ for i, element in enumerate(elements):
         dico[f"_{i}"] = element  # identifiant alternatif si plus de 26
 
 # Affichage du dictionnaire
+sauvegarder_dictionnaire(dico,"dico_direct.txt")
+sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
 
-#print("Dictionnaire crée")
+print("Dictionnaire crée")
 #print(dico)
-
+'''
 
 
 def dico_reciproque(dico):
@@ -171,20 +173,7 @@ def lire_message_crypte(nom_fichier, CE):
     return message_crypte
 
 
-#sauvegarder_dictionnaire(dico,"dico_direct.txt")
-#sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
 
-'''dico2 = lire_dictionnaire("dico_direct.txt", CEstand)
-dico_recip2 = lire_dictionnaire("dico_récip.txt", CEstand)
-
-
-m2 = cryptage_liste(text_to_pts("hello world",dico2), cle_publique)
-sauvegarder_message_crypte(m2, nom_fichier="message_crypte_file.txt")
-
-message_crypte = lire_message_crypte("message_crypte_file.txt", CEstand)
-
-m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip2)
-'''
 def envoyeur(message,cle_publique,nom_dico,nom_fichier,CEstand):
     dico = lire_dictionnaire(nom_dico, CEstand)
     m2 = cryptage_liste(text_to_pts(message,dico), cle_publique)
