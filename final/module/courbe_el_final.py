@@ -1,5 +1,3 @@
-from el_gamal import *
-
 class CourbeElliptique:
    def __init__(self, a, b, c, o):
        self.a = a
