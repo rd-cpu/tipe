@@ -42,6 +42,25 @@ def decryptage_liste(message_chiffre, cle_secrete):
         message_dechiffre.append(decryptage(couple, cle_secrete))
     return message_dechiffre
 
+def lire_dictionnaire(nom_fichier, CE=None):
+    dico = {}
+    with open(nom_fichier, "r", encoding="utf-8") as fichier:
+        for ligne in fichier:
+            if ":" not in ligne:
+                continue
+            cle, valeur = ligne.strip().split(":", 1)
+            cle = cle.strip()
+            valeur = valeur.strip()
+            
+            # Si la valeur semble être un point "(x, y)"
+            if valeur.startswith("(") and CE is not None:
+                try:
+                    valeur = str_to_point(valeur, CE)
+                except Exception:
+                    pass  # Si ce n’est pas un vrai point, on garde la chaîne
+            dico[cle] = valeur
+    print(f"✅ Le dictionnaire a été chargé depuis '{nom_fichier}'")
+    return dico
 
 def sauvegarder_message_crypte(message_crypte, nom_fichier="message_crypte.txt"):
     with open(nom_fichier, "w", encoding="utf-8") as fichier:
