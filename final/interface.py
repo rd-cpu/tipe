@@ -49,7 +49,7 @@ class CryptoApp:
         tk.Button(self.frame_receveur, text="Recevoir (Déchiffrer)", command=self.recevoir).grid(row=2, column=0, columnspan=3, pady=10)
 
         # Zone de résultat
-        self.result_label = tk.Label(root, text="Résultat :", wraplength=500, justify="left")
+        self.result_label = tk.Label(root, wraplength=500, justify="left")
         self.result_label.pack(pady=10)
 
     def browse_dico_direct(self):
@@ -85,7 +85,7 @@ class CryptoApp:
                 messagebox.showerror("Erreur", "Veuillez remplir tous les champs.")
                 return
             envoyeur(message, cle_publique, dico_direct, fichier_sortie, CEstand)
-            self.result_label.config(text=f"Résultat : Message chiffré sauvegardé dans '{fichier_sortie}'")
+            self.result_label.config(text=f"Message chiffré sauvegardé dans '{fichier_sortie}'")
         except Exception as e:
             messagebox.showerror("Erreur", f"Erreur lors du chiffrement : {str(e)}")
 
@@ -97,7 +97,7 @@ class CryptoApp:
                 messagebox.showerror("Erreur", "Veuillez remplir tous les champs.")
                 return
             message_dechiffre = receveur(message_crypte, CEstand, dico_recip, cle_secrete)
-            self.result_label.config(text=f"Résultat : Message déchiffré : {message_dechiffre}")
+            self.result_label.config(text=f"Message déchiffré : {message_dechiffre}")
         except Exception as e:
             messagebox.showerror("Erreur", f"Erreur lors du déchiffrement : {str(e)}")
 
