@@ -13,15 +13,7 @@ def sauvegarder_dictionnaire(dico, nom_fichier):
         print(f"Erreur lors de la sauvegarde du dictionnaire : {e}")
 
 
-CEstand = CourbeElliptique(2,0,2,49993) # Changer ordre et dico avec o = 49993,1193
-
-cle_secrete = 1789
 #l = find_points(CEstand)
-#P= l[random.randint(0,len(l))]
-P=Point(98, 29352,CEstand)
-cle_publique = generate_PK(cle_secrete, P, CEstand)
-
-
 
 '''
 # Nom du fichier de sortie
