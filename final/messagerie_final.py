@@ -115,7 +115,7 @@ def receveur(message_reçu,CEstand,nom_dico_recip,cle_secrete):
 
 CEstand = CourbeElliptique(2,0,2,49993) # Changer ordre et dico avec o = 49993,1193
 
-cle_secrete = 1789
+#cle_secrete = 1789
 #l = find_points(CEstand)
 #P= l[random.randint(0,len(l))]
 P=Point(98, 29352,CEstand)
