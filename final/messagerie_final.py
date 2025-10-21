@@ -114,6 +114,7 @@ def lire_message_crypte(nom_fichier, CE):
     return message_crypte
 
 def envoyeur(message,cle_publique,nom_dico,nom_fichier,CEstand):
+    message = message.replace(" ", "@")
     dico = lire_dictionnaire(nom_dico, CEstand)
     m2 = cryptage_liste(text_to_pts(message,dico), cle_publique)
     sauvegarder_message_crypte(m2, nom_fichier)
@@ -122,7 +123,7 @@ def receveur(message_reçu,CEstand,nom_dico_recip,cle_secrete):
     dico_recip = lire_dictionnaire(nom_dico_recip, CEstand)
     message_crypte = lire_message_crypte(message_reçu, CEstand)
     m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip)
-    return m4
+    return m4.replace("@", " ")
 
 CEstand = CourbeElliptique(2,0,2,49993) # Changer ordre et dico avec o = 49993,1193
 
@@ -132,9 +133,9 @@ cle_secrete = 1789
 P=Point(98, 29352,CEstand)
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
-'''
-# enlever les commentaires pour créer un nouveau fichier point et des nouveaux dico 
 
+# enlever les commentaires pour créer un nouveau fichier point et des nouveaux dico 
+'''
 # Nom du fichier de sortie
 nom_fichier = "points_CEstand.txt"
 
@@ -145,7 +146,7 @@ with open(nom_fichier, "w", encoding="utf-8") as fichier:
 
 print(f"✅ La liste a été sauvegardée dans '{nom_fichier}'")
 
-
+'''
 # Nom du fichier à lire
 nom_fichier = "points_CEstand.txt"
 
@@ -154,7 +155,7 @@ with open(nom_fichier, "r", encoding="utf-8") as fichier:
     elements = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
 
 # Alphabet en minuscules
-alphabet = string.ascii_lowercase + string.digits + " .,!?;:'\""
+alphabet = string.ascii_lowercase + string.digits + "@.,!?;:'\""
 
 dico = {}
 for i, element in enumerate(elements):
@@ -169,9 +170,9 @@ sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
 
 print("Dictionnaire crée")
 #print(dico)
-'''
 
 
-#envoyeur("coucou bg",cle_publique,"dico_direct.txt","mc.txt",CEstand)
 
-#receveur("mc.txt",CEstand,"dico_récip.txt",cle_secrete)
+envoyeur("coucou bg",cle_publique,"dico_direct.txt","mc.txt",CEstand)
+
+receveur("mc.txt",CEstand,"dico_récip.txt",cle_secrete)

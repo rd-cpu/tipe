@@ -1,8 +1,9 @@
-(484, 484) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(1172, 613) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
-(673, 418) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(583, 313) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
-(223, 826) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(7, 321) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
-(51, 310) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(464, 677) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
-(67, 833) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(1191, 307) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
-(666, 705) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(0, 886) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
-(459, 1066) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(979, 610) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
-(630, 539) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193,(1035, 1104) from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193
+(46014, 48609) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(21701, 5319) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
+(20421, 35545) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(20700, 6163) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
+(6271, 7866) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(37721, 29999) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
+(34999, 35359) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(37017, 26956) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
+(16474, 33436) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(13392, 522) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
+(38587, 32609) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(10989, 18273) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
+(8471, 21325) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(23987, 20846) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
+(35265, 24845) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(32599, 32126) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
+(33960, 3294) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993,(47413, 3420) from Courbe elliptique  y² = x³ + 2x² + 2 mod 49993
