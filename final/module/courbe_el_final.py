@@ -165,9 +165,6 @@ def find_points(c):
    l = []
    for x in range(c.o):
        for y in range(c.o):
-           if len(l)>=40:
-               return l
-           #print(len(l))
            try:
                p = Point(x,y,c)
                l.append(p)
