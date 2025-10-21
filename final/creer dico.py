@@ -33,9 +33,14 @@ nom_fichier = "points_CEstand.txt"
 with open(nom_fichier, "r", encoding="utf-8") as fichier:
     elements = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
 
-# Alphabet en minuscules
-alphabet = string.ascii_lowercase + string.digits + ".,!?;:'\""
+# Minuscules, majuscules et chiffres
+alphabet = string.ascii_lowercase + string.ascii_uppercase + string.digits
 
+# Ponctuation standard et symbole de séparation pour les espaces
+alphabet += "@.,!?;:'\"()-_"
+
+# Lettres accentuées (majuscules et minuscules)
+alphabet += "éèêëàâäùûüôöç"
 dico = {}
 for i, element in enumerate(elements):
     if i < len(alphabet):  # si on a moins de 26 éléments
