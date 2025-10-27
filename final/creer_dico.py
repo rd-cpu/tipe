@@ -1,4 +1,5 @@
 from messagerie_final import *
+from module.courbe_el_final import *
 
 def dico_reciproque(dico):
     return {valeur: cle for cle, valeur in dico.items()}
@@ -11,18 +12,6 @@ def sauvegarder_dictionnaire(dico, nom_fichier):
         print(f"✅ Le dictionnaire a été sauvegardé dans '{nom_fichier}'")
     except Exception as e:
         print(f"Erreur lors de la sauvegarde du dictionnaire : {e}")
-
-'''
-# Nom du fichier de sortie
-nom_fichier = nom_fichier_points(CE)
-
-# Écriture dans le fichier
-with open(nom_fichier, "w", encoding="utf-8") as fichier:
-    for element in l:
-        fichier.write(str(element) + "\n")  # chaque élément sur une nouvelle ligne
-
-print(f"✅ La liste a été sauvegardée dans '{nom_fichier}'")
-'''
 
 def creation_dicos(CE):
     # Nom du fichier à lire
@@ -50,5 +39,5 @@ def creation_dicos(CE):
             dico[f"_{i}"] = element  # identifiant alternatif si plus de 26
 
     # Affichage du dictionnaire
-    sauvegarder_dictionnaire(dico,nom_fichier_dico_direct)
-    sauvegarder_dictionnaire(dico_reciproque(dico),nom_fichier_dico_recip)
+    sauvegarder_dictionnaire(dico,fichier_dico_direct)
+    sauvegarder_dictionnaire(dico_reciproque(dico),fichier_dico_recip)

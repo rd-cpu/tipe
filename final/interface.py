@@ -1,9 +1,13 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
-from messagerie_final import envoyeur, receveur, CEstand, cle_publique, cle_secrete
+from messagerie_final import *
 
 class CryptoApp:
     def __init__(self, root):
+        chemin_fichier_message_crypte = nom_fichier_message_crypte(CEstand)
+        chemin_fichier_dico_direct = nom_fichier_dico_direct(CEstand)
+        chemin_fichier_dico_recip = nom_fichier_dico_recip(CEstand)
+
         self.root = root
         self.root.title("Cryptographie El Gamal sur Courbes Elliptiques")
         self.root.geometry("600x500")
@@ -15,17 +19,18 @@ class CryptoApp:
         tk.Label(self.frame_envoyeur, text="Message à envoyer :").grid(row=0, column=0, sticky="w")
         self.message_entry = tk.Entry(self.frame_envoyeur, width=40)
         self.message_entry.grid(row=0, column=1, padx=5, pady=5)
-
+        
         tk.Label(self.frame_envoyeur, text="Dictionnaire direct :").grid(row=1, column=0, sticky="w")
         self.dico_direct_entry = tk.Entry(self.frame_envoyeur, width=40)
         self.dico_direct_entry.grid(row=1, column=1, padx=5, pady=5)
-        self.dico_direct_entry.insert(0, "dico_direct.txt")
+        self.dico_direct_entry.insert(0, chemin_fichier_dico_direct)
         tk.Button(self.frame_envoyeur, text="Parcourir", command=self.browse_dico_direct).grid(row=1, column=2, padx=5)
+
 
         tk.Label(self.frame_envoyeur, text="Fichier de sortie :").grid(row=2, column=0, sticky="w")
         self.fichier_sortie_entry = tk.Entry(self.frame_envoyeur, width=40)
         self.fichier_sortie_entry.grid(row=2, column=1, padx=5, pady=5)
-        self.fichier_sortie_entry.insert(0, "message_crypte.txt")
+        self.fichier_sortie_entry.insert(0, chemin_fichier_message_crypte)
         tk.Button(self.frame_envoyeur, text="Parcourir", command=self.browse_fichier_sortie).grid(row=2, column=2, padx=5)
 
         tk.Button(self.frame_envoyeur, text="Envoyer (Chiffrer)", command=self.envoyer).grid(row=3, column=0, columnspan=3, pady=10)
@@ -37,13 +42,13 @@ class CryptoApp:
         tk.Label(self.frame_receveur, text="Fichier message crypté :").grid(row=0, column=0, sticky="w")
         self.message_crypte_entry = tk.Entry(self.frame_receveur, width=40)
         self.message_crypte_entry.grid(row=0, column=1, padx=5, pady=5)
-        self.message_crypte_entry.insert(0, "message_crypte.txt")
+        self.message_crypte_entry.insert(0, chemin_fichier_message_crypte)
         tk.Button(self.frame_receveur, text="Parcourir", command=self.browse_message_crypte).grid(row=0, column=2, padx=5)
 
         tk.Label(self.frame_receveur, text="Dictionnaire réciproque :").grid(row=1, column=0, sticky="w")
         self.dico_recip_entry = tk.Entry(self.frame_receveur, width=40)
         self.dico_recip_entry.grid(row=1, column=1, padx=5, pady=5)
-        self.dico_recip_entry.insert(0, "dico_récip.txt")
+        self.dico_recip_entry.insert(0, chemin_fichier_dico_recip)
         tk.Button(self.frame_receveur, text="Parcourir", command=self.browse_dico_recip).grid(row=1, column=2, padx=5)
 
         tk.Button(self.frame_receveur, text="Recevoir (Déchiffrer)", command=self.recevoir).grid(row=2, column=0, columnspan=3, pady=10)
@@ -84,7 +89,7 @@ class CryptoApp:
             if not message or not dico_direct or not fichier_sortie:
                 messagebox.showerror("Erreur", "Veuillez remplir tous les champs.")
                 return
-            envoyeur(message, cle_publique, dico_direct, fichier_sortie, CEstand)
+            envoyeur(message, cle_publique, CEstand)
             self.result_label.config(text=f"Message chiffré sauvegardé dans '{fichier_sortie}'")
         except Exception as e:
             messagebox.showerror("Erreur", f"Erreur lors du chiffrement : {str(e)}")
@@ -96,7 +101,7 @@ class CryptoApp:
             if not message_crypte or not dico_recip:
                 messagebox.showerror("Erreur", "Veuillez remplir tous les champs.")
                 return
-            message_dechiffre = receveur(message_crypte, CEstand, dico_recip, cle_secrete)
+            message_dechiffre = receveur(CEstand, cle_secrete)
             self.result_label.config(text=f"Message déchiffré : {message_dechiffre}")
         except Exception as e:
             messagebox.showerror("Erreur", f"Erreur lors du déchiffrement : {str(e)}")

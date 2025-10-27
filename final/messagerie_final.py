@@ -13,10 +13,10 @@ def nom_fichier_dico_direct(CE):
     return "dicos/dico_direct_"+ extension(CE)
 
 def nom_fichier_dico_recip(CE):
-    return "dicos/dico_recip" + extension(CE)
+    return "dicos/dico_recip_" + extension(CE)
 
 def nom_fichier_message_crypte(CE):
-    return "message_cryptes/message_crypte" + extension(CE)
+    return "messages_cryptes/message_crypte_" + extension(CE)
 
 def text_to_pts(texte, dico):
     pts = []
@@ -49,7 +49,7 @@ def cryptage_liste(message_pts, cle_publique):
     message_chiffre = []
     for pt in message_pts:
         message_chiffre.append(cryptage(cle_publique, pt))
-    return message_chiffrecrack_message
+    return message_chiffre
 
 def decryptage_liste(message_chiffre, cle_secrete):
     message_dechiffre = []
@@ -77,7 +77,8 @@ def lire_dictionnaire(nom_fichier, CE=None):
     print(f"✅ Le dictionnaire a été chargé depuis '{nom_fichier}'")
     return dico
 
-def sauvegarder_message_crypte(message_crypte, nom_fichier="message_crypte.txt"):
+def sauvegarder_message_crypte(message_crypte,CE):
+    nom_fichier = nom_fichier_message_crypte(CE)
     with open(nom_fichier, "w", encoding="utf-8") as fichier:
         for couple in message_crypte:
             y1, y2 = couple
@@ -121,7 +122,7 @@ def envoyeur(message,cle_publique,CE):
     nom_fichier = nom_fichier_message_crypte(CE)
     dico = lire_dictionnaire(nom_fichier_dico_direct(CE), CE)
     m2 = cryptage_liste(text_to_pts(message,dico), cle_publique)
-    sauvegarder_message_crypte(m2, nom_fichier)
+    sauvegarder_message_crypte(m2,CE)
 
 def receveur(CE,cle_secrete):
     message_recu = nom_fichier_message_crypte(CE)
@@ -140,7 +141,7 @@ def points_to_list(CE):
 
 def random_point(CE):
     nom_fichier = nom_fichier_points(CE)
-    l = points_to_list(nom_fichier,CE)
+    l = points_to_list(CE)
     i = randint(0,len(l)-1)
     return l[i]
 
