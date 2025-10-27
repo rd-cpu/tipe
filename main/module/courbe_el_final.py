@@ -1,4 +1,4 @@
-from module.el_gamal import inv_mod
+from el_gamal import inv_mod
 from random import randint
 
 class CourbeElliptique:
