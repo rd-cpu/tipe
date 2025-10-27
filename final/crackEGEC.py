@@ -1,14 +1,15 @@
 from module.courbe_el_final import *
 from module.el_gamal import *
 from messagerie_final import *
-
+'''
 CEstand = CourbeElliptique(2,0,2,49993)
 cle_secrete = 1789
 
 print("début calcul points")
 l=find_points(CEstand)
 P = point_ordre_max(l,CEstand)
-# cle_publique = generate_PK(cle_secrete, P, CEstand)
+'''
+cle_publique = generate_PK(cle_secrete, P, CEstand)
 
 
 def crack_log_discret(P,B,o):
