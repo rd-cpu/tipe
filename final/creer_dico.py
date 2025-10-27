@@ -1,6 +1,5 @@
 from messagerie_final import *
 
-
 def dico_reciproque(dico):
     return {valeur: cle for cle, valeur in dico.items()}
 
@@ -13,12 +12,9 @@ def sauvegarder_dictionnaire(dico, nom_fichier):
     except Exception as e:
         print(f"Erreur lors de la sauvegarde du dictionnaire : {e}")
 
-
-#l = find_points(CEstand)
-
 '''
 # Nom du fichier de sortie
-nom_fichier = "pointsCEs/points_CEstand.txt"
+nom_fichier = nom_fichier_points(CE)
 
 # Écriture dans le fichier
 with open(nom_fichier, "w", encoding="utf-8") as fichier:
@@ -27,28 +23,32 @@ with open(nom_fichier, "w", encoding="utf-8") as fichier:
 
 print(f"✅ La liste a été sauvegardée dans '{nom_fichier}'")
 '''
-# Nom du fichier à lire
-nom_fichier = "pointsCEs/points_CEstand.txt"
 
-# Lecture des éléments du fichier
-with open(nom_fichier, "r", encoding="utf-8") as fichier:
-    elements = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
+def creation_dicos(CE):
+    # Nom du fichier à lire
+    fichier_points = nom_fichier_points(CE)
+    fichier_dico_direct = nom_fichier_dico_direct(CE)
+    fichier_dico_recip = nom_fichier_dico_recip(CE)
 
-# Minuscules, majuscules et chiffres
-alphabet = string.ascii_lowercase + string.ascii_uppercase + string.digits
+    # Lecture des éléments du fichier
+    with open(fichier_points, "r", encoding="utf-8") as fichier:
+        elements = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
 
-# Ponctuation standard et symbole de séparation pour les espaces
-alphabet += "@.,!?;:'\"()-_"
+    # Minuscules, majuscules et chiffres
+    alphabet = string.ascii_lowercase + string.ascii_uppercase + string.digits
 
-# Lettres accentuées (majuscules et minuscules)
-alphabet += "éèêëàâäùûüôöç"
-dico = {}
-for i, element in enumerate(elements):
-    if i < len(alphabet):  # si on a moins de 26 éléments
-        dico[alphabet[i]] = element
-    else:
-        dico[f"_{i}"] = element  # identifiant alternatif si plus de 26
+    # Ponctuation standard et symbole de séparation pour les espaces
+    alphabet += "@.,!?;:'\"()-_"
 
-# Affichage du dictionnaire
-sauvegarder_dictionnaire(dico,"dico_direct.txt")
-sauvegarder_dictionnaire(dico_reciproque(dico),"dico_récip.txt")
+    # Lettres accentuées (majuscules et minuscules)
+    alphabet += "éèêëàâäùûüôöç"
+    dico = {}
+    for i, element in enumerate(elements):
+        if i < len(alphabet):  # si on a moins de 26 éléments
+            dico[alphabet[i]] = element
+        else:
+            dico[f"_{i}"] = element  # identifiant alternatif si plus de 26
+
+    # Affichage du dictionnaire
+    sauvegarder_dictionnaire(dico,nom_fichier_dico_direct)
+    sauvegarder_dictionnaire(dico_reciproque(dico),nom_fichier_dico_recip)

@@ -13,9 +13,8 @@ P = point_ordre_max(l,CEstand)
 s = randint(2000,CEstand.o - 1)
 print("clé secrète :",s)
 pk = generate_PK(s,P,CEstand)
-# l = find_points(CEstand)
-l = points_to_list("pointsCEs/points_CEstand.txt",CEstand)
-Q = random_point(CEstand,"pointsCEs/points_CEstand.txt")
+l = points_to_list(CEstand)
+Q = random_point(CEstand)
 
 
 def crack_log_discret_force_brute(P,B,o):

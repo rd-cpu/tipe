@@ -3,6 +3,21 @@ import random
 from module.el_gamal import *
 from module.courbe_el_final import *
 
+def extension(CE):
+    return str(CE.a) + '_' + str(CE.b) + '_' + str(CE.c) + '_' + str(CE.o) + ".txt"
+
+def nom_fichier_points(CE):
+    return "pointsCEs/points_" + extension(CE)
+
+def nom_fichier_dico_direct(CE):
+    return "dicos/dico_direct_"+ extension(CE)
+
+def nom_fichier_dico_recip(CE):
+    return "dicos/dico_recip" + extension(CE)
+
+def nom_fichier_message_crypte(CE):
+    return "message_cryptes/message_crypte" + extension(CE)
+
 def text_to_pts(texte, dico):
     pts = []
     for e in texte:
@@ -88,7 +103,7 @@ def lire_message_crypte(nom_fichier, CE):
             if pos2 == -1:
                 raise ValueError(f"Ligne invalide (2e point manquant) : {ligne}")
 
-            y1_str = ligne[:pos + len(") from Courbe elliptique  y² = x³ + 2x² + 2 mod 1193")]
+            y1_str = ligne[:pos + len(") from Courbe elliptique  y² = x³ + " + str(CE.a) + "x² + " + str(CE.c) + "mod " + str(CE.o))]
             y2_str = ligne[pos2:]
 
             try:
@@ -101,30 +116,38 @@ def lire_message_crypte(nom_fichier, CE):
     print(f"✅ Le message crypté a été chargé depuis '{nom_fichier}'")
     return message_crypte
 
-def envoyeur(message,cle_publique,nom_dico,nom_fichier,CEstand):
+def envoyeur(message,cle_publique,CE):
     message = message.replace(" ", ";")
-    dico = lire_dictionnaire(nom_dico, CEstand)
+    nom_fichier = nom_fichier_message_crypte(CE)
+    dico = lire_dictionnaire(nom_fichier_dico_direct(CE), CE)
     m2 = cryptage_liste(text_to_pts(message,dico), cle_publique)
     sauvegarder_message_crypte(m2, nom_fichier)
 
-def receveur(message_reçu,CEstand,nom_dico_recip,cle_secrete):
+def receveur(CE,cle_secrete):
+    message_recu = nom_fichier_message_crypte(CE)
+    nom_dico_recip = nom_fichier_dico_recip(CE)
     dico_recip = lire_dictionnaire(nom_dico_recip, CEstand)
-    message_crypte = lire_message_crypte(message_reçu, CEstand)
+    message_crypte = lire_message_crypte(message_recu, CEstand)
     m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip)
     return m4.replace(";", " ")
 
-def points_to_list(nom_fichier,CE):
+def points_to_list(CE):
+    nom_fichier = nom_fichier_points(CE)
     with open(nom_fichier, "r", encoding="utf-8") as fichier:
         lstr = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
         l = [str_to_point(s,CE) for s in lstr]
         return l
 
-def random_point(CE,nom_fichier):
+def random_point(CE):
+    nom_fichier = nom_fichier_points(CE)
     l = points_to_list(nom_fichier,CE)
     i = randint(0,len(l)-1)
     return l[i]
 
+
 CEstand = CourbeElliptique(2,0,2,49993) # Changer ordre et dico avec o = 49993,1193
+
+
 
 cle_secrete = 1789
 #l = find_points(CEstand)
@@ -133,6 +156,6 @@ P=Point(28,31632,CEstand)
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
 
-#envoyeur("coucou bg",cle_publique,"dicos/dico_direct.txt","mc.txt",CEstand)
+#envoyeur("coucou bg",cle_publique,CEstand)
 
-#receveur("mc.txt",CEstand,"dicos/dico_récip.txt",cle_secrete)
+#receveur(CEstand,cle_secrete)
