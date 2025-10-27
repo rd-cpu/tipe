@@ -1,5 +1,6 @@
 from messagerie_final import *
 
+
 def dico_reciproque(dico):
     return {valeur: cle for cle, valeur in dico.items()}
 
@@ -17,7 +18,7 @@ def sauvegarder_dictionnaire(dico, nom_fichier):
 
 '''
 # Nom du fichier de sortie
-nom_fichier = "points_CEstand.txt"
+nom_fichier = "pointsCEs/points_CEstand.txt"
 
 # Écriture dans le fichier
 with open(nom_fichier, "w", encoding="utf-8") as fichier:
@@ -27,7 +28,7 @@ with open(nom_fichier, "w", encoding="utf-8") as fichier:
 print(f"✅ La liste a été sauvegardée dans '{nom_fichier}'")
 '''
 # Nom du fichier à lire
-nom_fichier = "points_CEstand.txt"
+nom_fichier = "pointsCEs/points_CEstand.txt"
 
 # Lecture des éléments du fichier
 with open(nom_fichier, "r", encoding="utf-8") as fichier:

@@ -1,6 +1,7 @@
 from module.courbe_el_final import *
 from module.el_gamal import *
 from messagerie_final import *
+
 '''
 CEstand = CourbeElliptique(2,0,2,49993)
 cle_secrete = 1789
@@ -12,9 +13,12 @@ P = point_ordre_max(l,CEstand)
 s = randint(2000,CEstand.o - 1)
 print("clé secrète :",s)
 pk = generate_PK(s,P,CEstand)
-P = point_random(CEstand,"points_CEstand.txt")
+# l = find_points(CEstand)
+l = points_to_list("pointsCEs/points_CEstand.txt",CEstand)
+Q = random_point(CEstand,"pointsCEs/points_CEstand.txt")
 
-def crack_log_discret(P,B,o):
+
+def crack_log_discret_force_brute(P,B,o):
     #On veut k tel que b^k = a mod p
     k = 1
     X = P
@@ -25,10 +29,11 @@ def crack_log_discret(P,B,o):
         k+=1
     return k
 
-def crack(pk):
+def crack_force_brute(pk):
     CE, P, B = pk
-    s = crack_log_discret(P,B,CE.o)
+    s = crack_log_discret_force_brute(P,B,CE.o)
     return s
 
-def crack_message(message_chiffre,pk):
-    receveur()
+def crack_point_force_brute(message_chiffre,pk):
+    return decryptage(message_chiffre,crack_force_brute(pk))
+

@@ -113,15 +113,26 @@ def receveur(message_reçu,CEstand,nom_dico_recip,cle_secrete):
     m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip)
     return m4.replace(";", " ")
 
+def points_to_list(nom_fichier,CE):
+    with open(nom_fichier, "r", encoding="utf-8") as fichier:
+        lstr = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
+        l = [str_to_point(s,CE) for s in lstr]
+        return l
+
+def random_point(CE,nom_fichier):
+    l = points_to_list(nom_fichier,CE)
+    i = randint(0,len(l)-1)
+    return l[i]
+
 CEstand = CourbeElliptique(2,0,2,49993) # Changer ordre et dico avec o = 49993,1193
 
 cle_secrete = 1789
 #l = find_points(CEstand)
 #P= l[random.randint(0,len(l))]
-P=Point(98, 29352,CEstand)
+P=Point(28,31632,CEstand)
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
 
-#envoyeur("coucou bg",cle_publique,"dico_direct.txt","mc.txt",CEstand)
+#envoyeur("coucou bg",cle_publique,"dicos/dico_direct.txt","mc.txt",CEstand)
 
-#receveur("mc.txt",CEstand,"dico_récip.txt",cle_secrete)
+#receveur("mc.txt",CEstand,"dicos/dico_récip.txt",cle_secrete)
