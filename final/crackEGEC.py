@@ -9,8 +9,10 @@ print("début calcul points")
 l=find_points(CEstand)
 P = point_ordre_max(l,CEstand)
 '''
-cle_publique = generate_PK(cle_secrete, P, CEstand)
-
+s = randint(2000,CEstand.o - 1)
+print("clé secrète :",s)
+pk = generate_PK(s,P,CEstand)
+P = point_random(CEstand,"points_CEstand.txt")
 
 def crack_log_discret(P,B,o):
     #On veut k tel que b^k = a mod p
@@ -27,3 +29,6 @@ def crack(pk):
     CE, P, B = pk
     s = crack_log_discret(P,B,CE.o)
     return s
+
+def crack_message(message_chiffre,pk):
+    receveur()

@@ -1,4 +1,5 @@
 from module.el_gamal import inv_mod
+from random import randint
 class CourbeElliptique:
    def __init__(self, a, b, c, o):
        self.a = a
@@ -159,8 +160,6 @@ class Infini(Point):
        return self
 
 
-
-
 def find_points(c):
    l = []
    for x in range(c.o):
@@ -171,3 +170,14 @@ def find_points(c):
            except:
                pass
    return l
+
+def points_to_list(nom_fichier,CE):
+    with open(nom_fichier, "r", encoding="utf-8") as fichier:
+        lstr = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
+        l = [str_to_point(s,CE) for s in lstr]
+        return l
+
+def random_point(CE,nom_fichier):
+    l = points_to_list(CE,nom_fichier)
+    i = randint(0,len(l)-1)
+    return l[i]
