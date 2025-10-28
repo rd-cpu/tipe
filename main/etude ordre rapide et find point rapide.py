@@ -1,9 +1,9 @@
-# etude_rapide_export.py
 from module.courbe_el_final import CourbeElliptique, Point, Infini
 from collections import Counter
 import csv
 import math
 from messagerie_final import *
+from creer_dico import *
 
 
 def factorint(n):
@@ -17,22 +17,6 @@ def factorint(n):
     if n > 1:
         factors[n] = factors.get(n, 0) + 1
     return factors
-
-
-
-# ============================================================
-# --- Sauvegarde dictionnaire façon "(x, y):ordre" ---
-# ============================================================
-
-def sauvegarder_dictionnaire(d, nom_fichier):
-    """
-    Sauvegarde le dictionnaire des ordres au format texte :
-    (x, y):ordre
-    """
-    with open(nom_fichier, "w", encoding="utf-8") as f:
-        for (x, y), ordre in sorted(d.items()):
-            f.write(f"({x}, {y}):{ordre}\n")
-    print(f"✅ Dictionnaire sauvegardé dans '{nom_fichier}' ({len(d)} lignes).")
 
 
 # ============================================================
@@ -209,13 +193,4 @@ def etude_ordre_rapide_et_export(CE, export_csv=True, export_dico=True, verbose=
         print(f"  - Ordre max trouvé       : {max_order}")
         print(f"  - Point correspondant    : {max_point}")
 
-    return distribution, dico, max_point
 
-
-# ============================================================
-# --- Exemple d’utilisation ---
-# ============================================================
-
-if __name__ == "__main__":
-    CEstand = CourbeElliptique(2, 0, 2, 49993)
-    dist, dico, pmax = etude_ordre_rapide_et_export(CEstand)
