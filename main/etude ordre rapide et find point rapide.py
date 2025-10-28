@@ -147,6 +147,7 @@ def etude_ordre_rapide_et_export(CE, export_csv=True, export_dico=True, verbose=
     dico = {}
     max_order = 0
     max_point = Infini(CE)
+    l = []
 
     for i, P in enumerate(points, start=1):
         try:
@@ -161,7 +162,8 @@ def etude_ordre_rapide_et_export(CE, export_csv=True, export_dico=True, verbose=
 
         distribution[o] += 1
         dico[(P.x, P.y)] = o
-
+        l.append(o)
+        
         if o > max_order:
             max_order = o
             max_point = P
@@ -182,6 +184,17 @@ def etude_ordre_rapide_et_export(CE, export_csv=True, export_dico=True, verbose=
         if verbose:
             print(f"📁 CSV créé : {nom_csv}")
 
+    # Export CSV with x, y, ordre
+    if export_csv:
+        nom_csv = nom_fichier_liste_ordre(CE)
+        with open(nom_csv, mode="w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["x", "y", "Ordre"])
+            for P in points:
+                writer.writerow([P.x, P.y, dico[(P.x, P.y)]])
+        if verbose:
+            print(f"📁 CSV créé : {nom_csv}")
+            
     # Export DICO
     if export_dico:
         nom_dico = nom_fichier_dico_ordre(CE)
