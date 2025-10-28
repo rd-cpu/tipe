@@ -22,7 +22,7 @@ def nom_fichier_dico_ordre(CE):
     return "dicos_ordre/dico_ordre_" + extension(CE) + ".txt"
 
 def nom_fichier_liste_ordre(CE):
-    return "ordreptsCEs/ordreptsliste_" + extension(CE) + ".csv"
+    return "dicos_ordre/ordreptsliste_" + extension(CE) + ".csv"
 
 
 def nom_fichier_message_crypte(CE):
