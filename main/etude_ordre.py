@@ -1,5 +1,9 @@
 from module.el_gamal import *
 from module.courbe_el_final import *
+from messagerie_final import *
+import csv
+from collections import Counter
+
 
 CEstand = CourbeElliptique(2,0,2,49993)
 
@@ -23,3 +27,43 @@ def point_ordre_max_direct(CE):
                 pass
     return point_max
 
+import re
+
+def extraire_coordonnees(s):
+    # On cherche un motif du type (nombre, nombre)
+    match = re.search(r'\((\d+),\s*(\d+)\)', s)
+    if match:
+        x = int(match.group(1))
+        y = int(match.group(2))
+        return x, y
+    else:
+        raise ValueError("Aucune coordonnée trouvée dans la chaîne.")
+
+def ordre_distri(CE):
+    l = points_to_list(CE)
+    lo = []
+    for e in l:
+        o = e.ordre()
+        print("Point:", e, "Ordre:", o)
+        lo.append(o)
+    return lo        
+
+
+def export_ordre_distribution(liste_ordres, CE):
+    """
+    Exporte la répartition des ordres dans un fichier CSV.
+    Chaque ligne contient : Ordre, Fréquence
+    """
+    #liste_ordres = ordre_distri(CE)
+    nom_fichier = nom_fichier_ordre(CE)
+    # On compte combien de fois chaque ordre apparaît
+    distribution = Counter(liste_ordres)
+
+    # On écrit le CSV
+    with open(nom_fichier, mode='w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(["Ordre", "Fréquence"])
+        for ordre, freq in sorted(distribution.items()):
+            writer.writerow([ordre, freq])
+
+    print(f"✅ Fichier '{nom_fichier}' créé avec succès ({len(distribution)} ordres distincts).")

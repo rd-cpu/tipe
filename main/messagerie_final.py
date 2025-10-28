@@ -4,19 +4,22 @@ from module.el_gamal import *
 from module.courbe_el_final import *
 
 def extension(CE):
-    return str(CE.a) + '_' + str(CE.b) + '_' + str(CE.c) + '_' + str(CE.o) + ".txt"
+    return str(CE.a) + '_' + str(CE.b) + '_' + str(CE.c) + '_' + str(CE.o) 
 
 def nom_fichier_points(CE):
-    return "pointsCEs/points_" + extension(CE)
+    return "pointsCEs/points_" + extension(CE) + ".txt"
+
+def nom_fichier_ordre(CE):
+    return "ordreCEs/ordre_" + extension(CE) + ".csv"
 
 def nom_fichier_dico_direct(CE):
-    return "dicos/dico_direct_"+ extension(CE)
+    return "dicos/dico_direct_"+ extension(CE) + ".txt"
 
 def nom_fichier_dico_recip(CE):
-    return "dicos/dico_recip_" + extension(CE)
+    return "dicos/dico_recip_" + extension(CE) + ".txt"
 
 def nom_fichier_message_crypte(CE):
-    return "messages_cryptes/message_crypte_" + extension(CE)
+    return "messages_cryptes/message_crypte_" + extension(CE) + ".txt"
 
 def text_to_pts(texte, dico):
     pts = []
