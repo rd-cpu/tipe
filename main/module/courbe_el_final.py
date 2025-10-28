@@ -128,19 +128,6 @@ class Point:
             k += 1
         return k
 
-def point_ordre_max(l,CE):
-    point = Infini(CE)
-    ordre_point = 0
-    for p in l:
-        print("etude du point",p)
-        if ordre_point == CE.o: return point
-        ordretemp = p.ordre()
-        if ordretemp > ordre_point: 
-            point = p
-            ordre_point = ordretemp
-    return point
-
-
 
 class Infini(Point):
    def __init__(self, courbe_el):
@@ -159,6 +146,19 @@ class Infini(Point):
 
    def __neg__(self):
        return self
+
+def point_ordre_max(l,CE):
+    point = Infini(CE)
+    ordre_point = 0
+    for p in l:
+        print("etude du point",p)
+        if ordre_point == CE.o: return point
+        ordretemp = p.ordre()
+        if ordretemp > ordre_point: 
+            point = p
+            ordre_point = ordretemp
+            print(ordre_point)
+    return point
 
 
 def find_points(c):
