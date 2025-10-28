@@ -10,13 +10,20 @@ def nom_fichier_points(CE):
     return "pointsCEs/points_" + extension(CE) + ".txt"
 
 def nom_fichier_ordre(CE):
-    return "ordreCEs/ordre_" + extension(CE) + ".csv"
+    return "ordreptsCEs/ordrepts_" + extension(CE) + ".csv"
 
 def nom_fichier_dico_direct(CE):
     return "dicos/dico_direct_"+ extension(CE) + ".txt"
 
 def nom_fichier_dico_recip(CE):
     return "dicos/dico_recip_" + extension(CE) + ".txt"
+
+def nom_fichier_dico_ordre(CE):
+    return "dicos_ordre/dico_ordre_" + extension(CE) + ".txt"
+
+def nom_fichier_liste_ordre(CE):
+    return "dicos_ordre/ordreptsliste_" + extension(CE) + ".csv"
+
 
 def nom_fichier_message_crypte(CE):
     return "messages_cryptes/message_crypte_" + extension(CE) + ".txt"

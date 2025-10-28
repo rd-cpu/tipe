@@ -3,6 +3,7 @@ from module.courbe_el_final import *
 from messagerie_final import *
 import csv
 from collections import Counter
+from creer_dico import *
 
 
 CEstand = CourbeElliptique(2,0,2,49993)
@@ -29,22 +30,13 @@ def point_ordre_max_direct(CE):
 
 import re
 
-def extraire_coordonnees(s):
-    # On cherche un motif du type (nombre, nombre)
-    match = re.search(r'\((\d+),\s*(\d+)\)', s)
-    if match:
-        x = int(match.group(1))
-        y = int(match.group(2))
-        return x, y
-    else:
-        raise ValueError("Aucune coordonnée trouvée dans la chaîne.")
 
 def ordre_distri(CE):
     l = points_to_list(CE)
     lo = []
     for e in l:
         o = e.ordre()
-        print("Point:", e, "Ordre:", o)
+        #print("Point:", e, "Ordre:", o)
         lo.append(o)
     return lo        
 
@@ -64,3 +56,32 @@ def export_ordre_distribution(CE):
             writer.writerow([ordre, freq])
 
     print(f"✅ Fichier '{nom_fichier}' créé avec succès ({len(distribution)} ordres distincts).")
+
+
+def etude_ordre(CE):
+    d = {}
+    points = points_to_list(CE)
+    lo = []
+
+    for p in points:
+        try:
+            o = p.ordre()
+            lo.append(o)
+            d[(p.x, p.y)] = o
+            print(f"Point {p} -> Ordre {o}")
+        except Exception as e:
+            print(f"Erreur pour le point {p}: {e}")
+
+    nom_fichier = nom_fichier_ordre(CE)
+    sauvegarder_dictionnaire(d, nom_fichier_dico_ordre(CE))
+    
+    distribution = Counter(lo)
+
+    with open(nom_fichier, mode='w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(["Ordre", "Frequence"])
+        for ordre, freq in sorted(distribution.items()):
+            writer.writerow([ordre, freq])
+
+    print(f"✅ Fichier '{nom_fichier}' créé avec succès ({len(distribution)} ordres distincts).")
+
