@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdint.h>
-#include <inttypes.h>
 #include <stdlib.h>
+#include <inttypes.h>  // ← indispensable pour PRIu64
 
-int f(int a,int b,int c,int x) {
-	return x*x*x + a*x*x + b*x + c;
+uint64_t f(int a, int b, int c, uint64_t x) {
+    return (uint64_t)x*x*x + (uint64_t)a*x*x + (uint64_t)b*x + (uint64_t)c;
 }
 
 
-/* modular multiplication a * b % mod using 128-bit intermediate to avoid overflow */
+/* modular multiplication a * b % mod using 128-bit intermediate */
 static inline uint64_t modmul(uint64_t a, uint64_t b, uint64_t mod) {
     return (uint64_t)(((__uint128_t)a * (__uint128_t)b) % mod);
 }
@@ -42,12 +42,12 @@ int legendre(uint64_t a, uint64_t p) {
     return 0; /* should not happen for prime p */
 }
 
-
+/*
 /* Tonelli-Shanks:
    Solve x^2 ≡ n (mod p). p odd prime.
    On success: store one root in *root (the other is p - *root) and return 0.
    If no root exists, return -1.
-*/
+
 int tonelli_shanks(uint64_t n, uint64_t p, uint64_t *root) {
     n %= p;
     if (p == 2) {
@@ -61,15 +61,15 @@ int tonelli_shanks(uint64_t n, uint64_t p, uint64_t *root) {
 
     int leg = legendre(n, p);
     if (leg == -1) 
-		return -1; /* no solution */
+		return -1; // no solution
 
-    /* If p % 4 == 3, use simple formula: r = n^{(p+1)/4} (mod p) */
+    //  If p % 4 == 3, use simple formula: r = n^{(p+1)/4} (mod p) 
     if ((p & 3) == 3) {
         *root = modpow(n, (p + 1) >> 2, p);
         return 0;
     }
 
-    /* Factor p-1 as q * 2^s with q odd */
+    // Factor p-1 as q * 2^s with q odd 
     uint64_t q = p - 1;
     uint64_t s = 0;
     while ((q & 1) == 0) {
@@ -77,11 +77,11 @@ int tonelli_shanks(uint64_t n, uint64_t p, uint64_t *root) {
         s += 1;
     }
 
-    /* Find a quadratic non-residue z (Legendre(z,p) == -1) */
+    // Find a quadratic non-residue z (Legendre(z,p) == -1) 
     uint64_t z = 2;
     while (legendre(z, p) != -1) {
         z++;
-        /* In practice z will be found quickly; for safety we do not bound it here. */
+        // In practice z will be found quickly; for safety we do not bound it here. 
     }
 
     uint64_t c = modpow(z, q, p);
@@ -90,15 +90,15 @@ int tonelli_shanks(uint64_t n, uint64_t p, uint64_t *root) {
     uint64_t m = s;
 
     while (t != 1) {
-        /* find smallest i (0 < i < m) such that t^{2^i} == 1 */
+        // find smallest i (0 < i < m) such that t^{2^i} == 1
         uint64_t tt = t;
         uint64_t i = 0;
         for (i = 1; i < m; ++i) {
             tt = modmul(tt, tt, p);
             if (tt == 1) break;
         }
-        /* b = c^{2^{m-i-1}} */
-        uint64_t pow2 = 1ULL << (m - i - 1); /* safe because m-i-1 < 64 for reasonable primes */
+        // b = c^{2^{m-i-1}} 
+        uint64_t pow2 = 1ULL << (m - i - 1); // safe because m-i-1 < 64 for reasonable primes
         uint64_t b = modpow(c, pow2, p);
         r = modmul(r, b, p);
         c = modmul(b, b, p);
@@ -109,60 +109,29 @@ int tonelli_shanks(uint64_t n, uint64_t p, uint64_t *root) {
     *root = r % p;
     return 0;
 }
+*/
 
 
-int main(){
-	int a;
-	int b;
-	int c;
-	int o;
-	printf("Rentrez a : ");
-	scanf("%d",&a);
-	printf("Rentrez b : ");
-	scanf("%d",&b);
-	printf("Rentrez c : ");
-	scanf("%d",&c);
-	printf("Rentrez o : ");
-	scanf("%d",&o);
-
-	char filename[255];
-	sprintf(filename,"pointsCEs/points_%d_%d_%d_%d.txt",a,b,c,o);
-
-	FILE *file = fopen(filename, "w");
-    	if (file == NULL) {
-        	printf("Erreur d'ouverture du fichier.\n");
+int main(int argc, char* argv[]){
+    if (argc != 5) {
+        printf("Usage: %s a b c p\n", argv[0]);
         return 1;
-    	}
-
-	for (int x = 0; x < o; x++) {
-    	int fx_mod = f(a,b,c,x) % o;
-    	if (fx_mod < 0) fx_mod += o;  // modulo positif
-
-    	uint64_t y1, y2;
-    	int has_root = tonelli_shanks(fx_mod, o, &y1);
-    	if (has_root == 0) {
-			y2 = o - y1; // l'autre racine
-
-			// Écriture dans le fichier
-			if (b == 0) {
-				fprintf(file, "(%llu, %llu) from Courbe elliptique  y² = x³ + %dx² + %d mod %d\n",
-						(unsigned long long)x, (unsigned long long)y1, a, c, o);
-				if (y1 != y2) {
-					fprintf(file, "(%llu, %llu) from Courbe elliptique  y² = x³ + %dx² + %d mod %d\n",
-							(unsigned long long)x, (unsigned long long)y2, a, c, o);
-				}
-			} else {
-				fprintf(file, "(%llu, %llu) from Courbe elliptique  y² = x³ + %dx² + %dx + %d mod %d\n",
-						(unsigned long long)x, (unsigned long long)y1, a, b, c, o);
-				if (y1 != y2) {
-					fprintf(file, "(%llu, %llu) from Courbe elliptique  y² = x³ + %dx² + %dx + %d mod %d\n",
-							(unsigned long long)x, (unsigned long long)y2, a, b, c, o);
-				}
-			}
-    	}
-	}
-
-	printf("l'ensemble des points a été retranscrit dans le fichier %s\n",filename);
-
-	return 0;
+    }
+	int a = atoi(argv[1]);
+	int b = atoi(argv[2]);
+	int c = atoi(argv[3]);
+    uint64_t o = strtoull(argv[4], NULL, 10);
+    uint64_t i = 0;
+    uint64_t x;
+    for (uint64_t x = 0; x < o; x++) {
+        uint64_t fx_mod = f(a,b,c,x) % o;
+        int ls = legendre(fx_mod, o);
+        if (ls == 1)
+            i += 2;
+        else if (ls == 0)
+            i += 1;
+    }
+    i++;
+    printf("%" PRIu64 "\n", i);
+    return 0;
 }

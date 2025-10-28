@@ -2,8 +2,8 @@ from module.courbe_el_final import CourbeElliptique, Point, Infini
 from collections import Counter
 import csv
 import math
-from messagerie_final import *
-from creer_dico import *
+from module.noms_fichiers import *
+#from creer_dico import *
 from random import randint
 # from sage.all import * #On triche c'est la biblio qui a déjà les courbes elliptiques mais c'est pour calculer l'ordre plus facilement
 
@@ -92,7 +92,7 @@ def find_points_fast(CE):
     n = 30000
     x_dejavus = []
     m = min(n,CE.o)
-    while i < n:
+    while i < m:
         x = randint(0,CE.o - 1)
         while x in x_dejavus:
             x = randint(0,CE.o - 1)
@@ -163,15 +163,16 @@ def ordre_rapide(P, n=None):
 # --- Étude complète (avec export CSV + DICO) ---
 # ============================================================
 
-def etude_ordre_rapide_et_export(CE, export_csv=True, export_dico=True,verbose=True): # rajouter verbose=True comme argument si besoin
+def etude_ordre_rapide_et_export(CE, export_csv=True,verbose=True): # rajouter verbose=True comme argument si besoin
     points = find_points_fast(CE)
-    # if verbose:
-    #     print(f"✅ {len(points)} points trouvés sur la courbe (hors point à l'infini)")
-    # n = len(points) + 1
-    # if verbose:
-    #     print(f"Ordre estimé du groupe : {n}")
-# J'ai mis en comm parce que on calcule plus tous les points de CE
-    n = CE.nombre_points()
+    if verbose: 
+        print("points trouvés")
+    try:
+        n = CE.nombre_points_subprocess() # appelle l'executable c
+    except:
+        n = CE.nombre_points() # appelle les fonctions python tant pis
+    if verbose:
+        print(f"Ordre estimé du groupe : {n}")
     distribution = Counter()
     dico = {}
     max_order = 0
@@ -216,7 +217,7 @@ def etude_ordre_rapide_et_export(CE, export_csv=True, export_dico=True,verbose=T
 
     # Export CSV with x, y, ordre
     if export_csv:
-        nom_csv = nom_fichier_points_csv(CE)
+        nom_csv = nom_fichier_points(CE)
         with open(nom_csv, mode="w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["x", "y", "Ordre"])
@@ -226,7 +227,7 @@ def etude_ordre_rapide_et_export(CE, export_csv=True, export_dico=True,verbose=T
             print(f"📁 CSV créé : {nom_csv}")
             
     if export_csv:
-        nom_csv = nom_fichier_point_ordre_max(CE)
+        nom_csv = nom_fichier_points_ordre_max(CE)
         with open(nom_csv,"w",newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["x","y"])
@@ -234,12 +235,6 @@ def etude_ordre_rapide_et_export(CE, export_csv=True, export_dico=True,verbose=T
                 if dico[x,y] == max_order:
                     writer.writerow([x, y])
                 
-
-    # Export DICO
-    if export_dico:
-        nom_dico = nom_fichier_dico_ordre(CE)
-        sauvegarder_dictionnaire(dico, nom_dico)
-
     if verbose:
         print("\n📊 Résumé :")
         # print(f"  - Ordre estimé du groupe : {n}")
@@ -255,23 +250,25 @@ def file_points_to_list(CE,nom_fichier):
         for row in reader:
             x = int(row['x'])  # convertir en entier
             y = int(row['y'])
-            points.append(Point(x, y,CE))
+            points.append(Point(x,y,CE))
     return points
     
 def liste_points(CE):
-    nom_fichier = nom_fichier_points_csv(CE)
-    file_points_to_list(CE,nom_fichier)
+    nom_fichier = nom_fichier_points(CE)
+    l = file_points_to_list(CE,nom_fichier)
+    return l
 
 def liste_points_ordre_max(CE):
     nom_fichier = nom_fichier_points_ordre_max(CE)
-    file_points_to_list(CE,nom_fichier)
+    l = file_points_to_list(CE,nom_fichier)
+    return l
 
 def point_random(CE):
     l = liste_points(CE)
-    i = randint(0,CE.o)
+    i = randint(0,len(l)-1)
     return l[i]
 
 def point_ordre_max_random(CE):
     l = liste_points_ordre_max(CE)
-    i = randint(0,CE.o)
+    i = randint(0,len(l)-1)
     return l[i]

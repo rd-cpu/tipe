@@ -1,6 +1,6 @@
 from module.courbe_el_final import *
 from module.el_gamal import *
-from messagerie_final import *
+from module.trouve_points_ordres import *
 
 '''
 CEstand = CourbeElliptique(2,0,2,49993)
@@ -10,14 +10,13 @@ print("début calcul points")
 l=find_points(CEstand)
 P = point_ordre_max(l,CEstand)
 '''
-CEstand = CourbeElliptique(2,0,2,101)
+# CEstand = CourbeElliptique(2,0,2,6482753)
 
-s = randint(0,CEstand.o - 1)
-print("clé secrète :",s)
-l = points_to_list(CEstand)
-P = point_ordre_max(l,CEstand)
-pk = generate_PK(s,P,CEstand)
-Q = random_point(CEstand)
+# s = randint(0,CEstand.o - 1)
+# print("clé secrète :",s)
+# P = point_ordre_max_random(CEstand)
+# pk = generate_PK(s,P,CEstand)
+# Q = point_random(CEstand)
 
 
 def crack_log_discret_force_brute(P,B,o):
