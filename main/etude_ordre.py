@@ -3,6 +3,7 @@ from module.courbe_el_final import *
 from messagerie_final import *
 import csv
 from collections import Counter
+from creer_dico import *
 
 
 CEstand = CourbeElliptique(2,0,2,49993)
@@ -55,3 +56,18 @@ def export_ordre_distribution(CE):
             writer.writerow([ordre, freq])
 
     print(f"✅ Fichier '{nom_fichier}' créé avec succès ({len(distribution)} ordres distincts).")
+
+
+def dict_points_ordres(CE):
+    d = {}
+    points = points_to_list(CE)
+    
+    for p in points:
+        try:
+            o = p.ordre()
+            d[(p.x, p.y)] = o
+            print(f"Point {p} -> Ordre {o}")
+        except Exception as e:
+            print(f"Erreur pour le point {p}: {e}")
+    nom_fichier = nom_fichier_dico_ordre(CE)
+    sauvegarder_dictionnaire(d, nom_fichier)
