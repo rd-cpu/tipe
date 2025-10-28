@@ -29,15 +29,6 @@ def point_ordre_max_direct(CE):
 
 import re
 
-def extraire_coordonnees(s):
-    # On cherche un motif du type (nombre, nombre)
-    match = re.search(r'\((\d+),\s*(\d+)\)', s)
-    if match:
-        x = int(match.group(1))
-        y = int(match.group(2))
-        return x, y
-    else:
-        raise ValueError("Aucune coordonnée trouvée dans la chaîne.")
 
 def ordre_distri(CE):
     l = points_to_list(CE)
