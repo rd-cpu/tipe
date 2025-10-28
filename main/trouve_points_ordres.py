@@ -4,6 +4,7 @@ import csv
 import math
 from messagerie_final import *
 from creer_dico import *
+from random import randint
 
 
 def factorint(n):
@@ -76,7 +77,25 @@ def tonelli_shanks(n, p):
 def find_points_fast(CE):
     p = CE.o
     pts = []
-    for x in range(p):
+    # for x in range(p):
+    #     fx = CE.f(x) % p
+    #     y = tonelli_shanks(fx, p)
+    #     if y is None:
+    #         continue
+    #     pts.append(Point(x, y, CE))
+    #     if y != 0:
+    #         pts.append(Point(x, (-y) % p, CE))
+    # return pts
+    x = 0
+    i = 0
+    n = 30000
+    x_dejavus = []
+    m = min(n,CE.o)
+    while i < n:
+        x = randint(0,CE.o - 1)
+        while x in x_dejavus:
+            x = randint(0,CE.o - 1)
+        x_dejavus.append(x)
         fx = CE.f(x) % p
         y = tonelli_shanks(fx, p)
         if y is None:
@@ -84,6 +103,8 @@ def find_points_fast(CE):
         pts.append(Point(x, y, CE))
         if y != 0:
             pts.append(Point(x, (-y) % p, CE))
+            i += 1
+        i += 1
     return pts
 
 
