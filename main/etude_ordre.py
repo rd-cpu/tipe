@@ -49,12 +49,9 @@ def ordre_distri(CE):
     return lo        
 
 
-def export_ordre_distribution(liste_ordres, CE):
-    """
-    Exporte la répartition des ordres dans un fichier CSV.
-    Chaque ligne contient : Ordre, Fréquence
-    """
-    #liste_ordres = ordre_distri(CE)
+def export_ordre_distribution(CE):
+
+    liste_ordres = ordre_distri(CE)
     nom_fichier = nom_fichier_ordre(CE)
     # On compte combien de fois chaque ordre apparaît
     distribution = Counter(liste_ordres)
@@ -62,7 +59,7 @@ def export_ordre_distribution(liste_ordres, CE):
     # On écrit le CSV
     with open(nom_fichier, mode='w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(["Ordre", "Fréquence"])
+        writer.writerow(["Ordre", "Frequence"])
         for ordre, freq in sorted(distribution.items()):
             writer.writerow([ordre, freq])
 
