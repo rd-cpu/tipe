@@ -58,16 +58,30 @@ def export_ordre_distribution(CE):
     print(f"✅ Fichier '{nom_fichier}' créé avec succès ({len(distribution)} ordres distincts).")
 
 
-def dict_points_ordres(CE):
+def etude_ordre(CE):
     d = {}
     points = points_to_list(CE)
-    
+    lo = []
+
     for p in points:
         try:
             o = p.ordre()
+            lo.append(o)
             d[(p.x, p.y)] = o
             print(f"Point {p} -> Ordre {o}")
         except Exception as e:
             print(f"Erreur pour le point {p}: {e}")
-    nom_fichier = nom_fichier_dico_ordre(CE)
-    sauvegarder_dictionnaire(d, nom_fichier)
+
+    nom_fichier = nom_fichier_ordre(CE)
+    sauvegarder_dictionnaire(d, nom_fichier_dico_ordre(CE))
+    
+    distribution = Counter(lo)
+
+    with open(nom_fichier, mode='w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(["Ordre", "Frequence"])
+        for ordre, freq in sorted(distribution.items()):
+            writer.writerow([ordre, freq])
+
+    print(f"✅ Fichier '{nom_fichier}' créé avec succès ({len(distribution)} ordres distincts).")
+
