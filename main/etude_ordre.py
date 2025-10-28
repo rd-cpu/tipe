@@ -35,7 +35,7 @@ def ordre_distri(CE):
     lo = []
     for e in l:
         o = e.ordre()
-        print("Point:", e, "Ordre:", o)
+        #print("Point:", e, "Ordre:", o)
         lo.append(o)
     return lo        
 
