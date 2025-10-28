@@ -39,3 +39,4 @@ def crack_force_brute(pk):
 def crack_point_force_brute(message_chiffre,pk):
     return decryptage(message_chiffre,crack_force_brute(pk))
 
+# def crack_message_force_brute(pk)
