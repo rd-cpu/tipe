@@ -10,10 +10,13 @@ print("début calcul points")
 l=find_points(CEstand)
 P = point_ordre_max(l,CEstand)
 '''
-s = randint(2000,CEstand.o - 1)
+CEstand = CourbeElliptique(2,0,2,101)
+
+s = randint(0,CEstand.o - 1)
 print("clé secrète :",s)
-pk = generate_PK(s,P,CEstand)
 l = points_to_list(CEstand)
+P = point_ordre_max(l,CEstand)
+pk = generate_PK(s,P,CEstand)
 Q = random_point(CEstand)
 
 

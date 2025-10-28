@@ -162,13 +162,14 @@ class Infini(Point):
 
 
 def find_points(c):
-   l = []
-   for x in range(c.o):
-       for y in range(c.o):
-           try:
-               p = Point(x,y,c)
-               l.append(p)
-           except:
-               pass
-   return l
+    l = []
+    for x in range(c.o):
+        for y in range(c.o):
+            if y**2 % c.o == c.f(x) % c.o:
+                print(f"Point trouvé : ({x},{y})")
+                p = Point(x,y,c)
+                l.append(p)
+            if len(l) > 10000:
+                return l
+    return l
 
