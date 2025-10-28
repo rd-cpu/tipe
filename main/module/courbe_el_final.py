@@ -2,33 +2,52 @@ from module.el_gamal import inv_mod
 from random import randint
 
 class CourbeElliptique:
-   def __init__(self, a, b, c, o):
-       self.a = a
-       self.b = b
-       self.c = c
-       self.o = o
-       self.f = lambda x: x ** 3 + self.a * x ** 2 + self.b * x + self.c
-       self.fp = lambda x: 3 * x ** 2 + 2 * self.a * x + self.b
+    def __init__(self, a, b, c, o):
+        self.a = a
+        self.b = b
+        self.c = c
+        self.o = o
+        self.f = lambda x: x ** 3 + self.a * x ** 2 + self.b * x + self.c
+        self.fp = lambda x: 3 * x ** 2 + 2 * self.a * x + self.b
 
 
-   def __eq__(self, d):
-       return self.a == d.a and self.b == d.b and self.c == d.c and self.o == d.o
+    def __eq__(self, d):
+        return self.a == d.a and self.b == d.b and self.c == d.c and self.o == d.o
 
 
-   def __repr__(self):
-       return "Courbe elliptique  y² = x³" + \
-           (
-               "" if self.a == 0 else " + x²" if self.a == 1 else " - x²" if self.a == -1 else f" + {self.a}x²" if self.a > 0 else f" - {-self.a}x²") + \
-           ("" if self.b == 0 else " + x" if self.b == 1 else " - x" if self.b == -1 else f" + {self.b}x" if self.b > 0 else f" - {-self.b}x") + \
-           ("" if self.c == 0 else f" + {self.c}" if self.c >= 0 else f" - {-self.c}") \
-           + f" mod {self.o}"
+    def __repr__(self):
+        return "Courbe elliptique  y² = x³" + \
+            (
+                "" if self.a == 0 else " + x²" if self.a == 1 else " - x²" if self.a == -1 else f" + {self.a}x²" if self.a > 0 else f" - {-self.a}x²") + \
+            ("" if self.b == 0 else " + x" if self.b == 1 else " - x" if self.b == -1 else f" + {self.b}x" if self.b > 0 else f" - {-self.b}x") + \
+            ("" if self.c == 0 else f" + {self.c}" if self.c >= 0 else f" - {-self.c}") \
+            + f" mod {self.o}"
 
 
-   def __contains__(self, p):
-       if not isinstance(p, Point):
-           raise TypeError(f"in <CourbeElliptique> requires a point of type <Point> as left operand, not {type(p)}")
-       return self.f(p.x) % self.o == p.y ** 2 % self.o
+    def __contains__(self, p):
+        if not isinstance(p, Point):
+            raise TypeError(f"in <CourbeElliptique> requires a point of type <Point> as left operand, not {type(p)}")
+        return self.f(p.x) % self.o == p.y ** 2 % self.o
 
+    def legendre_symbol(self, n):
+        """Retourne 0 si n ≡ 0 mod p, 1 si n est un carré mod p, -1 sinon"""
+        n = n % self.o
+        if n == 0:
+            return 0
+        return pow(n, (self.o - 1) // 2, self.o) if pow(n, (self.o - 1) // 2, self.o) != self.o - 1 else -1
+
+    def nombre_points(self):
+        """Retourne le nombre exact de points sur la courbe elliptique mod p"""
+        count = 0
+        for x in range(self.o):
+            rhs = (self.f(x)) % self.o
+            ls = self.legendre_symbol(rhs)
+            if ls == 1:
+                count += 2  # deux solutions pour y
+            elif ls == 0:
+                count += 1  # une solution pour y
+            # ls == -1 => aucune solution
+        return count + 1  # ajouter le point à l'infini
 
 
 

@@ -21,8 +21,11 @@ def nom_fichier_dico_recip(CE):
 def nom_fichier_dico_ordre(CE):
     return "dicos_ordre/dico_ordre_" + extension(CE) + ".txt"
 
-def nom_fichier_liste_ordre(CE):
-    return "dicos_ordre/ordreptsliste_" + extension(CE) + ".csv"
+def nom_fichier_points_csv(CE):
+    return "pointsCEs_csv/ordreptsliste_" + extension(CE) + ".csv"
+
+def nom_fichier_point_ordre_max(CE):
+    return "points_ordre_max/pt_om_" + extension(CE) + ".csv"
 
 
 def nom_fichier_message_crypte(CE):
@@ -141,13 +144,6 @@ def receveur(CE,cle_secrete):
     message_crypte = lire_message_crypte(message_recu, CEstand)
     m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip)
     return m4.replace(";", " ")
-
-def points_to_list(CE):
-    nom_fichier = nom_fichier_points(CE)
-    with open(nom_fichier, "r", encoding="utf-8") as fichier:
-        lstr = [ligne.strip() for ligne in fichier.readlines() if ligne.strip()]
-        l = [str_to_point(s,CE) for s in lstr]
-        return l
 
 def random_point(CE):
     nom_fichier = nom_fichier_points(CE)
