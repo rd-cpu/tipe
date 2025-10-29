@@ -2,6 +2,7 @@ from module.el_gamal import inv_mod
 from random import randint
 import subprocess
 import numbers
+import platform
 
 class CourbeElliptique:
     def __init__(self, a, b, c, o):
@@ -19,8 +20,7 @@ class CourbeElliptique:
 
     def __repr__(self):
         return "Courbe elliptique  y² = x³" + \
-            (
-                "" if self.a == 0 else " + x²" if self.a == 1 else " - x²" if self.a == -1 else f" + {self.a}x²" if self.a > 0 else f" - {-self.a}x²") + \
+            ("" if self.a == 0 else " + x²" if self.a == 1 else " - x²" if self.a == -1 else f" + {self.a}x²" if self.a > 0 else f" - {-self.a}x²") + \
             ("" if self.b == 0 else " + x" if self.b == 1 else " - x" if self.b == -1 else f" + {self.b}x" if self.b > 0 else f" - {-self.b}x") + \
             ("" if self.c == 0 else f" + {self.c}" if self.c >= 0 else f" - {-self.c}") \
             + f" mod {self.o}"
@@ -53,8 +53,14 @@ class CourbeElliptique:
     
     
     def nombre_points_subprocess(self):
-        cmd = ['./fichier', str(self.a), str(self.b), str(self.c), str(self.o)]
+        os_type = platform.system()
+        if os_type == "Linux":
+            cmd = ['module/ordre_CE', str(self.a), str(self.b), str(self.c), str(self.o)]
+        elif os_type == "Windows":
+            cmd = ['module/ordre_CE.exe', str(self.a), str(self.b), str(self.c), str(self.o)]
+        print("début d'exectution de",cmd[0])
         result = subprocess.run(cmd, capture_output=True, text=True)
+        print("fin d'execution")
         i = int(result.stdout.strip())  # on récupère directement l'entier
         return i
 
