@@ -175,6 +175,7 @@ def etude_ordre_rapide_et_export(CE, export_csv=True,verbose=True): # rajouter v
         n = CE.nombre_points() # appelle les fonctions python tant pis
     if verbose:
         print(f"Ordre estimé du groupe : {n}")
+
     distribution = Counter()
     dico = {}
     max_order = 0
