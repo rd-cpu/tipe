@@ -6,6 +6,9 @@ def extension(CE):
 def nom_fichier_ordre(CE):
     return "ordreptsCEs/ordrepts_" + extension(CE) + ".csv"
 
+def nom_fichier_ordre_CE(CE):
+    return "ordreCEs/ordre_" + extension(CE) + ".csv"
+
 def nom_fichier_points(CE):
     return "pointsCEs/points_" + extension(CE) + ".csv"
 

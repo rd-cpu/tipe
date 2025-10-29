@@ -207,11 +207,21 @@ def etude_ordre_rapide_et_export(CE, export_csv=True,verbose=True): # rajouter v
 
     # Export CSV
     if export_csv:
+        nom_csv = nom_fichier_ordre_CE(CE)
+        with open(nom_csv, mode="w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["Ordre max d'un point","ordre de la courbe"])
+            writer.writerow([max_order,n])
+        if verbose:
+            print(f"📁 CSV créé : {nom_csv}")
+            
+    # Export CSV
+    if export_csv:
         nom_csv = nom_fichier_ordre(CE)
         with open(nom_csv, mode="w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["Ordre", "Frequence"])
-            for ordre, freq in sorted(distribution.items()):
+            for ordre, freq in sorted(distribution.items(),reverse=True):
                 writer.writerow([ordre, freq])
         if verbose:
             print(f"📁 CSV créé : {nom_csv}")
@@ -276,3 +286,20 @@ def point_ordre_max_random(CE):
     l = liste_points_ordre_max(CE)
     i = randint(0,len(l)-1)
     return l[i]
+
+def ordre(CE):
+    nom_fichier = nom_fichier_ordre_CE(CE)
+    with open(nom_fichier, "r", newline='') as fichier:
+        reader = csv.DictReader(fichier)  # On lit avec les noms de colonnes
+        for row in reader:
+            ordre_max = int(row["Ordre max d'un point"])  # convertir en entier
+            ordre_courbe = int(row['ordre de la courbe'])
+    return ordre_max,ordre_courbe
+
+def ordre_CE():
+    a,b = ordre(CE)
+    return b
+
+def ordre_max(CE):
+    a,b = ordre(CE)
+    return a
