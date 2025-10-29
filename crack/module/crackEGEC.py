@@ -17,6 +17,8 @@ P = point_ordre_max(l,CEstand)
 # P = point_ordre_max_random(CEstand)
 # pk = generate_PK(s,P,CEstand)
 # Q = point_random(CEstand)
+# M = cryptage(pk,Q)
+# Md = crack_point_force_brute(M,pk)
 
 
 def crack_log_discret_force_brute(P,B,o):
@@ -39,3 +41,4 @@ def crack_point_force_brute(message_chiffre,pk):
     return decryptage(message_chiffre,crack_force_brute(pk))
 
 # def crack_message_force_brute(pk)
+
