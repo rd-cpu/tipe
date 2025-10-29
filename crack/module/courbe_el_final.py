@@ -1,6 +1,7 @@
 from module.el_gamal import inv_mod
 from random import randint
 import subprocess
+import numbers
 
 class CourbeElliptique:
     def __init__(self, a, b, c, o):
@@ -87,7 +88,7 @@ class Point:
 
 
    def __mul__(self, other):
-       if isinstance(other, int):
+       if isinstance(other, numbers.Integral):
            return self.mul_by_int(other)
 
 

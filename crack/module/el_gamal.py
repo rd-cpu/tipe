@@ -1,47 +1,57 @@
 from random import randint
+import numpy as np
+from module.courbe_el_final import *
+import numbers
 
 def bezout_fct(a, b):
-   if b == 0:
-       return 1, 0
-   else:
-       u, v = bezout_fct(b, a % b)
-       return v, u - (a // b) * v
+    if b == 0:
+        return 1, 0
+    else:
+        u, v = bezout_fct(b, a % b)
+        return v, u - (a // b) * v
 
 
 
 
 def generate_PK(cle_secrete, P, CE):
-   B = cle_secrete * P  # entier * point
-   return CE, P, B
+    if isinstance(cle_secrete,numbers.Integral):
+        B = cle_secrete * P  # entier * point
+        return CE, P, B      
+    # elif isinstance(cle_secrete,np.ndarray) and isinstance(P,Point):
+    #     return np.array([generate_PK(s,P,CE) for s in cle_secrete])
+    elif isinstance(cle_secrete,np.ndarray) and isinstance(P,np.ndarray):
+        return np.array([generate_PK(cle_secrete[i],P[i],CE) for i in range(len(cle_secrete))])
+
+
 
 
 
 
 def cryptage(cle_publique, message):
-   CE, P, B = cle_publique
-   k = randint(1, CE.o - 1)
-   y1 = k*P
-   y2 = message + k*B
-   return y1, y2
+    CE, P, B = cle_publique
+    k = randint(1, CE.o - 1)
+    y1 = k*P
+    y2 = message + k*B
+    return y1, y2
 
 
 
 
 def decryptage(message_encrypte, cle_secrete):
-   y1, y2 = message_encrypte
-   m = y2 - cle_secrete*y1
-   return m
+    y1, y2 = message_encrypte
+    m = y2 - cle_secrete*y1
+    return m
 
 
 
 
 def est_premier(n):
-   if n % 2 == 0:
-       return False
-   for i in range(3, int(n**(1/2)), 2):
-       if n % i == 0:
-           return False
-   return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, int(n**(1/2)), 2):
+        if n % i == 0:
+            return False
+    return True
 
 def trouve_premier():
     i = randint(200,2000)
@@ -51,20 +61,19 @@ def trouve_premier():
 
 
 def inv_mod(e, p):
-   unm1, un = 1, 0
-   vnm1, vn = 0, 1
-   a = p
-   b = e % p
-   while b != 0:
-       q, r = a // b, a % b
-       temp = unm1, vnm1
-       unm1, vnm1 = un, vn
-       un, vn = -q*un + temp[0], -q*vn + temp[1]
-       a, b = b, r
+    unm1, un = 1, 0
+    vnm1, vn = 0, 1
+    a = p
+    b = e % p
+    while b != 0:
+        q, r = a // b, a % b
+        temp = unm1, vnm1
+        unm1, vnm1 = un, vn
+        un, vn = -q*un + temp[0], -q*vn + temp[1]
+        a, b = b, r
 
 
-   if a != 1:
-       raise ValueError(f"{e} isn't invertible mod {p}")
-   return vnm1
-
-
+    if a != 1:
+        raise ValueError(f"{e} isn't invertible mod {p}")
+    
+    return vnm1
