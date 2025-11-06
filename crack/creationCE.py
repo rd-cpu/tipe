@@ -31,5 +31,6 @@ def trouve_CE_viable(a,b,min,max):
     creationCE(a,b,p,ordre)
 
 
+
 # 6000000
 # 7000000

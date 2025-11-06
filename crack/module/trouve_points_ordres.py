@@ -312,7 +312,8 @@ def file_points_to_list(CE,nom_fichier):
     return points
 
 def ordre(CE):
-    with open(nom_fichier, "r", newline='') as fichier:
+    
+    with open(nom_CEcsv, "r", newline='') as fichier:
         reader = csv.DictReader(fichier)  # On lit avec les noms de colonnes
         for row in reader:
             return int(row["n"])
@@ -321,6 +322,8 @@ def liste_points(CE):
     nom_fichier = nom_fichier_points(CE)
     l = file_points_to_list(CE,nom_fichier)
     return l
+
+
 '''
 def liste_points_ordre_max(CE):
     nom_fichier = nom_fichier_points_ordre_max(CE)
