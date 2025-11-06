@@ -277,11 +277,7 @@ def trouve_points(CE,verbose=True):
     points = find_points_fast(CE)
     if verbose: 
         print("points trouvés")
-    distribution = Counter()
-    dico = {}
-    max_order = 0
-    max_point = Infini(CE)
-    l = []
+
     nom_csv = nom_fichier_points(CE)
     with open(nom_csv, mode="w", newline="") as f:
         writer = csv.writer(f)
@@ -290,6 +286,15 @@ def trouve_points(CE,verbose=True):
             writer.writerow([P.x, P.y])
     if verbose:
         print(f"📁 CSV créé : {nom_csv}")
+    
+    nom_csv = nom_CEcsv(CE)
+    with open(nom_csv, mode="w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["a","b","p","ordre"])
+        writer.writerow([CE.b,CE.c,CE.o,n])
+    if verbose:
+        print(f"📁 CSV créé : {nom_csv}")
+    
 
 def file_points_to_list(CE,nom_fichier):
     points = []
@@ -300,22 +305,28 @@ def file_points_to_list(CE,nom_fichier):
             y = int(row['y'])
             points.append(Point(x,y,CE))
     return points
+
+def ordre(CE):
+    with open(nom_fichier, "r", newline='') as fichier:
+        reader = csv.DictReader(fichier)  # On lit avec les noms de colonnes
+        for row in reader:
+            return int(row["n"])
     
 def liste_points(CE):
     nom_fichier = nom_fichier_points(CE)
     l = file_points_to_list(CE,nom_fichier)
     return l
-
+'''
 def liste_points_ordre_max(CE):
     nom_fichier = nom_fichier_points_ordre_max(CE)
     l = file_points_to_list(CE,nom_fichier)
-    return l
+    return l'''
 
 def point_random(CE):
     l = liste_points(CE)
     i = randint(0,len(l)-1)
     return l[i]
-
+'''
 def point_ordre_max_random(CE):
     l = liste_points_ordre_max(CE)
     i = randint(0,len(l)-1)
@@ -337,3 +348,5 @@ def ordre_CE():
 def ordre_max(CE):
     a,b = ordre(CE)
     return a
+'''
+

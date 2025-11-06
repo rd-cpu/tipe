@@ -14,3 +14,5 @@ def nom_fichier_points(CE):
 
 def nom_fichier_points_ordre_max(CE):
     return "points_ordre_max/pt_om_" + extension(CE) + ".csv"
+
+def nom_CEcsv(): return "CE.csv"
