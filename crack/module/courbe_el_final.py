@@ -55,11 +55,13 @@ class CourbeElliptique:
     def nombre_points_subprocess(self):
         os_type = platform.system()
         if os_type == "Linux":
-            cmd = ['module/ordre_CE', str(self.a), str(self.b), str(self.c), str(self.o)]
+            # cmd = ['module/ordre_CE', str(self.a), str(self.b), str(self.c), str(self.o)]
+            # print("début d'exectution de",cmd[0])
+            cmd = "echo 'E = ellinit([0," + str(self.a) + ",0," + str(self.b) + "," + str(self.c)+ "]," + str(self.o) + " ); print(ellcard(E));' | gp -q -f"
         elif os_type == "Windows":
             cmd = ['module/ordre_CE.exe', str(self.a), str(self.b), str(self.c), str(self.o)]
-        print("début d'exectution de",cmd[0])
-        result = subprocess.run(cmd, capture_output=True, text=True)
+            print("début d'exectution de",cmd[0])
+        result = subprocess.run(cmd, capture_output=True, text=True,shell=True)
         print("fin d'execution")
         i = int(result.stdout.strip())  # on récupère directement l'entier
         return i

@@ -170,8 +170,9 @@ def etude_ordre_rapide_et_export(CE, export_csv=True,verbose=True): # rajouter v
     try:
         print("Calcul du nombre de points par fichier executable")
         n = CE.nombre_points_subprocess() # appelle l'executable c
-    except:
-        print("erreur bon bah finalement on calcule en python mskn")
+    except Exception as e:
+        if verbose :
+            print(f"erreur bon bah finalement on calcule en python mskn : {e}")
         n = CE.nombre_points() # appelle les fonctions python tant pis
     if verbose:
         print(f"Ordre estimé du groupe : {n}")
