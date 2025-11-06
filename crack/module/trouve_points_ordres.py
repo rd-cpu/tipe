@@ -5,6 +5,7 @@ import math
 from module.noms_fichiers import *
 #from creer_dico import *
 from random import randint
+import sympy as sp
 # from sage.all import * #On triche c'est la biblio qui a déjà les courbes elliptiques mais c'est pour calculer l'ordre plus facilement
 
 
@@ -162,7 +163,7 @@ def ordre_rapide(P, n=None):
 # ============================================================
 # --- Étude complète (avec export CSV + DICO) ---
 # ============================================================
-
+'''
 def etude_ordre_rapide_et_export(CE, export_csv=True,verbose=True): # rajouter verbose=True comme argument si besoin
     points = find_points_fast(CE)
     if verbose: 
@@ -257,7 +258,38 @@ def etude_ordre_rapide_et_export(CE, export_csv=True,verbose=True): # rajouter v
         print(f"  - Ordre max trouvé       : {max_order}")
         print(f"  - Point correspondant    : {max_point}")
 
+'''
 
+def trouve_points(CE,verbose=True):
+    print("Calcul du nombre de points par fichier executable")
+    try: 
+        n = CE.nombre_points_subprocess() # appelle l'executable c
+    except Exception as e:
+        if verbose :
+            print(f"erreur bon bah finalement on calcule en python mskn : {e}")
+        n = CE.nombre_points() # appelle les fonctions python tant pis
+    if verbose:
+        print(f"Ordre estimé du groupe : {n}")
+    if not sp.isprime(n):
+        print("Veuillez prendre une autre CE : l'ordre de la courbe n'est pas premier")
+        return
+    
+    points = find_points_fast(CE)
+    if verbose: 
+        print("points trouvés")
+    distribution = Counter()
+    dico = {}
+    max_order = 0
+    max_point = Infini(CE)
+    l = []
+    nom_csv = nom_fichier_points(CE)
+    with open(nom_csv, mode="w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["x", "y"])
+        for P in points:
+            writer.writerow([P.x, P.y])
+    if verbose:
+        print(f"📁 CSV créé : {nom_csv}")
 
 def file_points_to_list(CE,nom_fichier):
     points = []
