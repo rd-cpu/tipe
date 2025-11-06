@@ -260,20 +260,26 @@ def etude_ordre_rapide_et_export(CE, export_csv=True,verbose=True): # rajouter v
 
 '''
 
-def trouve_points(CE,verbose=True):
-    print("Calcul du nombre de points par fichier executable")
-    try: 
-        n = CE.nombre_points_subprocess() # appelle l'executable c
-    except Exception as e:
-        if verbose :
+def courbe_cyclique(CE,n=None):
+    if n == None:
+        print("Calcul du nombre de points par fichier executable")
+        try: 
+            n = CE.nombre_points_subprocess() # appelle l'executable c
+        except Exception as e:
             print(f"erreur bon bah finalement on calcule en python mskn : {e}")
-        n = CE.nombre_points() # appelle les fonctions python tant pis
-    if verbose:
-        print(f"Ordre estimé du groupe : {n}")
-    if not sp.isprime(n):
-        print("Veuillez prendre une autre CE : l'ordre de la courbe n'est pas premier")
-        return
-    
+            n = CE.nombre_points() # appelle les fonctions python tant pis
+        print(f"Ordre estimé du groupe : {n}")        
+    return sp.isprime(n)
+
+def trouve_points(CE,verbose=True,n=None):
+    if n == None:
+        print("Calcul du nombre de points par fichier executable")
+        try:
+            n = CE.nombre_points_subprocess() # appelle l'executable c
+        except Exception as e:
+            print(f"erreur bon bah finalement on calcule en python mskn : {e}")
+            n = CE.nombre_points() # appelle les fonctions python tant pis
+
     points = find_points_fast(CE)
     if verbose: 
         print("points trouvés")
@@ -287,14 +293,13 @@ def trouve_points(CE,verbose=True):
     if verbose:
         print(f"📁 CSV créé : {nom_csv}")
     
-    nom_csv = nom_CEcsv(CE)
-    with open(nom_csv, mode="w", newline="") as f:
+    nom_csv = nom_CEcsv()
+    with open(nom_csv, mode="a", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["a","b","p","ordre"])
         writer.writerow([CE.b,CE.c,CE.o,n])
     if verbose:
         print(f"📁 CSV créé : {nom_csv}")
-    
+    return True
 
 def file_points_to_list(CE,nom_fichier):
     points = []
