@@ -1,4 +1,4 @@
-from module.el_gamal import inv_mod
+#from module.el_gamal import inv_mod
 from random import randint
 import subprocess
 import numbers
@@ -59,7 +59,8 @@ class CourbeElliptique:
             # print("début d'exectution de",cmd[0])
             cmd = "echo 'E = ellinit([0," + str(self.a) + ",0," + str(self.b) + "," + str(self.c)+ "]," + str(self.o) + " ); print(ellcard(E));' | gp -q -f"
         elif os_type == "Windows":
-            cmd = ['module/ordre_CE.exe', str(self.a), str(self.b), str(self.c), str(self.o)]
+            #cmd = ['module/ordre_CE.exe', str(self.a), str(self.b), str(self.c), str(self.o)]
+            cmd = f"E = ellinit([0,{self.a},0,{self.b},{self.c}],{self.o}); print(ellcard(E));"
             print("début d'exectution de",cmd[0])
         result = subprocess.run(cmd, capture_output=True, text=True,shell=True)
         print("fin d'execution")
