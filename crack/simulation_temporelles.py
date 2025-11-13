@@ -4,14 +4,14 @@ import time
 import numpy as np
 
 
-CEstand = CourbeElliptique(2,0,2,6482753)
 
-def duree_crack(CE,algo_crack,N=10000):
+CE1 = CourbeElliptique(0,2,2,484763)
+
+def duree_crack_monte_carlo(CE,algo_crack,N=1000):
     o = ordre(CE)
     tab_sk = np.random.randint(1,o, size=N)
     tab_P = np.array([point_random(CE) for i in range(N)])
     tab_pk = generate_PK(tab_sk,tab_P,CE)
-    tab_temps = np.array([0]*N)
     tab_temps = np.array([0]*N)
     for i in range(N):
         start = time.perf_counter()

@@ -312,11 +312,12 @@ def file_points_to_list(CE,nom_fichier):
     return points
 
 def ordre(CE):
-    
-    with open(nom_CEcsv, "r", newline='') as fichier:
+    with open(nom_CEcsv(), "r", newline='') as fichier:
         reader = csv.DictReader(fichier)  # On lit avec les noms de colonnes
-        for row in reader:
-            return int(row["n"])
+        for line in reader:
+            if (CE.b,CE.c,CE.o) == ((int(line["a"]),int(line["b"]),int(line["p"]))):
+                return int(line["ordre"])
+        return None
     
 def liste_points(CE):
     nom_fichier = nom_fichier_points(CE)
@@ -334,6 +335,7 @@ def point_random(CE):
     l = liste_points(CE)
     i = randint(0,len(l)-1)
     return l[i]
+
 '''
 def point_ordre_max_random(CE):
     l = liste_points_ordre_max(CE)

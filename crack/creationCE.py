@@ -5,7 +5,7 @@ from random import choice
 
 def creationCE(a,b,p,ordre=None):
     print("Création de la Courbe Elliptique")
-    CE = CourbeElliptique(a,0,b,p)
+    CE = CourbeElliptique(0,a,b,p)
     print("Courbe elliptique crée")
     if ordre == None:
         trouve_points(CE)
@@ -14,19 +14,14 @@ def creationCE(a,b,p,ordre=None):
 
 def trouve_CE_viable(a,b,min,max):
     l = list(primerange(min,max))
-    p = choice(l)
-    CE = CourbeElliptique(0,a,b,p)
-    try:
-        ordre = CE.nombre_points_subprocess()
-        print(n)
-
-    except:
-        print("Frero t'as installé pari-gp et implémenté nombre_points_subprocess pour windows ??")
+    p = 0
+    CE = 0
+    ordre = 0
     while not courbe_cyclique(CE,ordre):
         p = choice(l)
         CE = CourbeElliptique(0,a,b,p)
         ordre = CE.nombre_points_subprocess()
-        print(ordre)
+        print(f"ordre pour p = {p} : {ordre}")
 
     creationCE(a,b,p,ordre)
 
