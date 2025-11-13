@@ -16,3 +16,6 @@ def nom_fichier_points_ordre_max(CE):
     return "points_ordre_max/pt_om_" + extension(CE) + ".csv"
 
 def nom_CEcsv(): return "CE.csv"
+
+def nom_perfcsv(algo): 
+    return f"perf_{algo.__name__}.csv"

@@ -3,6 +3,7 @@ from random import randint
 import subprocess
 import numbers
 import platform
+from module.el_gamal import inv_mod
 
 class CourbeElliptique:
     def __init__(self, a, b, c, o):
