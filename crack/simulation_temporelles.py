@@ -5,8 +5,7 @@ import numpy as np
 
 
 
-CE1 = CourbeElliptique(0,2,2,484763)
-
+CE1 = CourbeElliptique(0,2,2,40423)
 def duree_crack_monte_carlo(CE,algo_crack,N=1000):
     o = ordre(CE)
     tab_sk = np.random.randint(1,o, size=N)
