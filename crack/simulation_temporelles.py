@@ -1,4 +1,5 @@
 from module.crackEGEC import *
+from module.algo_crack.rho_de_pollard import *
 import csv
 import time
 import numpy as np
@@ -30,3 +31,13 @@ def crack_perfCE_csv(CE,algo,N=1000): # prendre en compte l'ordre
         writer.writerow([repr(CE),str(N),str(temps_moyen),str(u_temps)])
 
 # faire crack_perf_ZnZ
+
+CEstand = CE1
+
+s = randint(0,CEstand.o - 1)
+print("clé secrète :",s)
+P = point_random(CEstand)
+pk = generate_PK(s,P,CEstand)
+Q = point_random(CEstand)
+M = cryptage(pk,Q)
+Md = crack_point_rho_de_pollard(M,pk)
