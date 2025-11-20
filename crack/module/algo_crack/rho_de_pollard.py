@@ -1,39 +1,5 @@
-from courbe_el_final import *
-from el_gamal import *
-
-def rho_de_pollard(n, f, x0, max_steps=10000):
-    """
-    Implements the Pollard's Rho algorithm for integer factorization.
-
-    Parameters:
-    n (int): The integer to be factored.
-    f (function): The polynomial function used in the algorithm.
-    x0 (int): The starting point for the sequence.
-    max_steps (int): Maximum number of iterations to prevent infinite loops.
-
-    Returns:
-    int: A non-trivial factor of n if found, otherwise None.
-    """
-    def gcd(a, b):
-        while b:
-            a, b = b, a % b
-        return a
-
-    x = x0
-    y = x0
-    d = 1
-    step = 0
-
-    while d == 1 and step < max_steps:
-        x = f(x) % n
-        y = f(f(y)) % n
-        d = gcd(abs(x - y), n)
-        step += 1
-
-    if d == n:
-        return None  # Failure to find a factor
-    return d  # Non-trivial factor found
-
+from module.courbe_el_final import *
+from module.el_gamal import *
 
 def rho_de_pollard_CE(alpha, beta):
     a = 0
@@ -43,6 +9,7 @@ def rho_de_pollard_CE(alpha, beta):
     A = a
     B = b
     X = x
+
     def f(x,alpha,beta):
         r = x.x % 3
         if r == 0 :
@@ -52,6 +19,7 @@ def rho_de_pollard_CE(alpha, beta):
         else: 
             x = x*beta
         return x
+    
     def g(x,a,n):
         r = x.x % 3
         if r == 0 :
@@ -61,6 +29,7 @@ def rho_de_pollard_CE(alpha, beta):
         else: 
             a = (a+1)%n
         return a
+    
     def h(x,b,n):
         r = x.x % 3
         if r == 0 :
@@ -70,10 +39,12 @@ def rho_de_pollard_CE(alpha, beta):
         else: 
             b = (b+1)%n
         return b
+    
     def appliquer(x,a,b):
         x = f(x,alpha,beta)
         a = g(x,a,n)
         b = h(x,b,n)
+    
     while True:
         appliquer(x,a,b)
         appliquer(X,A,B)
@@ -86,7 +57,7 @@ def rho_de_pollard_CE(alpha, beta):
 
 def crack_rho_de_pollard(pk):
     CE, P, B = pk
-    s = rho_de_pollard(P,B,CE.o)
+    s = rho_de_pollard_CE(P,B,CE.o)
     return s
 
 def crack_point_rho_de_pollard(message_chiffre,pk):

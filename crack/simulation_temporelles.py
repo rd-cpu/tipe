@@ -1,4 +1,5 @@
 from module.crackEGEC import *
+from module.algo_crack.rho_de_pollard import *
 import csv
 import time
 import numpy as np
@@ -32,7 +33,7 @@ def crack_perfCE_csv(CE,algo,N=1000): # prendre en compte l'ordre
 
 # faire crack_perf_ZnZ
 
-CEstand = CourbeElliptique(2,0,2,40423)
+CEstand = CE1
 
 s = randint(0,CEstand.o - 1)
 print("clé secrète :",s)
