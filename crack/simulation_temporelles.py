@@ -43,3 +43,6 @@ Q = point_random(CEstand)
 M = cryptage(pk,Q)
 Md = crack_point_rho_de_pollard(M,pk)
 '''
+
+#duree_crack_monte_carlo(CE1,crack_force_brute)
+#duree_crack_monte_carlo(CE1,crack_rho_de_pollard)
