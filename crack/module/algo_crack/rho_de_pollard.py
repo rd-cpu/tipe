@@ -1,63 +1,73 @@
 from module.courbe_el_final import *
 from module.el_gamal import *
+from random import randint
 
-def rho_de_pollard_CE(alpha, beta, n):
-    a = 0
-    b = 0
-    x = (a * alpha) * (b * beta)
+def rho_de_pollard_CE(alpha, beta):
+
+    n = alpha.ordre()
+
+    if n == 0:
+        raise ValueError("ordre(alpha) = 0 (point à l'infini)")
+
+    a = randint(0, n-1)
+    b = randint(0, n-1)
+    x = a*alpha + b*beta
     A = a
     B = b
     X = x
 
-    def f(x,alpha,beta):
-        r = x.x % 3 
-        if r == 0 :
-            x = x*x
-        elif r == 1 :
-            x = x*alpha
-        else: 
-            x = x*beta
-        return x
-    
-    def g(x,a,n):
+    def f(x, alpha, beta):
         r = x.x % 3
-        if r == 0 :
-            a = a
-        elif r == 1 :
-            a = 2*a%n
-        else: 
-            a = (a+1)%n
-        return a
-    
-    def h(x,b,n):
+        if r == 0:
+            return x + x       
+        elif r == 1:
+            return x + alpha
+        else:
+            return x + beta
+        
+    def g(x, a, n):
         r = x.x % 3
-        if r == 0 :
-            b = b 
-        elif r == 1 :
-            b = 2*b%n
-        else: 
-            b = (b+1)%n
-        return b
-    
-    def appliquer(x,a,b):
-        x = f(x,alpha,beta)
-        a = g(x,a,n)
-        b = h(x,b,n)
-    
+        if r == 0:
+            return (2*a) % n
+        elif r == 1:
+            return (a+1) % n
+        else:
+            return a
+
+    def h(x, b, n):
+        r = x.x % 3
+        if r == 0:
+            return (2*b) % n
+        elif r == 1:
+            return b
+        else:
+            return (b+1) % n
+
+    def appliquer(x, a, b):
+        x2 = f(x, alpha, beta)
+        a2 = g(x, a, n)
+        b2 = h(x, b, n)
+        return x2, a2, b2
+
     while True:
-        appliquer(x,a,b)
-        appliquer(X,A,B)
-        appliquer(X,A,B)
+        x, a, b = appliquer(x, a, b)
+
+        X, A, B = appliquer(X, A, B)
+        X, A, B = appliquer(X, A, B)
+
         if x == X:
-            r = b-B 
+            r = (b - B) % n
             if r == 0:
                 return "échec"
-            return inv_mod(r,n) * (A-a)  % n
+            inv_r = inv_mod(r, n)
+            return (inv_r * (A - a)) % n
+        
+
 
 def crack_rho_de_pollard(pk):
     CE, P, B = pk
     n = CE.o
-    s = rho_de_pollard_CE(P,B,n)
+    s = rho_de_pollard_CE(P,B)
     return s
 
 def crack_point_rho_de_pollard(message_chiffre,pk):
