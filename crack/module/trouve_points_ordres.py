@@ -92,7 +92,8 @@ def find_points_fast(CE):
     i = 0
     n = 30000
     x_dejavus = []
-    m = min(n,CE.o)
+    #m = min(n,CE.o)
+    m = CE.o
     while i < m:
         x = randint(0,CE.o - 1)
         while x in x_dejavus:

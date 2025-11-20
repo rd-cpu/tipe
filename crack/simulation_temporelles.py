@@ -34,7 +34,8 @@ def crack_perfCE_csv(CE,algo,N=1000): # prendre en compte l'ordre
 
 CEstand = CE1
 
-s = randint(0,CEstand.o - 1)
+#s = randint(0,CEstand.o - 1)
+s = 123456789
 print("clé secrète :",s)
 P = point_random(CEstand)
 pk = generate_PK(s,P,CEstand)

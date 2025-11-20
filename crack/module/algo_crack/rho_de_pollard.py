@@ -1,6 +1,7 @@
 from module.courbe_el_final import *
 from module.el_gamal import *
 from random import randint
+from module.trouve_points_ordres import ordre_rapide
 
 def rho_de_pollard_CE(alpha, beta):
 
@@ -66,7 +67,6 @@ def rho_de_pollard_CE(alpha, beta):
 
 def crack_rho_de_pollard(pk):
     CE, P, B = pk
-    n = CE.o
     s = rho_de_pollard_CE(P,B)
     return s
 
