@@ -1,17 +1,16 @@
 from module.courbe_el_final import *
 from module.el_gamal import *
 
-def rho_de_pollard_CE(alpha, beta):
+def rho_de_pollard_CE(alpha, beta, n):
     a = 0
     b = 0
-    x = 1
-    n = alpha.o
+    x = (a * alpha) * (b * beta)
     A = a
     B = b
     X = x
 
     def f(x,alpha,beta):
-        r = x.x % 3
+        r = x.x % 3 
         if r == 0 :
             x = x*x
         elif r == 1 :
@@ -52,16 +51,19 @@ def rho_de_pollard_CE(alpha, beta):
         if x == X:
             r = b-B 
             if r == 0:
-                return None
+                return "échec"
             return inv_mod(r,n) * (A-a)  % n
 
 def crack_rho_de_pollard(pk):
     CE, P, B = pk
-    s = rho_de_pollard_CE(P,B,CE.o)
+    n = CE.o
+    s = rho_de_pollard_CE(P,B,n)
     return s
 
 def crack_point_rho_de_pollard(message_chiffre,pk):
-    return decryptage(message_chiffre,crack_rho_de_pollard(pk))
+    s = crack_rho_de_pollard(pk) 
+    print(s)
+    return decryptage(message_chiffre,s)
 
 
 '''CEstand = CourbeElliptique(2,0,2,6482753)
