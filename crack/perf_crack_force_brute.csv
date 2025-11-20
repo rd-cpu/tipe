@@ -2,3 +2,5 @@ Courbe Elliptique,Ã‰chantillon,Temps Moyen,Incertitude
 Courbe elliptique  yÂ² = xÂ³ + 2x + 2 mod 484763,10,1.70014807449998,1.03388356187839
 Courbe elliptique  yÂ² = xÂ³ + 2x + 2 mod 484763,10,1.8618896375000986,1.0060896130463495
 Courbe elliptique  yÂ² = xÂ³ + 2x + 2 mod 484763,100,0.7899067280700365,0.4976723754716682
+Courbe elliptique  y² = x³ + 2x + 2 mod 40423,100,0.13161832200010395,0.07801097338513302
+Courbe elliptique  y² = x³ + 2x + 2 mod 484763,100,1.903081388999981,1.169164465637641
