@@ -42,17 +42,17 @@ u_int64_t fp(CE Courbe,Point P) {
 }
 
 u_int64_t inv_mod(u_int64_t e, u_int64_t p) {
-    i_int64_t unm1= 1;
-    i_int64_t un = 0;
-    i_int64_t vnm1= 0;
-    i_int64_t vn = 1;
-    i_int64_t a = p;
-    i_int64_t b = e % p;
+    int64_t unm1= 1;
+    int64_t un = 0;
+    int64_t vnm1= 0;
+    int64_t vn = 1;
+    int64_t a = p;
+    int64_t b = ((int64_t) e) % ((int64_t) p);
     while (b != 0) {
-        i_int64_t q = a / b;
-        i_int64_t r =  a % b;
-        i_int64_t temp1 = unm1;
-        i_int64_t temp2 = vnm1;
+        int64_t q = a / b;
+        int64_t r =  a % b;
+        int64_t temp1 = unm1;
+        int64_t temp2 = vnm1;
         unm1 = un;
         vnm1 = vn;
         un = -q*un + temp1;
