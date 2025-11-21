@@ -60,6 +60,8 @@ u_int64_t inv_mod(u_int64_t e, u_int64_t p) {
         a = b;
         b = r;
     }
+    if (unm1 < 0) unm1 += p;
+    return (u_int64_t)unm1;
 }
 
 Point etoile(Point P1, Point P2) {
