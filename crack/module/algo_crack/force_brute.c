@@ -99,18 +99,32 @@ Point etoile(Point P1, Point P2) {
 
 Point plus(Point P, Point Q) {
     Point P3 = etoile(P,Q);
-    P3.y = -P3.y;
+    P3.y = -P3.y % P3.CE->p;
     return P3;
 }
 
-u_int64_t log_discret_force_brute(Point P,Point Q) {
+u_int64_t log_discret_force_brute(Point P, Point Q) {
     Point R = P;
     u_int64_t x = 1;
-    while (R.x != Q.x || R.y != Q.y) {
-        R = plus(R,P);
+    // Si Q est le point à l'infini et P aussi, retourner 0 directement
+    if (Q.infini) return 0;
+
+    while (1) {
+        // Comparaison complète avec gestion du point à l'infini
+        if (R.infini && Q.infini) {
+            return x;  // Trouvé sur point infini
+        }
+        if (!R.infini && !Q.infini && (R.x == Q.x) && (R.y == Q.y)) {
+            return x;  // Trouvé point égal
+        }
+        // Si on atteint le point à l'infini sans correspondance, chercher est impossible
+        if (R.infini) {
+            // clé secrète non trouvée dans le groupe
+            return 0;  // ou une valeur signifiant échec
+        }
+        R = plus(R, P);
         x++;
     }
-    return x;
 }
 
 int main(int argc, char** argv) {
