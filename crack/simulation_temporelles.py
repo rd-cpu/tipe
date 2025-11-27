@@ -5,8 +5,6 @@ import time
 import numpy as np
 
 
-
-CE1 = CourbeElliptique(0,2,2,40423)
 def duree_crack_monte_carlo(CE,algo_crack,N=20):
     o = ordre(CE)
     tab_sk = np.random.randint(1,o, size=N)
@@ -32,10 +30,12 @@ def crack_perfCE_csv(CE,algo,N=1000): # prendre en compte l'ordre
         writer.writerow([repr(CE),str(N),str(temps_moyen),str(u_temps)])
 
 # faire crack_perf_ZnZ
+CE1 = CourbeElliptique(0,2,2,40423)
 
-CEstand = CE1
+CEstand = CourbeElliptique(0,2,2,5810993)
 
 #s = randint(0,CEstand.o - 1)
+
 s = 1009
 print("clé secrète :",s)
 P = point_random(CEstand)
@@ -43,7 +43,6 @@ pk = generate_PK(s,P,CEstand)
 Q = point_random(CEstand)
 M = cryptage(pk,Q)
 Md = crack_point_rho_de_pollard(M,pk)
-
 
 #duree_crack_monte_carlo(CE1,crack_force_brute)
 #duree_crack_monte_carlo(CE1,crack_rho_de_pollard)
