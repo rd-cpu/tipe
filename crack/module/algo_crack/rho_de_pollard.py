@@ -20,7 +20,7 @@ def rho_de_pollard_CE(alpha, beta):
     def f(x, alpha, beta):
         r = x.x % 3
         if r == 0:
-            return x + x       
+            return x + x
         elif r == 1:
             return x + alpha
         else:
@@ -29,20 +29,20 @@ def rho_de_pollard_CE(alpha, beta):
     def g(x, a, n):
         r = x.x % 3
         if r == 0:
-            return (2*a) % n
+            return (2 * a) % n
         elif r == 1:
-            return (a+1) % n
+            return (a + 1) % n
         else:
             return a
 
     def h(x, b, n):
         r = x.x % 3
         if r == 0:
-            return (2*b) % n
+            return (2 * b) % n
         elif r == 1:
             return b
         else:
-            return (b+1) % n
+            return (b + 1) % n
 
     def appliquer(x, a, b):
         x2 = f(x, alpha, beta)
@@ -60,15 +60,23 @@ def rho_de_pollard_CE(alpha, beta):
             r = (b - B) % n
             if r == 0:
                 return "échec"
-            inv_r = inv_mod(r, n)
-            return (inv_r * (A - a)) % n
+            inv_r = pow(r, -1, n)
+            return (inv_r * ((A - a) % n)) % n
         
 
 
-def crack_rho_de_pollard(pk):
+def crack_rho_de_pollard(pk, max_retries=5):
+    """
+    Attempt to crack discrete log using Pollard's rho algorithm.
+    Retries up to max_retries times since rho is probabilistic.
+    """
     CE, P, B = pk
-    s = rho_de_pollard_CE(P,B)
-    return s
+    for attempt in range(max_retries):
+        s = rho_de_pollard_CE(P, B)
+        if s != "échec":
+            return s
+    # If all retries failed, return None or raise
+    return None
 
 def crack_point_rho_de_pollard(message_chiffre,pk):
     s = crack_rho_de_pollard(pk) 

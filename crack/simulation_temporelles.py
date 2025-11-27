@@ -36,14 +36,16 @@ def crack_perfCE_csv(CE,algo,N=1000): # prendre en compte l'ordre
 CEstand = CE1
 
 #s = randint(0,CEstand.o - 1)
-'''s = 123456789
+s = 1009
 print("clé secrète :",s)
 P = point_random(CEstand)
 pk = generate_PK(s,P,CEstand)
 Q = point_random(CEstand)
 M = cryptage(pk,Q)
 Md = crack_point_rho_de_pollard(M,pk)
-'''
+
 
 #duree_crack_monte_carlo(CE1,crack_force_brute)
 #duree_crack_monte_carlo(CE1,crack_rho_de_pollard)
+#crack_perfCE_csv(CE1,crack_rho_de_pollard,10)
+#crack_perfCE_csv(CE1,crack_force_brute,10)
