@@ -61,19 +61,7 @@ def trouve_premier():
 
 
 def inv_mod(e, p):
-    unm1, un = 1, 0
-    vnm1, vn = 0, 1
-    a = p
-    b = e % p
-    while b != 0:
-        q, r = a // b, a % b
-        temp = unm1, vnm1
-        unm1, vnm1 = un, vn
-        un, vn = -q*un + temp[0], -q*vn + temp[1]
-        a, b = b, r
-
-
-    if a != 1:
+    try:
+        return pow(e % p, -1, p)
+    except ValueError:
         raise ValueError(f"{e} isn't invertible mod {p}")
-    
-    return vnm1
