@@ -38,21 +38,21 @@ typedef struct {
 } Point;
 
 u_int64_t fp(CE Courbe,Point P) {
-    return 3*P.x + Courbe.a;
+    return 3*P.x*P.x+ Courbe.a;
 }
 
 u_int64_t inv_mod(u_int64_t e, u_int64_t p) {
-    u_int64_t unm1= 1;
-    u_int64_t un = 0;
-    u_int64_t vnm1= 0;
-    u_int64_t vn = 1;
-    u_int64_t a = p;
-    u_int64_t b = e % p;
+    int64_t unm1= 1;
+    int64_t un = 0;
+    int64_t vnm1= 0;
+    int64_t vn = 1;
+    int64_t a = (int64_t) p;
+    int64_t b = ((int64_t) e) % ((int64_t) p);
     while (b != 0) {
-        u_int64_t q = a / b;
-        u_int64_t r =  a % b;
-        u_int64_t temp1 = unm1;
-        u_int64_t temp2 = vnm1;
+        int64_t q = a / b;
+        int64_t r =  a % b;
+        int64_t temp1 = unm1;
+        int64_t temp2 = vnm1;
         unm1 = un;
         vnm1 = vn;
         un = -q*un + temp1;
@@ -60,41 +60,71 @@ u_int64_t inv_mod(u_int64_t e, u_int64_t p) {
         a = b;
         b = r;
     }
+    if (unm1 < 0) unm1 += p;
+    return (u_int64_t)unm1;
 }
 
 Point etoile(Point P1, Point P2) {
     Point P3;
-    u_int64_t lambda;
+    u_int64_t lambda_num, lambda_den, lambda;
+    u_int64_t p = P1.CE->p;
+    u_int64_t a = P1.CE->a;
+
     P3.CE = P1.CE;
+    P3.infini = 0;
+
+    if (P1.infini) return P2;
+    if (P2.infini) return P1;
+
     if (P1.x == P2.x) {
         if (P1.y != P2.y || P1.y == 0) {
             P3.infini = 1;
-        } else {
-            P3.infini = 0;
-            lambda = P1.fp * inv_mod(2*P1.y, P1.CE->p);
+            return P3;
         }
+        lambda_num = (3 * modmul(P1.x, P1.x, p) + a) % p;
+        lambda_den = (2 * P1.y) % p;
     } else {
-        P3.infini = 0;
-        lambda = (P2.x - P1.x) * inv_mod(P2.y - P1.y, P1.CE->p);
+        lambda_num = (P2.y + p - P1.y) % p;
+        lambda_den = (P2.x + p - P1.x) % p;
     }
-    P3.x = (lambda*lambda - P1.CE->a - P1.x - P2.x)%P3.CE->p;
-    P3.y = (lambda * P3.x - lambda * P1.x + P1.y)%P3.CE->p;
+
+    u_int64_t inv_lambda_den = inv_mod(lambda_den, p);
+    lambda = modmul(lambda_num, inv_lambda_den, p);
+
+    P3.x = (modmul(lambda, lambda, p) + p - P1.x + p - P2.x) % p;
+    P3.y = (modmul(lambda, (P1.x + p - P3.x) % p, p) + p - P1.y) % p;
+
     return P3;
 }
 
 Point plus(Point P, Point Q) {
     Point P3 = etoile(P,Q);
-    P3.y = -P3.y;
+    P3.y = -P3.y % P3.CE->p;
+    return P3;
 }
 
-u_int64_t log_discret_force_brute(Point P,Point Q) {
+u_int64_t log_discret_force_brute(Point P, Point Q) {
     Point R = P;
     u_int64_t x = 1;
-    while (R.x != Q.x && R.y != Q.y) {
-        R = plus(R,P);
+    // Si Q est le point à l'infini et P aussi, retourner 0 directement
+    if (Q.infini) return 0;
+
+    while (1) {
+        // Comparaison complète avec gestion du point à l'infini
+        if (R.infini && Q.infini) {
+            return x;  // Trouvé sur point infini
+        }
+        if (!R.infini && !Q.infini && (R.x == Q.x) && (R.y == Q.y)) {
+            return x;  // Trouvé point égal
+        }
+        // Si on atteint le point à l'infini sans correspondance, chercher est impossible
+        if (R.infini) {
+            // clé secrète non trouvée dans le groupe
+            return 0;  // ou une valeur signifiant échec
+        }
+        R = plus(R, P);
         x++;
     }
-    return x;
 }
 
 int main(int argc, char** argv) {
