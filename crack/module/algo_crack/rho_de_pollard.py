@@ -66,16 +66,11 @@ def rho_de_pollard_CE(alpha, beta):
 
 
 def crack_rho_de_pollard(pk, max_retries=5):
-    """
-    Attempt to crack discrete log using Pollard's rho algorithm.
-    Retries up to max_retries times since rho is probabilistic.
-    """
     CE, P, B = pk
     for attempt in range(max_retries):
         s = rho_de_pollard_CE(P, B)
         if s != "échec":
             return s
-    # If all retries failed, return None or raise
     return None
 
 def crack_point_rho_de_pollard(message_chiffre,pk):
