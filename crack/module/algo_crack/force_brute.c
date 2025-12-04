@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <inttypes.h>
-#include "CE.h"
+#include "include/CE.h"
 
 int main(int argc, char** argv) {
     if (argc != 7) {
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     B.x = strtoul(argv[3], &endptr, 10); B.y = strtoul(argv[4], &endptr, 10);
     CEstand.a = strtoul(argv[5], &endptr, 10); CEstand.p = strtoul(argv[6], &endptr, 10);
     
-    Point P2 = etoile(P, B);
+    Point P2 = plus(P, B);
     printf("%lu,%lu\n", P2.x, P2.y);
     return 0;
 }
