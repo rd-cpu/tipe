@@ -76,7 +76,7 @@ def tonelli_shanks(n, p):
 # --- Recherche rapide des points (Tonelli–Shanks) ---
 # ============================================================
 
-def find_points_fast(CE):
+def find_points_fast(CE,n):
     p = CE.o
     pts = []
     # for x in range(p):
@@ -90,11 +90,10 @@ def find_points_fast(CE):
     # return pts
     x = 0
     i = 0
-    n = 30000
     x_dejavus = []
     #m = min(n,CE.o)
     m = CE.o
-    while i < m:
+    while i < n:
         x = randint(0,CE.o - 1)
         while x in x_dejavus:
             x = randint(0,CE.o - 1)
@@ -106,6 +105,7 @@ def find_points_fast(CE):
         pts.append(Point(x, y, CE))
         if y != 0:
             pts.append(Point(x, (-y) % p, CE))
+            print(f"Point ajouté : ({x},{-y})")
             i += 1
         i += 1
     return pts
@@ -272,7 +272,7 @@ def courbe_cyclique(CE,n=None):
         print(f"Ordre estimé du groupe : {n}")        
     return sp.isprime(n)
 
-def trouve_points(CE,verbose=True,n=None):
+def trouve_points(CE,verbose=True,n=None,nb_points=30000):
     if n == None:
         print("Calcul du nombre de points par fichier executable")
         try:
@@ -280,8 +280,8 @@ def trouve_points(CE,verbose=True,n=None):
         except Exception as e:
             print(f"erreur bon bah finalement on calcule en python mskn : {e}")
             n = CE.nombre_points() # appelle les fonctions python tant pis
-
-    points = find_points_fast(CE)
+    print("tout va bien ici")
+    points = find_points_fast(CE,nb_points)
     if verbose: 
         print("points trouvés")
 
