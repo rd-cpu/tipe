@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import csv
 import os
+import time
 
 # Import functions and classes
 from module.courbe_el_final import CourbeElliptique
@@ -79,10 +80,24 @@ class CrackerGUI(tk.Tk):
         # Progress / status
         self.status_label = ttk.Label(self, text='Ready')
         self.status_label.grid(column=1, row=3, sticky='w')
+        
+        # Global timer label
+        self.timer_label = ttk.Label(self, text='Elapsed: 00:00:00')
+        self.timer_label.grid(column=1, row=2, sticky='e', padx=8)
+
+        # Progress bar and counter frame
+        progress_frame = ttk.Frame(self)
+        progress_frame.grid(column=0, row=4, columnspan=2, padx=pad, pady=pad, sticky='ew')
+        
+        self.progress_bar = ttk.Progressbar(progress_frame, mode='determinate', length=300)
+        self.progress_bar.pack(side='left', fill='x', expand=True, padx=(0, pad))
+        
+        self.counter_label = ttk.Label(progress_frame, text='0/0', width=8)
+        self.counter_label.pack(side='right')
 
         # Results text with scrollbar
         text_frame = ttk.Frame(self)
-        text_frame.grid(column=0, row=4, columnspan=2, padx=pad, pady=pad, sticky='nsew')
+        text_frame.grid(column=0, row=5, columnspan=2, padx=pad, pady=pad, sticky='nsew')
         
         scrollbar = ttk.Scrollbar(text_frame)
         scrollbar.pack(side='right', fill='y')
@@ -93,7 +108,7 @@ class CrackerGUI(tk.Tk):
 
         # Configure grid weights for responsiveness
         self.columnconfigure(1, weight=1)
-        self.rowconfigure(4, weight=1)
+        self.rowconfigure(5, weight=1)
 
     def start(self):
         algo = self.algo_var.get()
@@ -156,19 +171,49 @@ class CrackerGUI(tk.Tk):
         self._append_result(f'Running {algo} on curve {curve_idx} for N={n}\n')
 
         # run in background thread
+        self.progress_bar['value'] = 0
+        self.counter_label.config(text=f'0/{n}')
+        # start timer and thread
+        self._start_time = time.perf_counter()
+        self._running_timer = True
+        self.after(200, self._update_timer)
         thread = threading.Thread(target=self._run_and_report, args=(CE, algo_func, n, curve_idx), daemon=True)
         thread.start()
 
     def _run_and_report(self, CE, algo_func, n, curve_label):
         try:
-            mean, u = crack_perfCE_csv(CE, algo_func, N=n)
-            self._append_result(f'Finished: mean={mean:.6f}s ± {u:.6f}s\n')
+            # Create a callback that updates progress bar and counter
+            def progress_with_bar(msg):
+                # Extract counter from msg (e.g., "Cracked: 3/5...")
+                if "Cracked:" in msg:
+                    parts = msg.split()
+                    for part in parts:
+                        if '/' in part:
+                            current, total = map(int, part.split('/'))
+                            self._update_progress(current, total)
+                            break
+                self._append_result(msg)
+            
+            mean, u = crack_perfCE_csv(CE, algo_func, N=n, progress_callback=progress_with_bar)
+            self._append_result(f'\n✓ Finished: mean={mean:.6f}s ± {u:.6f}s\n')
             self.status_label.config(text='Done')
+            self.progress_bar['value'] = 100
         except Exception as e:
             self._append_result(f'Error during run: {e}\n')
             self.status_label.config(text='Error')
         finally:
+            # stop timer and re-enable UI
+            self._running_timer = False
             self.start_btn.config(state='normal')
+
+    def _update_timer(self):
+        if not getattr(self, '_running_timer', False):
+            return
+        elapsed = time.perf_counter() - getattr(self, '_start_time', time.perf_counter())
+        hrs, rem = divmod(int(elapsed), 3600)
+        mins, secs = divmod(rem, 60)
+        self.timer_label.config(text=f'Elapsed: {hrs:02d}:{mins:02d}:{secs:02d}')
+        self.after(200, self._update_timer)
 
     def _append_result(self, text):
         def _append():
@@ -177,6 +222,13 @@ class CrackerGUI(tk.Tk):
             self.result_text.see('end')
             self.result_text.config(state='disabled')
         self.after(0, _append)
+
+    def _update_progress(self, current, total):
+        def _update():
+            percent = (current / total) * 100 if total > 0 else 0
+            self.progress_bar['value'] = percent
+            self.counter_label.config(text=f'{current}/{total}')
+        self.after(0, _update)
 
 
 if __name__ == '__main__':
