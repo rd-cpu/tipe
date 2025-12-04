@@ -3,16 +3,16 @@ from module.trouve_points_ordres import *
 from sympy import primerange
 from random import choice
 
-def creationCE(a,b,p,ordre=None):
+def creationCE(a,b,p,ordre=None,nb_points=30000):
     print("Création de la Courbe Elliptique")
     CE = CourbeElliptique(0,a,b,p)
     print("Courbe elliptique crée")
     if ordre == None:
-        trouve_points(CE)
+        trouve_points(CE,nb_points=nb_points)
     else:
-        trouve_points(CE,n=ordre)
+        trouve_points(CE,n=ordre,nb_points=nb_points)
 
-def trouve_CE_viable(a,b,min,max):
+def trouve_CE_viable(a,b,min,max,nb_points=30000):
     l = list(primerange(min,max))
     p = 0
     CE = 0
@@ -23,7 +23,7 @@ def trouve_CE_viable(a,b,min,max):
         ordre = CE.nombre_points_subprocess()
         print(f"ordre pour p = {p} : {ordre}")
 
-    creationCE(a,b,p,ordre)
+    creationCE(a,b,p,ordre,nb_points=nb_points)
 
 
 # 6000000
