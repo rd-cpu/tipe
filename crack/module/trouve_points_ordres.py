@@ -94,7 +94,7 @@ def find_points_fast(CE):
     x_dejavus = []
     #m = min(n,CE.o)
     m = CE.o
-    while i < m:
+    while i < n:
         x = randint(0,CE.o - 1)
         while x in x_dejavus:
             x = randint(0,CE.o - 1)
@@ -106,6 +106,7 @@ def find_points_fast(CE):
         pts.append(Point(x, y, CE))
         if y != 0:
             pts.append(Point(x, (-y) % p, CE))
+            print(f"Point ajouté : ({x},{-y})")
             i += 1
         i += 1
     return pts
@@ -280,7 +281,7 @@ def trouve_points(CE,verbose=True,n=None):
         except Exception as e:
             print(f"erreur bon bah finalement on calcule en python mskn : {e}")
             n = CE.nombre_points() # appelle les fonctions python tant pis
-
+    print("tout va bien ici")
     points = find_points_fast(CE)
     if verbose: 
         print("points trouvés")
