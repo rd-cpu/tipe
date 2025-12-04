@@ -11,8 +11,8 @@ class CourbeElliptique:
         self.b = b
         self.c = c
         self.o = o
-        self.f = lambda x: x ** 3 + self.a * x ** 2 + self.b * x + self.c
-        self.fp = lambda x: 3 * x ** 2 + 2 * self.a * x + self.b
+        # Use methods for f and fp instead of lambdas so the object is picklable
+        # (lambdas are not picklable and break multiprocessing on Windows)
 
 
     def __eq__(self, d):
@@ -67,6 +67,15 @@ class CourbeElliptique:
         print("fin d'execution")
         i = int(result.stdout.strip())  # on récupère directement l'entier
         return i
+
+    # --- polynomial and derivative as methods (picklable) ---
+    def f(self, x):
+        """Polynomial f(x) = x^3 + a x^2 + b x + c (mod p)."""
+        return x ** 3 + self.a * x ** 2 + self.b * x + self.c
+
+    def fp(self, x):
+        """Derivative f'(x) = 3 x^2 + 2 a x + b (mod p)."""
+        return 3 * x ** 2 + 2 * self.a * x + self.b
 
 
 
