@@ -28,7 +28,7 @@ def crack_perfCE_csv(CE,algo,N=1000): # prendre en compte l'ordre
         writer = csv.writer(f)
         # writer.writerow(["Courbe Elliptique", "Échantillon","Temps Moyen","Incertitude"])
         writer.writerow([repr(CE),str(N),str(temps_moyen),str(u_temps)])
-
+    return temps_moyen,u_temps
 # faire crack_perf_ZnZ
 CE1 = CourbeElliptique(0,2,2,40423)
 '''

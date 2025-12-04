@@ -10,7 +10,7 @@ from module.crackEGEC import crack_force_brute
 from module.algo_crack.rho_de_pollard import crack_rho_de_pollard
 
 # We'll reuse the parallel benchmark function
-from simu_multi_thread import duree_crack_monte_carlo
+from simu_multi_thread import crack_perfCE_csv
 
 CE_CSV = os.path.join(os.path.dirname(__file__), 'CE.csv')
 
@@ -40,8 +40,8 @@ class CrackerGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Elliptic Curve DLP – Cracker GUI')
-        self.geometry('520x320')
-        self.resizable(False, False)
+        self.geometry('700x600')
+        self.resizable(True, True)
 
         self.curves = read_curves()
 
@@ -80,12 +80,20 @@ class CrackerGUI(tk.Tk):
         self.status_label = ttk.Label(self, text='Ready')
         self.status_label.grid(column=1, row=3, sticky='w')
 
-        # Results text
-        self.result_text = tk.Text(self, height=10, width=62, state='disabled')
-        self.result_text.grid(column=0, row=4, columnspan=2, padx=pad, pady=pad)
+        # Results text with scrollbar
+        text_frame = ttk.Frame(self)
+        text_frame.grid(column=0, row=4, columnspan=2, padx=pad, pady=pad, sticky='nsew')
+        
+        scrollbar = ttk.Scrollbar(text_frame)
+        scrollbar.pack(side='right', fill='y')
+        
+        self.result_text = tk.Text(text_frame, height=20, width=85, state='disabled', yscrollcommand=scrollbar.set)
+        self.result_text.pack(side='left', fill='both', expand=True)
+        scrollbar.config(command=self.result_text.yview)
 
-        # Configure grid weights
+        # Configure grid weights for responsiveness
         self.columnconfigure(1, weight=1)
+        self.rowconfigure(4, weight=1)
 
     def start(self):
         algo = self.algo_var.get()
@@ -153,7 +161,7 @@ class CrackerGUI(tk.Tk):
 
     def _run_and_report(self, CE, algo_func, n, curve_label):
         try:
-            mean, u = duree_crack_monte_carlo(CE, algo_func, N=n)
+            mean, u = crack_perfCE_csv(CE, algo_func, N=n)
             self._append_result(f'Finished: mean={mean:.6f}s ± {u:.6f}s\n')
             self.status_label.config(text='Done')
         except Exception as e:

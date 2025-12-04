@@ -89,6 +89,8 @@ def crack_perfCE_csv(CE, algo, N=1000):
     with open(nom_perfcsv(algo), "a", newline='') as f:
         writer = csv.writer(f)
         writer.writerow([repr(CE), str(N), str(temps_moyen), str(u_temps)])
+    
+    return temps_moyen, u_temps
 
 
 if __name__ == "__main__":
