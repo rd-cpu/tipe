@@ -40,7 +40,7 @@ def worker_temps_crack(args):
 
 # --- VERSION PARALLÈLE ---
 
-def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None):
+def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None, workers=None):
 
     # identifie l'algo
     algo_name = "rho" if algo_crack == crack_rho_de_pollard else "force"
@@ -72,7 +72,8 @@ def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None):
 
     # ---- PARALLÉLISATION ----
     tab_temps = []
-    with ProcessPoolExecutor() as pool:
+    # allow caller to control number of worker processes (None = default)
+    with ProcessPoolExecutor(max_workers=workers) as pool:
         for i, elapsed_time in enumerate(pool.map(worker_temps_crack, args), 1):
             tab_temps.append(elapsed_time)
             if progress_callback:
@@ -87,8 +88,8 @@ def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None):
     return temps_moyen, u_temps
 
 
-def crack_perfCE_csv(CE, algo, N=1000, progress_callback=None):
-    temps_moyen, u_temps = duree_crack_monte_carlo(CE, algo, N, progress_callback=progress_callback)
+def crack_perfCE_csv(CE, algo, N=1000, progress_callback=None, workers=None):
+    temps_moyen, u_temps = duree_crack_monte_carlo(CE, algo, N, progress_callback=progress_callback, workers=workers)
 
     with open(nom_perfcsv(algo), "a", newline='') as f:
         writer = csv.writer(f)

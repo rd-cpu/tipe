@@ -26,7 +26,9 @@ def read_curves(csv_path=CE_CSV):
                 b = int(row['b'])
                 p = int(row['p'])
                 ordre = int(row['ordre']) if 'ordre' in row and row['ordre'] else p
-                label = f"a={a}, b={b}, p={p} (ordre≈{ordre})"
+                # format ordre with spaces every 3 digits, e.g. 102 023 032
+                ordre_fmt = f"{ordre:,}".replace(',', ' ')
+                label = f"a={a}, b={b}, p={p} (ordre≈{ordre_fmt})"
                 curves.append((label, (a, b, p, ordre)))
     except FileNotFoundError:
         # fallback: a few defaults
@@ -34,6 +36,8 @@ def read_curves(csv_path=CE_CSV):
             ("CE default: 0,2,2,40423", (0, 2, 2, 40423)),
             ("CE default: 2,2,2,5810993", (2, 2, 2, 5810993)),
         ]
+    # Sort curves by order (ascending)
+    curves.sort(key=lambda x: x[1][3])
     return curves
 
 
@@ -61,17 +65,26 @@ class CrackerGUI(tk.Tk):
         # Curve selection
         ttk.Label(self, text='Elliptic Curve:').grid(column=0, row=1, sticky='w', padx=pad, pady=pad)
         self.curve_var = tk.StringVar()
-        curve_menu = ttk.Combobox(self, textvariable=self.curve_var, state='readonly', width=50)
+        curve_menu = ttk.Combobox(self, textvariable=self.curve_var, state='readonly', width=80)
         curve_menu['values'] = [c[0] for c in self.curves]
         if self.curves:
             curve_menu.current(0)
         curve_menu.grid(column=1, row=1, sticky='ew', padx=pad)
 
-        # Number of simulations
+        # Number of simulations and workers (grouped)
         ttk.Label(self, text='Simulations (N):').grid(column=0, row=2, sticky='w', padx=pad, pady=pad)
+        sim_frame = ttk.Frame(self)
+        sim_frame.grid(column=1, row=2, sticky='w', padx=pad)
+
         self.n_var = tk.IntVar(value=5)
-        n_spin = ttk.Spinbox(self, from_=1, to=10000, textvariable=self.n_var, width=10)
-        n_spin.grid(column=1, row=2, sticky='w', padx=pad)
+        n_spin = ttk.Spinbox(sim_frame, from_=1, to=10000, textvariable=self.n_var, width=10)
+        n_spin.pack(side='left')
+
+        ttk.Label(sim_frame, text='   Workers:').pack(side='left', padx=(8, 0))
+        default_workers = os.cpu_count() or 2
+        self.workers_var = tk.IntVar(value=default_workers)
+        w_spin = ttk.Spinbox(sim_frame, from_=1, to=256, textvariable=self.workers_var, width=6)
+        w_spin.pack(side='left', padx=(4, 0))
 
         # Start button
         self.start_btn = ttk.Button(self, text='Start', command=self.start)
@@ -81,9 +94,9 @@ class CrackerGUI(tk.Tk):
         self.status_label = ttk.Label(self, text='Ready')
         self.status_label.grid(column=1, row=3, sticky='w')
         
-        # Global timer label
+        # Global timer label (next to status)
         self.timer_label = ttk.Label(self, text='Elapsed: 00:00:00')
-        self.timer_label.grid(column=1, row=2, sticky='e', padx=8)
+        self.timer_label.grid(column=2, row=3, sticky='w', padx=8)
 
         # Progress bar and counter frame
         progress_frame = ttk.Frame(self)
@@ -173,14 +186,17 @@ class CrackerGUI(tk.Tk):
         # run in background thread
         self.progress_bar['value'] = 0
         self.counter_label.config(text=f'0/{n}')
+        # get worker count
+        workers = int(self.workers_var.get()) if getattr(self, 'workers_var', None) else None
+
         # start timer and thread
         self._start_time = time.perf_counter()
         self._running_timer = True
         self.after(200, self._update_timer)
-        thread = threading.Thread(target=self._run_and_report, args=(CE, algo_func, n, curve_idx), daemon=True)
+        thread = threading.Thread(target=self._run_and_report, args=(CE, algo_func, n, curve_idx, workers), daemon=True)
         thread.start()
 
-    def _run_and_report(self, CE, algo_func, n, curve_label):
+    def _run_and_report(self, CE, algo_func, n, curve_label, workers=None):
         try:
             # Create a callback that updates progress bar and counter
             def progress_with_bar(msg):
@@ -194,7 +210,7 @@ class CrackerGUI(tk.Tk):
                             break
                 self._append_result(msg)
             
-            mean, u = crack_perfCE_csv(CE, algo_func, N=n, progress_callback=progress_with_bar)
+            mean, u = crack_perfCE_csv(CE, algo_func, N=n, progress_callback=progress_with_bar, workers=workers)
             self._append_result(f'\n✓ Finished: mean={mean:.6f}s ± {u:.6f}s\n')
             self.status_label.config(text='Done')
             self.progress_bar['value'] = 100
