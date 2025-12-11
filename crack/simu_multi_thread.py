@@ -72,7 +72,7 @@ def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None, worker
 
     # ---- PARALLÉLISATION ----
     tab_temps = []
-    # allow caller to control number of worker processes (None = default)
+    # permet au caller de contrôler le nombre de processus workers (None = défaut)
     with ProcessPoolExecutor(max_workers=workers) as pool:
         for i, elapsed_time in enumerate(pool.map(worker_temps_crack, args), 1):
             tab_temps.append(elapsed_time)
