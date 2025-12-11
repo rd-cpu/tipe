@@ -54,7 +54,7 @@ plt.tight_layout()
 
 output_path = script_dir / 'perf_crack_graph.png'
 plt.savefig(output_path, dpi=150, bbox_inches='tight')
-print(f"\nGraph saved to: {output_path}")
+print(f"\nGraph sauvegardé à : {output_path}")
 
 plt.show()
 
