@@ -54,19 +54,57 @@ class CourbeElliptique:
     
     
     def nombre_points_subprocess(self):
+        """Compute number of points on curve using PARI/GP (Linux) or Python fallback (Windows)"""
         os_type = platform.system()
+
         if os_type == "Linux":
-            # cmd = ['module/ordre_CE', str(self.a), str(self.b), str(self.c), str(self.o)]
-            # print("début d'exectution de",cmd[0])
-            cmd = "echo 'E = ellinit([0," + str(self.a) + ",0," + str(self.b) + "," + str(self.c)+ "]," + str(self.o) + " ); print(ellcard(E));' | gp -q -f"
+            # Linux: use PARI/GP via shell pipe
+            cmd = "echo 'E = ellinit([0," + str(self.a) + ",0," + str(self.b) + "," + str(self.c) + "]," + str(self.o) + "); print(ellcard(E));' | gp -q -f"
+            try:
+                result = subprocess.run(cmd, capture_output=True, text=True, shell=True, timeout=60)
+                try:
+                    return int(result.stdout.strip())
+                except ValueError:
+                    print(f"Failed to parse PARI/GP output: {result.stdout}")
+                    if result.stderr:
+                        print(f"stderr: {result.stderr}")
+                    print("Falling back to Python calculation")
+                    return self.nombre_points()
+            except subprocess.TimeoutExpired:
+                print("PARI/GP timeout; falling back to Python calculation")
+                return self.nombre_points()
+
         elif os_type == "Windows":
-            #cmd = ['module/ordre_CE.exe', str(self.a), str(self.b), str(self.c), str(self.o)]
-            cmd = f"E = ellinit([0,{self.a},0,{self.b},{self.c}],{self.o}); print(ellcard(E));"
-            print("début d'exectution de",cmd[0])
-        result = subprocess.run(cmd, capture_output=True, text=True,shell=True)
-        print("fin d'execution")
-        i = int(result.stdout.strip())  # on récupère directement l'entier
-        return i
+            # Windows: try gp.exe if installed, else fall back to Python
+            pari_cmd = f"E = ellinit([0,{self.a},0,{self.b},{self.c}],{self.o}); print(ellcard(E));"
+            try:
+                result = subprocess.run(
+                    ['gp', '-q', '-f'],
+                    input=pari_cmd,
+                    capture_output=True,
+                    text=True,
+                    timeout=60
+                )
+                try:
+                    return int(result.stdout.strip())
+                except ValueError:
+                    print(f"Failed to parse PARI/GP output: {result.stdout}")
+                    if result.stderr:
+                        print(f"stderr: {result.stderr}")
+                    print("Falling back to Python calculation")
+                    return self.nombre_points()
+            except FileNotFoundError:
+                # gp not found; fall back to Python calculation
+                print("gp.exe not found on Windows; using Python fallback for point counting")
+                return self.nombre_points()
+            except subprocess.TimeoutExpired:
+                print("PARI/GP timeout on Windows; falling back to Python calculation")
+                return self.nombre_points()
+
+        else:
+            # Unknown OS; fall back to Python
+            print(f"Unknown OS: {os_type}; using Python fallback")
+            return self.nombre_points()
 
     # --- polynomial and derivative as methods (picklable) ---
     def f(self, x):
