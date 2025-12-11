@@ -14,14 +14,18 @@ def creationCE(a,b,p,ordre=None,nb_points=30000,cyclique=True):
 
 def trouve_CE_viable(a,b,min,max,nb_points=30000,cyclique=True):
     l = list(primerange(min,max))
-    p = 0
-    CE = 0
-    ordre = 0
-    while courbe_cyclique(CE,ordre) != cyclique:
+    p = None
+    CE = None
+    ordre = None
+    found = False
+    while not found:
         p = choice(l)
         CE = CourbeElliptique(0,a,b,p)
         ordre = CE.nombre_points_subprocess()
         print(f"ordre pour p = {p} : {ordre}")
+        if courbe_cyclique(CE, ordre) == cyclique:
+            found = True
+            print(f"✓ Courbe viable trouvée: a={a}, b={b}, p={p}, ordre={ordre}, cyclique={cyclique}")
 
     creationCE(a,b,p,ordre,nb_points=nb_points,cyclique=cyclique)
 
