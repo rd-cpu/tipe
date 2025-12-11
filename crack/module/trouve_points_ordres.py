@@ -264,7 +264,7 @@ def etude_ordre_rapide_et_export(CE, export_csv=True,verbose=True): # rajouter v
 def courbe_cyclique(CE,n=None):
     if n == None:
         print("Calcul du nombre de points par fichier executable")
-        try: 
+        try:
             n = CE.nombre_points_subprocess() # appelle l'executable c
         except Exception as e:
             print(f"erreur bon bah finalement on calcule en python mskn : {e}")
@@ -272,7 +272,7 @@ def courbe_cyclique(CE,n=None):
         print(f"Ordre estimé du groupe : {n}")        
     return sp.isprime(n)
 
-def trouve_points(CE,verbose=True,n=None,nb_points=30000):
+def trouve_points(CE,verbose=True,n=None,nb_points=30000,cyclique=True):
     if n == None:
         print("Calcul du nombre de points par fichier executable")
         try:
@@ -297,7 +297,7 @@ def trouve_points(CE,verbose=True,n=None,nb_points=30000):
     nom_csv = nom_CEcsv()
     with open(nom_csv, mode="a", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow([CE.b,CE.c,CE.o,n])
+        writer.writerow([CE.b,CE.c,CE.o,n,cyclique])
     if verbose:
         print(f"📁 CSV créé : {nom_csv}")
     return True
@@ -325,7 +325,13 @@ def liste_points(CE):
     l = file_points_to_list(CE,nom_fichier)
     return l
 
-
+def cyclique(CE):
+    with open(nom_CEcsv(), "r", newline='') as fichier:
+        reader = csv.DictReader(fichier)  # On lit avec les noms de colonnes
+        for line in reader:
+            if (CE.b,CE.c,CE.o) == ((int(line["a"]),int(line["b"]),int(line["p"]))):
+                return int(line["cyclique"])
+        return None
 '''
 def liste_points_ordre_max(CE):
     nom_fichier = nom_fichier_points_ordre_max(CE)
