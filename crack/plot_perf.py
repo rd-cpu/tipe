@@ -29,8 +29,8 @@ print(f"Loaded {len(df_force)} Brute Force records and {len(df_rho)} Rho records
 force_grouped = df_force.groupby('Ordre')['Temps Moyen'].mean().reset_index().sort_values('Ordre')
 rho_grouped = df_rho.groupby('Ordre')['Temps Moyen'].mean().reset_index().sort_values('Ordre')
 
-print(f"\nBrute Force unique orders: {force_grouped['Ordre'].tolist()}")
-print(f"Pollard Rho unique orders: {rho_grouped['Ordre'].tolist()}")
+print(f"\nBrute Force ordres uniques:    {force_grouped['Ordre'].tolist()}")
+print(f"Rho de Pollard ordres uniques: {rho_grouped['Ordre'].tolist()}")
 
 plt.figure(figsize=(12, 7))
 
@@ -39,7 +39,7 @@ if len(force_grouped) > 0:
              marker='o', label='Brute Force', linewidth=2, markersize=8, color='blue')
 if len(rho_grouped) > 0:
     plt.plot(rho_grouped['Ordre'], rho_grouped['Temps Moyen'], 
-             marker='s', label='Pollard Rho', linewidth=2, markersize=8, color='red')
+             marker='s', label='Rho de Pollard', linewidth=2, markersize=8, color='red')
 
 plt.xlabel('Ordre de la Courbe Elliptique', fontsize=12)
 plt.ylabel('Temps Moyen (secondes)', fontsize=12)
@@ -60,16 +60,16 @@ plt.show()
 
 print("\n=== Brute Force Performance ===")
 for _, row in force_grouped.iterrows():
-    print(f"Order {int(row['Ordre']):>12}: {row['Temps Moyen']:.3f}s")
+    print(f"Ordre {int(row['Ordre']):>12}: {row['Temps Moyen']:.3f}s")
 
-print("\n=== Pollard Rho Performance ===")
+print("\n=== Rho de Pollard Performance ===")
 for _, row in rho_grouped.iterrows():
-    print(f"Order {int(row['Ordre']):>12}: {row['Temps Moyen']:.3f}s")
+    print(f"Ordre {int(row['Ordre']):>12}: {row['Temps Moyen']:.3f}s")
 
-print("\n=== Comparison ===")
+print("\n=== Comparaison ===")
 for order in sorted(set(force_grouped['Ordre'].tolist() + rho_grouped['Ordre'].tolist())):
     bf = force_grouped[force_grouped['Ordre'] == order]['Temps Moyen'].values
     rh = rho_grouped[rho_grouped['Ordre'] == order]['Temps Moyen'].values
     if len(bf) > 0 and len(rh) > 0:
         ratio = rh[0] / bf[0]
-        print(f"Order {int(order):>12}: BF={bf[0]:.2f}s vs Rho={rh[0]:.2f}s (Rho {ratio:.1f}x {'slower' if ratio > 1 else 'faster'})")
+        print(f"Ordre {int(order):>12}: BF={bf[0]:.2f}s vs Rho={rh[0]:.2f}s (Rho {ratio:.1f}x {'plus lent' if ratio > 1 else 'plus rapide'})")
