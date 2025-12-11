@@ -1,4 +1,4 @@
-from module.crackEGEC import *
+from crack.module.algo_crack.crackEGEC import *
 from module.algo_crack.rho_de_pollard import *
 import csv
 import time
