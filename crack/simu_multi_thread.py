@@ -93,7 +93,7 @@ def crack_perfCE_csv(CE, algo, N=1000, progress_callback=None, workers=None):
 
     with open(nom_perfcsv(algo), "a", newline='') as f:
         writer = csv.writer(f)
-        writer.writerow([repr(CE), str(N), str(temps_moyen), str(u_temps)])
+        writer.writerow([repr(CE), str(CE.o), str(N), str(temps_moyen), str(u_temps)])
     
     return temps_moyen, u_temps
 

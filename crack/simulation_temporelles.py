@@ -26,8 +26,8 @@ def crack_perfCE_csv(CE,algo,N=1000): # prendre en compte l'ordre
     tab_sk,tab_P,tab_temps,temps_moyen,u_temps = duree_crack_monte_carlo(CE,algo,N)
     with open(nom_perfcsv(algo), "a", newline='') as f: # 'w' si pas écrit
         writer = csv.writer(f)
-        # writer.writerow(["Courbe Elliptique", "Échantillon","Temps Moyen","Incertitude"])
-        writer.writerow([repr(CE),str(N),str(temps_moyen),str(u_temps)])
+        # writer.writerow(["Courbe Elliptique","Ordre","Échantillon","Temps Moyen","Incertitude"])
+        writer.writerow([repr(CE),str(CE.o),str(N),str(temps_moyen),str(u_temps)])
     return temps_moyen,u_temps
 # faire crack_perf_ZnZ
 CE1 = CourbeElliptique(0,2,2,40423)
