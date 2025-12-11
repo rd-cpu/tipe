@@ -6,7 +6,7 @@ from module.trouve_points_ordres import ordre_rapide
 def rho_de_pollard_CE(alpha, beta):
 
     n = alpha.ordre()
-
+    #n = alpha.CE
     if n == 0:
         raise ValueError("ordre(alpha) = 0 (point à l'infini)")
 
