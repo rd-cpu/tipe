@@ -4,7 +4,7 @@ import numpy as np
 import csv
 
 # IMPORTS DU MODULE (garder dans le main script)
-from crack.module.algo_crack.crackEGEC import *
+from module.algo_crack.crackEGEC import *
 from module.algo_crack.rho_de_pollard import *
 
 

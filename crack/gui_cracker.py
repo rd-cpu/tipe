@@ -7,7 +7,7 @@ import time
 
 # Import functions and classes
 from module.courbe_el_final import CourbeElliptique
-from crack.module.algo_crack.crackEGEC import crack_force_brute
+from module.algo_crack.crackEGEC import crack_force_brute
 from module.algo_crack.rho_de_pollard import crack_rho_de_pollard
 
 # We'll reuse the parallel benchmark function
