@@ -2,9 +2,10 @@ from concurrent.futures import ProcessPoolExecutor
 import time
 import numpy as np
 import csv
+from plot_perf import generate_perf_graph
 
 # IMPORTS DU MODULE (garder dans le main script)
-from module.crackEGEC import *
+from module.algo_crack.crackEGEC import *
 from module.algo_crack.rho_de_pollard import *
 
 
@@ -72,7 +73,7 @@ def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None, worker
 
     # ---- PARALLÉLISATION ----
     tab_temps = []
-    # allow caller to control number of worker processes (None = default)
+    # permet au caller de contrôler le nombre de processus workers (None = défaut)
     with ProcessPoolExecutor(max_workers=workers) as pool:
         for i, elapsed_time in enumerate(pool.map(worker_temps_crack, args), 1):
             tab_temps.append(elapsed_time)
@@ -88,12 +89,19 @@ def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None, worker
     return temps_moyen, u_temps
 
 
-def crack_perfCE_csv(CE, algo, N=1000, progress_callback=None, workers=None):
+def crack_perfCE_csv(CE, algo, N=1000, progress_callback=None, workers=None, update_plot=True):
     temps_moyen, u_temps = duree_crack_monte_carlo(CE, algo, N, progress_callback=progress_callback, workers=workers)
 
     with open(nom_perfcsv(algo), "a", newline='') as f:
         writer = csv.writer(f)
         writer.writerow([repr(CE), str(CE.o), str(N), str(temps_moyen), str(u_temps)])
+    # Update perf graph after CSV write (disabled if update_plot=False)
+    if update_plot:
+        try:
+            generate_perf_graph(show=False, verbose=False)
+        except Exception as e:
+            # Avoid failing the crack routine if plotting fails
+            print(f"Warning: generate_perf_graph failed: {e}")
     
     return temps_moyen, u_temps
 
