@@ -65,7 +65,7 @@ class CrackerGUI(tk.Tk):
         ttk.Label(self, text='Algorithm:').grid(column=0, row=0, sticky='w', padx=pad, pady=pad)
         self.algo_var = tk.StringVar(value='rho')
         algo_menu = ttk.Combobox(self, textvariable=self.algo_var, state='readonly')
-        algo_menu['values'] = ('rho', 'force')
+        algo_menu['values'] = ('rho', 'force', 'tous les algorithmes')
         algo_menu.grid(column=1, row=0, sticky='ew', padx=pad)
 
         # Curve selection
@@ -181,13 +181,16 @@ class CrackerGUI(tk.Tk):
             self.start_btn.config(state='normal')
             return
 
-        # choose algorithm function
-        algo_func = crack_rho_de_pollard if algo == 'rho' else crack_force_brute
+        # choose algorithm function(s)
+        algos_map = {'rho': crack_rho_de_pollard, 'force': crack_force_brute}
 
         # disable UI
         self.start_btn.config(state='disabled')
         self.status_label.config(text='Running...')
-        self._append_result(f'Running {algo} on curve {curve_idx} for N={n}\n')
+        if algo == 'tous les algorithmes':
+            self._append_result(f'Exécution de tous les algorithmes sur la courbe {curve_idx} pour N={n}\n')
+        else:
+            self._append_result(f'Running {algo} on curve {curve_idx} for N={n}\n')
 
         # run in background thread
         self.progress_bar['value'] = 0
@@ -199,7 +202,10 @@ class CrackerGUI(tk.Tk):
         self._start_time = time.perf_counter()
         self._running_timer = True
         self.after(200, self._update_timer)
-        thread = threading.Thread(target=self._run_and_report, args=(CE, algo_func, n, curve_idx, workers), daemon=True)
+        if algo == 'tous les algorithmes':
+            thread = threading.Thread(target=self._run_all_and_report, args=(CE, n, curve_idx, workers), daemon=True)
+        else:
+            thread = threading.Thread(target=self._run_and_report, args=(CE, algos_map[algo], n, curve_idx, workers), daemon=True)
         thread.start()
 
     def _run_and_report(self, CE, algo_func, n, curve_label, workers=None):
@@ -218,6 +224,48 @@ class CrackerGUI(tk.Tk):
             
             mean, u = crack_perfCE_csv(CE, algo_func, N=n, progress_callback=progress_with_bar, workers=workers)
             self._append_result(f'\n✓ Finished: mean={mean:.6f}s ± {u:.6f}s\n')
+            self.status_label.config(text='Done')
+            self.progress_bar['value'] = 100
+        except Exception as e:
+            self._append_result(f'Error during run: {e}\n')
+            self.status_label.config(text='Error')
+        finally:
+            # stop timer and re-enable UI
+            self._running_timer = False
+            self.start_btn.config(state='normal')
+
+    def _run_all_and_report(self, CE, n, curve_label, workers=None):
+        try:
+            algos = [('rho', crack_rho_de_pollard), ('force', crack_force_brute)]
+            for name, func in algos:
+                self._append_result(f'\n=== Running {name} ===\n')
+                self.status_label.config(text=f'Running {name}')
+                # reset progress for each algorithm
+                self.progress_bar['value'] = 0
+                self.counter_label.config(text=f'0/{n}')
+
+                def progress_with_bar(msg, prefix=name):
+                    # Extract counter from msg (e.g., "Cracked: 3/5...")
+                    if "Cracked:" in msg:
+                        parts = msg.split()
+                        for part in parts:
+                            if '/' in part:
+                                current, total = map(int, part.split('/'))
+                                self._update_progress(current, total)
+                                break
+                    self._append_result(f'[{name}] {msg}')
+
+                mean, u = crack_perfCE_csv(CE, func, N=n, progress_callback=progress_with_bar, workers=workers, update_plot=False)
+                self._append_result(f'\n✓ Finished {name}: mean={mean:.6f}s ± {u:.6f}s\n')
+
+            # try to generate combined perf graph once at the end
+            try:
+                from module.plot_perf import generate_perf_graph
+                generate_perf_graph(show=False, verbose=False)
+            except Exception as e:
+                self._append_result(f'Warning: generate_perf_graph failed: {e}\n')
+
+            self._append_result('\nTous les algorithmes terminés\n')
             self.status_label.config(text='Done')
             self.progress_bar['value'] = 100
         except Exception as e:
