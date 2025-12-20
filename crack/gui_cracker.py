@@ -1,7 +1,7 @@
 #IMPORTANT ce programme doit etre ouvert depuis un terminal 
 
 
-
+#python3 Desktop\tipe_ce\tipe\crack\gui_cracker.py
 
 
 import threading
@@ -11,12 +11,10 @@ import csv
 import os
 import time
 
-# Import functions and classes
 from module.courbe_el_final import CourbeElliptique
 from module.algo_crack.crackEGEC import crack_force_brute
 from module.algo_crack.rho_de_pollard import crack_rho_de_pollard
 
-# We'll reuse the parallel benchmark function
 from module.simu_multi_thread import crack_perfCE_csv
 
 CE_CSV = os.path.join(os.path.dirname(__file__), 'CE.csv')
