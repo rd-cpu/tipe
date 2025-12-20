@@ -11,8 +11,6 @@ class CourbeElliptique:
         self.b = b
         self.c = c
         self.o = o
-        # Use methods for f and fp instead of lambdas so the object is picklable
-        # (lambdas are not picklable and break multiprocessing on Windows)
 
 
     def __eq__(self, d):
