@@ -163,6 +163,6 @@ P=Point(28,31632,CEstand)
 cle_publique = generate_PK(cle_secrete, P, CEstand)
 
 
-#envoyeur("coucou bg",cle_publique,CEstand)
+#envoyeur("coucou",cle_publique,CEstand)
 
 #receveur(CEstand,cle_secrete)
