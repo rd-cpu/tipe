@@ -10,14 +10,31 @@ from matplotlib.ticker import FuncFormatter
 script_dir = Path(__file__).parent
 
 
+def _find_perf_dir(start_dir):
+    """Search upwards from start_dir to find a folder named 'perf_csv'.
+    Returns the Path to the perf_csv folder (or a default path under start_dir if not found).
+    """
+    cur = Path(start_dir)
+    # check current and all parent directories
+    for p in [cur] + list(cur.parents):
+        candidate = p / 'perf_csv'
+        if candidate.exists():
+            return candidate
+    # fallback to module-local perf_csv if it doesn't exist elsewhere
+    return start_dir / 'perf_csv'
+
+
 def _read_perf_csvs(script_dir):
+    perf_dir = _find_perf_dir(script_dir)
+    force_path = perf_dir / 'perf_crack_force_brute.csv'
+    rho_path = perf_dir / 'perf_crack_rho_de_pollard.csv'
     try:
-        df_force = pd.read_csv(script_dir / 'perf_csv/perf_crack_force_brute.csv', encoding='latin-1')
-        df_rho = pd.read_csv(script_dir / 'perf_csv/perf_crack_rho_de_pollard.csv', encoding='latin-1')
+        df_force = pd.read_csv(force_path, encoding='latin-1')
+        df_rho = pd.read_csv(rho_path, encoding='latin-1')
     except Exception as e:
-        print(f"Error with latin-1: {e}")
-        df_force = pd.read_csv(script_dir / 'perf_csv/perf_crack_force_brute.csv', encoding='utf-8', errors='ignore')
-        df_rho = pd.read_csv(script_dir / 'perf_csv/perf_crack_rho_de_pollard.csv', encoding='utf-8', errors='ignore')
+        print(f"Error reading with latin-1: {e}; trying utf-8 with errors='ignore' on paths: {force_path}, {rho_path}")
+        df_force = pd.read_csv(force_path, encoding='utf-8', errors='ignore')
+        df_rho = pd.read_csv(rho_path, encoding='utf-8', errors='ignore')
 
     df_force.columns = [col.strip() for col in df_force.columns]
     df_rho.columns = [col.strip() for col in df_rho.columns]
@@ -52,6 +69,7 @@ def generate_perf_graph(show=False, output_path=None, verbose=True):
         Path to generated PNG file.
     """
 
+    perf_dir = _find_perf_dir(script_dir)
     df_force, df_rho = _read_perf_csvs(script_dir)
 
     if verbose:
@@ -138,7 +156,8 @@ def generate_perf_graph(show=False, output_path=None, verbose=True):
     fig.tight_layout()
 
     if output_path is None:
-        output_path = script_dir / 'perf_crack_graph.png'
+        # Save the generated PNG into the project root (parent of perf_csv), not inside module/
+        output_path = perf_dir.parent / 'perf_crack_graph.png'
     else:
         output_path = Path(output_path)
 

@@ -2,7 +2,7 @@ from concurrent.futures import ProcessPoolExecutor
 import time
 import numpy as np
 import csv
-from plot_perf import generate_perf_graph
+from module.plot_perf import generate_perf_graph
 
 # IMPORTS DU MODULE (garder dans le main script)
 from module.algo_crack.crackEGEC import *

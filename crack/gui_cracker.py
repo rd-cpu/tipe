@@ -17,7 +17,7 @@ from module.algo_crack.crackEGEC import crack_force_brute
 from module.algo_crack.rho_de_pollard import crack_rho_de_pollard
 
 # We'll reuse the parallel benchmark function
-from simu_multi_thread import crack_perfCE_csv
+from module.simu_multi_thread import crack_perfCE_csv
 
 CE_CSV = os.path.join(os.path.dirname(__file__), 'CE.csv')
 
