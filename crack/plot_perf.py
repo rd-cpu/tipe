@@ -12,12 +12,12 @@ script_dir = Path(__file__).parent
 
 def _read_perf_csvs(script_dir):
     try:
-        df_force = pd.read_csv(script_dir / 'perf_crack_force_brute.csv', encoding='latin-1')
-        df_rho = pd.read_csv(script_dir / 'perf_crack_rho_de_pollard.csv', encoding='latin-1')
+        df_force = pd.read_csv(script_dir / 'perf_csv/perf_crack_force_brute.csv', encoding='latin-1')
+        df_rho = pd.read_csv(script_dir / 'perf_csv/perf_crack_rho_de_pollard.csv', encoding='latin-1')
     except Exception as e:
         print(f"Error with latin-1: {e}")
-        df_force = pd.read_csv(script_dir / 'perf_crack_force_brute.csv', encoding='utf-8', errors='ignore')
-        df_rho = pd.read_csv(script_dir / 'perf_crack_rho_de_pollard.csv', encoding='utf-8', errors='ignore')
+        df_force = pd.read_csv(script_dir / 'perf_csv/perf_crack_force_brute.csv', encoding='utf-8', errors='ignore')
+        df_rho = pd.read_csv(script_dir / 'perf_csv/perf_crack_rho_de_pollard.csv', encoding='utf-8', errors='ignore')
 
     df_force.columns = [col.strip() for col in df_force.columns]
     df_rho.columns = [col.strip() for col in df_rho.columns]
@@ -117,18 +117,18 @@ def generate_perf_graph(show=False, output_path=None, verbose=True):
         ax2 = ax.twinx()
         ax2.set_yscale('log')
         low, high = ax.get_ylim()
-        low_h = max(low / 3600.0, 1e-12)
-        high_h = max(high / 3600.0, low_h * 10)
-        ax2.set_ylim(low_h, high_h)
+        low_min = max(low / 60.0, 1e-12)
+        high_min = max(high / 60.0, low_min * 10)
+        ax2.set_ylim(low_min, high_min)
 
-        def hours_formatter(x, pos):
+        def minutes_formatter(x, pos):
             try:
-                return f"{x:.2f} h"
+                return f"{x:.2f} min"
             except Exception:
                 return str(x)
 
-        ax2.yaxis.set_major_formatter(FuncFormatter(hours_formatter))
-        ax2.set_ylabel('Temps Moyen (heures)', fontsize=12)
+        ax2.yaxis.set_major_formatter(FuncFormatter(minutes_formatter))
+        ax2.set_ylabel('Temps Moyen (minutes)', fontsize=12)
 
     # Only show legend for the main axis if plotted lines exist
     if ax.lines:
