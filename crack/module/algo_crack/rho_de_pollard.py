@@ -1,14 +1,15 @@
 from module.courbe_el_final import *
 from module.el_gamal import *
 from random import randint
-from module.trouve_points_ordres import ordre_rapide
+from module.trouve_points_ordres import ordre
 
 def rho_de_pollard_CE(alpha, beta):
-
-    n = alpha.ordre()
-    #n = alpha.CE
-    if n == 0:
+    if isinstance(alpha, Infini):
         raise ValueError("ordre(alpha) = 0 (point à l'infini)")
+
+    n = ordre(alpha.CE)
+    #n = alpha.CE
+    
 
     a = randint(0, n-1)
     b = randint(0, n-1)

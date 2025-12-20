@@ -121,7 +121,8 @@ class Point:
    def __init__(self, x, y, courbe_el):
        if not isinstance(courbe_el, CourbeElliptique):
            raise TypeError(f"courbe_el : a <CourbeElliptique> was expected, not a {type(courbe_el)}")
-
+       
+       self.CE = courbe_el
 
        self.x = x % courbe_el.o
        self.y = y % courbe_el.o
