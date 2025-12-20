@@ -58,6 +58,27 @@ def point_to_str(point):
         raise TypeError(f"Un objet de type Point est attendu, pas {type(point)}")
     return f"({point.x}, {point.y}) from {point.courbe_el}"
 
+def points_to_list(CE):
+    pts = []
+    nom_f = nom_fichier_points(CE)
+    try:
+        with open(nom_f, "r", encoding="utf-8") as f:
+            for ligne in f:
+                ligne = ligne.strip()
+                if not ligne:
+                    continue
+                try:
+                    pt = str_to_point(ligne, CE)
+                    pts.append(pt)
+                except Exception:
+                    # Ligne malformée ou non reconnue : on ignore
+                    continue
+    except FileNotFoundError:
+        print(f"⚠️ Fichier de points introuvable : {nom_f}")
+    return pts
+
+
+
 def cryptage_liste(message_pts, cle_publique):
     message_chiffre = []
     for pt in message_pts:
@@ -148,7 +169,9 @@ def receveur(CE,cle_secrete):
 def random_point(CE):
     nom_fichier = nom_fichier_points(CE)
     l = points_to_list(CE)
-    i = randint(0,len(l)-1)
+    if not l:
+        raise ValueError(f"Aucun point trouvé dans '{nom_fichier}'")
+    i = random.randint(0, len(l) - 1)
     return l[i]
 
 
