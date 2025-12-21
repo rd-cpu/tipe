@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from matplotlib.ticker import FuncFormatter
+import platform
 
 script_dir = Path(__file__).parent
 
@@ -26,8 +27,12 @@ def _find_perf_dir(start_dir):
 
 def _read_perf_csvs(script_dir):
     perf_dir = _find_perf_dir(script_dir)
-    force_path = perf_dir / 'perf_crack_force_brute.csv'
-    rho_path = perf_dir / 'perf_crack_rho_de_pollard.csv'
+    if platform.system() == "Linux":
+        force_path = perf_dir / 'perf_crack_force_brute_linux.csv'
+        rho_path = perf_dir / 'perf_crack_rho_de_pollard_linux.csv'
+    else:
+        force_path = perf_dir / 'perf_crack_force_brute.csv'
+        rho_path = perf_dir / 'perf_crack_rho_de_pollard.csv'
     try:
         df_force = pd.read_csv(force_path, encoding='latin-1')
         df_rho = pd.read_csv(rho_path, encoding='latin-1')

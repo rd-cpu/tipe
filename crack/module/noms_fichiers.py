@@ -19,3 +19,6 @@ def nom_CEcsv(): return "CE.csv"
 
 def nom_perfcsv(algo): 
     return f"perf_csv/perf_{algo.__name__}.csv"
+
+def nom_perfcsv_linux(algo): 
+    return f"perf_csv/perf_{algo.__name__}_linux.csv"

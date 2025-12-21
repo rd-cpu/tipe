@@ -2,6 +2,7 @@ from module.algo_crack.crackEGEC import *
 from module.algo_crack.rho_de_pollard import *
 import csv
 import time
+import platform
 import numpy as np
 
 
@@ -24,7 +25,12 @@ def duree_crack_monte_carlo(CE,algo_crack,N=20):
 
 def crack_perfCE_csv(CE,algo,N=1000): # prendre en compte l'ordre
     tab_sk,tab_P,tab_temps,temps_moyen,u_temps = duree_crack_monte_carlo(CE,algo,N)
-    with open(nom_perfcsv(algo), "a", newline='') as f: # 'w' si pas écrit
+    os_type = platform.system()
+    if os_type == "Linux":
+        nom_fichier = nom_perfcsv_linux(algo)
+    else:
+        nom_fichier = nom_perfcsv(algo)
+    with open(nom_fichier, "a", newline='') as f: # 'w' si pas écrit
         writer = csv.writer(f)
         # writer.writerow(["Courbe Elliptique","Ordre","Échantillon","Temps Moyen","Incertitude"])
         writer.writerow([repr(CE),str(CE.o),str(N),str(temps_moyen),str(u_temps)])
