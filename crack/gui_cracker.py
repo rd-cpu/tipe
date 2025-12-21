@@ -10,6 +10,7 @@ from tkinter import ttk, messagebox
 import csv
 import os
 import time
+import math
 
 from module.courbe_el_final import CourbeElliptique
 from module.algo_crack.crackEGEC import crack_force_brute
@@ -93,6 +94,10 @@ class CrackerGUI(tk.Tk):
         # Start button
         self.start_btn = ttk.Button(self, text='Start', command=self.start)
         self.start_btn.grid(column=0, row=3, padx=pad, pady=20)
+
+        # Predict Time button
+        self.predict_btn = ttk.Button(self, text='Predict Time', command=self.predict_time)
+        self.predict_btn.grid(column=3, row=3, sticky='w', padx=pad, pady=20)
 
         # Progress / status
         self.status_label = ttk.Label(self, text='Ready')
@@ -273,6 +278,57 @@ class CrackerGUI(tk.Tk):
             # stop timer and re-enable UI
             self._running_timer = False
             self.start_btn.config(state='normal')
+
+    def predict_time(self):
+        """Predict using the fitted power-law model and write result to results box."""
+        algo = self.algo_var.get()
+        curve_idx = self.curve_var.get()
+        if not curve_idx:
+            messagebox.showerror('Error', 'Select a curve first')
+            return
+        curve_items = [c for c in self.curves if c[0] == curve_idx]
+        if not curve_items:
+            messagebox.showerror('Error', 'Curve not found')
+            return
+        a, b, p, ordre = curve_items[0][1]
+
+        # determine methods to predict
+        methods = []
+        if algo == 'tous les algorithmes':
+            methods = [('Brute Force', 'brute'), ('Rho de Pollard', 'rho')]
+        else:
+            m = 'brute' if algo.startswith('force') else 'rho'
+            methods = [(algo, m)]
+
+        try:
+            from module.plot_perf import predict_time_for_order
+        except Exception as e:
+            messagebox.showerror('Error', f'Cannot import prediction module: {e}')
+            return
+
+        for disp_name, method in methods:
+            try:
+                pred = predict_time_for_order(ordre, method=method)
+                sec = pred['seconds']
+                mins = pred['minutes']
+                hrs = pred['hours']
+                model = pred['model']
+
+                # get N and workers from UI (defaults and guards)
+                n = int(self.n_var.get()) if getattr(self, 'n_var', None) else 1
+                workers = int(self.workers_var.get()) if getattr(self, 'workers_var', None) else 1
+                if workers <= 0:
+                    workers = 1
+
+                # realistic wall-clock estimation: number of rounds = ceil(N / workers)
+                rounds = math.ceil(n / workers)
+                total_rounds = sec * rounds
+
+                self._append_result(f"\nPrediction ({disp_name}) for ordre={ordre:,} -> single run: {sec:.3f}s (~{mins:.3f}min, {hrs:.3f}h)\n")
+                self._append_result(f"Estimated wall-clock (ceil rounds = {rounds}, workers={workers}): {total_rounds:.3f}s (~{total_rounds/60:.3f}min, {total_rounds/3600:.3f}h)\n")
+                self._append_result(f"Model: a={model['a']:.3e}, b={model['b']:.4f}, R²={model['r2']:.4f}\n")
+            except Exception as e:
+                self._append_result(f"\nPrediction ({disp_name}) failed: {e}\n")
 
     def _update_timer(self):
         if not getattr(self, '_running_timer', False):

@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from matplotlib.ticker import FuncFormatter
+import math
 
 script_dir = Path(__file__).parent
 
@@ -55,6 +56,97 @@ def _read_perf_csvs(script_dir):
     df_rho = df_rho.dropna(subset=['Ordre', 'Temps Moyen'])
 
     return df_force, df_rho
+
+
+def fit_log_power_law(x, y):
+    """Fit a power-law y = a * x^b by linear regression on logs.
+
+    Returns a dict: {'a', 'b', 'intercept_log', 'r2', 'rmse', 'n'}.
+    """
+    x = np.asarray(x)
+    y = np.asarray(y)
+    mask = (x > 0) & (y > 0)
+    x = x[mask]
+    y = y[mask]
+    n = len(x)
+    if n < 2:
+        return {'a': None, 'b': None, 'intercept_log': None, 'r2': None, 'rmse': None, 'n': n}
+    xlog = np.log(x)
+    ylog = np.log(y)
+    # linear fit ylog = m*xlog + c
+    m, c = np.polyfit(xlog, ylog, 1)
+    ylog_pred = m * xlog + c
+    ss_res = np.sum((ylog - ylog_pred) ** 2)
+    ss_tot = np.sum((ylog - np.mean(ylog)) ** 2)
+    r2 = 1 - ss_res / ss_tot if ss_tot != 0 else 1.0
+    a = float(np.exp(c))
+    b = float(m)
+    y_pred = a * (x ** b)
+    rmse = float(np.sqrt(np.mean((y - y_pred) ** 2)))
+    return {'a': a, 'b': b, 'intercept_log': float(c), 'r2': float(r2), 'rmse': rmse, 'n': n}
+
+
+def predict_time_for_order(order, method='brute', script_dir=script_dir):
+    """Predict time for a given order using a fitted power-law model.
+
+    method: 'brute' or 'rho' (case-insensitive).
+    Returns a dict with:
+        - seconds, minutes, hours : numeric estimates (float or inf)
+        - years : numeric estimate in years (float or inf when overflow)
+        - years_str : human-friendly string for very large values (e.g. '1.23e+09' or '~1e308 years')
+        - model : dict with model parameters (a, b, intercept_log, r2, ...)
+    """
+    df_force, df_rho = _read_perf_csvs(script_dir)
+    force_grouped = df_force.groupby('Ordre').agg({'Temps Moyen': 'mean'}).reset_index().sort_values('Ordre')
+    rho_grouped = df_rho.groupby('Ordre').agg({'Temps Moyen': 'mean'}).reset_index().sort_values('Ordre')
+    if method.lower().startswith('b'):
+        data = force_grouped
+    else:
+        data = rho_grouped
+    if data.empty:
+        raise ValueError("No data available to fit model.")
+    fit = fit_log_power_law(data['Ordre'].values, data['Temps Moyen'].values)
+    if fit['a'] is None:
+        raise ValueError("Not enough data points to fit model.")
+    # compute prediction using logs to avoid overflow on very large orders
+    if order <= 0:
+        raise ValueError("Order must be positive to predict time.")
+    try:
+        # use math.log to handle large Python ints reliably
+        log_a = math.log(float(fit['a']))
+        log_order = math.log(float(order))
+    except Exception:
+        # fallback to numpy-based approach
+        log_a = float(np.log(float(fit['a'])))
+        log_order = float(np.log(float(order)))
+    log_seconds = log_a + fit['b'] * log_order
+    # threshold to avoid overflow when exponentiating (float64 exp overflow around 709)
+    try:
+        if log_seconds < 700:
+            pred_seconds = float(np.exp(log_seconds))
+        else:
+            pred_seconds = float('inf')
+    except Exception:
+        pred_seconds = float('inf')
+
+    sec_per_year = 3600.0 * 24.0 * 365.0
+    if np.isfinite(pred_seconds):
+        years = pred_seconds / sec_per_year
+        years_str = f"{years:.3e}"
+    else:
+        # create an approximate scientific string from log_seconds
+        years_log10 = (log_seconds - np.log(sec_per_year)) / np.log(10)
+        years_str = f"~1e{int(np.floor(years_log10))} years"
+        years = float('inf')
+
+    return {
+        'seconds': pred_seconds,
+        'hours': pred_seconds / 3600.0 if np.isfinite(pred_seconds) else float('inf'),
+        'minutes': pred_seconds / 60.0 if np.isfinite(pred_seconds) else float('inf'),
+        'years': years,
+        'years_str': years_str,
+        'model': fit
+    }
 
 
 def generate_perf_graph(show=False, output_path=None, verbose=True):
@@ -119,6 +211,23 @@ def generate_perf_graph(show=False, output_path=None, verbose=True):
         ax.errorbar(rho_grouped['Ordre'], rho_grouped['Temps Moyen'],
                      yerr=rho_grouped['yerr'], fmt='s-', label='Rho de Pollard', linewidth=2, markersize=6,
                      color='red', capsize=3, elinewidth=1)
+
+    # Fit power-law models on log-log data and plot the fitted curves
+    fits = {}
+    if not force_grouped.empty:
+        fit_bf = fit_log_power_law(force_grouped['Ordre'].values, force_grouped['Temps Moyen'].values)
+        fits['Brute Force'] = fit_bf
+        if fit_bf['a'] is not None:
+            x_fit = np.logspace(np.log10(force_grouped['Ordre'].min()), np.log10(force_grouped['Ordre'].max()), 200)
+            y_fit = fit_bf['a'] * (x_fit ** fit_bf['b'])
+            ax.plot(x_fit, y_fit, '--', color='blue', linewidth=1.5, label=f"Fit BF: y≈{fit_bf['a']:.3e} x^{fit_bf['b']:.2f} (R²={fit_bf['r2']:.3f})")
+    if not rho_grouped.empty:
+        fit_rho = fit_log_power_law(rho_grouped['Ordre'].values, rho_grouped['Temps Moyen'].values)
+        fits['Rho de Pollard'] = fit_rho
+        if fit_rho['a'] is not None:
+            x_fit = np.logspace(np.log10(rho_grouped['Ordre'].min()), np.log10(rho_grouped['Ordre'].max()), 200)
+            y_fit = fit_rho['a'] * (x_fit ** fit_rho['b'])
+            ax.plot(x_fit, y_fit, '--', color='red', linewidth=1.5, label=f"Fit Rho: y≈{fit_rho['a']:.3e} x^{fit_rho['b']:.2f} (R²={fit_rho['r2']:.3f})")
 
     ax.set_xlabel('Ordre de la Courbe Elliptique', fontsize=12)
     ax.set_ylabel('Temps Moyen (secondes)', fontsize=12)
@@ -193,8 +302,30 @@ def generate_perf_graph(show=False, output_path=None, verbose=True):
                 ratio = rh[0] / bf[0]
                 print(f"Ordre {int(order):>12}: BF={bf[0]:.2f}s vs Rho={rh[0]:.2f}s (Rho {ratio:.1f}x {'plus lent' if ratio > 1 else 'plus rapide'})")
 
+        # Print fitted model parameters if available
+        if 'fits' in locals() and fits:
+            print("\n=== Fit Models (power-law: y = a * x^b) ===")
+            for name, fit in fits.items():
+                if fit and fit['a'] is not None:
+                    print(f"{name}: a={fit['a']:.3e}, b={fit['b']:.4f}, R²={fit['r2']:.4f}")
+                else:
+                    print(f"{name}: not enough data to fit")
+
     return output_path
 
 
 if __name__ == '__main__':
-    generate_perf_graph(show=True)
+    out = generate_perf_graph(show=True)
+    # Example prediction (use an order of 1,000,000 as illustration)
+    try:
+        pred = predict_time_for_order(1_000_000, method='brute')
+        print(f"\nPrediction example: order=1_000_000 -> {pred['seconds']:.2f}s ({pred['hours']:.2f}h, {pred['minutes']:.2f}min)")
+    except Exception as e:
+        print(f"Prediction example failed: {e}")
+
+    # Example for a very large order (shows years)
+    try:
+        big = predict_time_for_order(2**256, method='brute')
+        print(f"\nPrediction example: order=2**256 -> {big['years_str']} years (seconds: {'inf' if not np.isfinite(big['seconds']) else f'{big['seconds']:.3e}'})")
+    except Exception as e:
+        print(f"Prediction example for 2**256 failed: {e}")
