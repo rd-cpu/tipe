@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <sys/types.h>
 #include "include/CE.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { // P.x P.y B.x B.y CE.a CE.p
     if (argc != 7) {
         fprintf(stderr, "Usage: %s Px Py Bx By a p\n", argv[0]);
         return 1;
@@ -19,7 +20,12 @@ int main(int argc, char** argv) {
     B.x = strtoul(argv[3], &endptr, 10); B.y = strtoul(argv[4], &endptr, 10);
     CEstand.a = strtoul(argv[5], &endptr, 10); CEstand.p = strtoul(argv[6], &endptr, 10);
     
-    Point P2 = plus(P, B);
-    printf("%lu,%lu\n", P2.x, P2.y);
+    Point R = P;
+    u_int64_t s = 1;
+    while (R.infini == 0) {
+        R = plus(R,P);
+        s++;
+    }
+    printf("%lu",s);
     return 0;
 }

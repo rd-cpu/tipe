@@ -34,7 +34,7 @@ uint64_t inv_mod(uint64_t a, uint64_t b)
 }
 
 Point moins(Point P) {
-    P.y = -P.y % P.CE->p;
+    P.y = (P.CE->p -P.y) % P.CE->p;
     return P;
 }
 
@@ -45,34 +45,87 @@ Point etoile(Point P1, Point P2) {
 
     if (P1.infini) return moins(P2);
     if (P2.infini) return moins(P1);
+
     uint64_t lambda;
+
     if (P1.x == P2.x) {
         if (P1.y != P2.y || P1.y == 0) {
             P3.infini = 1;
             return P3;
         }
-        uint64_t lambda_num = P1.fp;
-        uint64_t lambda_den = (2 * P1.y);
-        uint64_t inv_den = inv_mod(lambda_den, p);
-        /*P3.x = (modmul(inv_den, lambda_num, p) * inv_den % p * inv_den % p + p - 2 * P1.x + p) % p; // CORRIGÉ
-        P3.y = (modmul(inv_den, lambda_num, p) * (P1.x + p - P3.x) % p + p - P1.y) % p; // CORRIGÉ*/
-        lambda = modmul(lambda_num, inv_den, p);  // lambda = num/den
+        uint64_t num = (3 * modmul(P1.x, P1.x, p) + P1.CE->a) % p;
+        uint64_t den = (2 * P1.y) % p;
+        lambda = modmul(num, inv_mod(den, p), p);
     } else {
-        uint64_t lambda_num = ((P2.y - P1.y) % p);
-        uint64_t lambda_den = ((P2.x - P1.x) % p);
-        uint64_t inv_den = inv_mod(lambda_den, p);
-        lambda = modmul(lambda_num, inv_den, p);
+        uint64_t num = (P2.y - P1.y) % p;
+        uint64_t den = (P2.x - P1.x) % p;
+        lambda = modmul(num, inv_mod(den, p), p);
     }
-    P3.x = (modmul(lambda, lambda, p) - P1.x - P2.x) % p;
-    P3.y = (modmul(lambda, P3.x, p) - modmul(lambda, P1.x,p)+P1.y);
-    
-    P3.fp = fp(P3);
+
+    P3.x = (modmul(lambda, lambda, p) + p - P1.x + p - P2.x) % p;
+    // P3.y = (modmul(lambda, (P1.x + p - P3.x) % p, p) + p - P1.y) % p;
+    P3.y = (modmul(lambda, P3.x, p) + p - modmul(lambda, P1.x, p) + P1.y) % p;
+
     P3.infini = 0;
     return P3;
 }
 
-Point plus(Point P, Point Q) {
+Point plus(Point P,Point Q) {
     Point R = etoile(P,Q);
-    R.y = (-R.y) % P.CE->p;
+    R.y = R.CE->p - R.y;
     return R;
 }
+/*
+static inline uint64_t add_mod(uint64_t a, uint64_t b, uint64_t p) {
+    a += b;
+    return (a >= p) ? a - p : a;
+}
+
+static inline uint64_t sub_mod(uint64_t a, uint64_t b, uint64_t p) {
+    return (a >= b) ? (a - b) : (a + p - b);
+}
+
+
+Point plus(Point P, Point Q) {
+    Point R = {0};
+    uint64_t p = P.CE->p;
+    R.CE = P.CE;
+
+    //  Cas du point à l'infini 
+    if (P.infini) return Q;
+    if (Q.infini) return P;
+
+    // P + (-P) = O 
+    if (P.x == Q.x && P.y == sub_mod(0, Q.y, p)) {
+        R.infini = 1;
+        return R;
+    }
+
+    uint64_t lambda;
+
+    // Doublement 
+    if (P.x == Q.x && P.y == Q.y) {
+        if (P.y == 0) {
+            R.infini = 1;
+            return R;
+        }
+        uint64_t num = add_mod(modmul(3, modmul(P.x, P.x, p), p), P.CE->a, p);
+        uint64_t den = modmul(2, P.y, p);
+        lambda = modmul(num, inv_mod(den, p), p);
+    }
+    // Addition générale 
+    else {
+        uint64_t num = sub_mod(Q.y, P.y, p);
+        uint64_t den = sub_mod(Q.x, P.x, p);
+        lambda = modmul(num, inv_mod(den, p), p);
+    }
+
+    R.x = sub_mod(modmul(lambda, lambda, p), add_mod(P.x, Q.x, p), p);
+
+    uint64_t dx = sub_mod(P.x, R.x, p);
+    R.y = sub_mod(modmul(lambda, dx, p), P.y, p);
+
+    R.infini = 0;
+    return R;
+}
+*/

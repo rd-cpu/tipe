@@ -29,6 +29,7 @@ def trouve_CE_viable(a,b,min,max,nb_points=30000,cyclique=True):
 
     creationCE(a,b,p,ordre,nb_points=nb_points,cyclique=cyclique)
 
+CE1
 
 # 6000000
 # 7000000
