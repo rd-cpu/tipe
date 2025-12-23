@@ -17,7 +17,6 @@ def duree_crack_monte_carlo(CE,algo_crack,N=20):
         sk_cracké = algo_crack(tab_pk[i])
         end = time.perf_counter()
         tab_temps[i] = end - start # en s
-        print(i+1)
     temps_moyen = np.mean(tab_temps)
     u_temps = np.std(tab_temps,ddof=1)
     print("le temps nécessaire pour cracker la CE est", temps_moyen,"s +-",u_temps)

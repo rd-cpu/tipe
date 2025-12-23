@@ -16,13 +16,15 @@ int main(int argc, char** argv) { // P.x P.y B.x B.y CE.a CE.p
     char *endptr;
     
     P.CE = B.CE = &CEstand;
-    P.x = strtoul(argv[1], &endptr, 10); P.y = strtoul(argv[2], &endptr, 10);
-    B.x = strtoul(argv[3], &endptr, 10); B.y = strtoul(argv[4], &endptr, 10);
-    CEstand.a = strtoul(argv[5], &endptr, 10); CEstand.p = strtoul(argv[6], &endptr, 10);
-    
+    P.x = strtoull(argv[1], &endptr, 10); P.y = strtoull(argv[2], &endptr, 10);
+    B.x = strtoull(argv[3], &endptr, 10); B.y = strtoull(argv[4], &endptr, 10);
+    CEstand.a = strtoull(argv[5], &endptr, 10); CEstand.p = strtoull(argv[6], &endptr, 10);
+    P.infini = 0;   
+    B.infini = 0;
     Point R = P;
-    u_int64_t s = 1;
-    while (R.infini == 0) {
+    uint64_t s = 1;
+
+    while ((R.x != B.x) && (R.y != B.y))  {
         R = plus(R,P);
         s++;
     }

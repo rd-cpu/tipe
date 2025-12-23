@@ -57,8 +57,8 @@ Point etoile(Point P1, Point P2) {
         uint64_t den = (2 * P1.y) % p;
         lambda = modmul(num, inv_mod(den, p), p);
     } else {
-        uint64_t num = (P2.y - P1.y) % p;
-        uint64_t den = (P2.x - P1.x) % p;
+        uint64_t num = (P2.y - P1.y + p) % p;
+        uint64_t den = (P2.x - P1.x + p) % p;
         lambda = modmul(num, inv_mod(den, p), p);
     }
 
