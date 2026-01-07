@@ -44,6 +44,7 @@ def decryptage(message_encrypte, cle_secrete, n):
 
 
 def is_prime(n):
+    print("prout")
     if n % 2 == 0:
         return False
     for i in range(3,int(n**(1/2)),2):
