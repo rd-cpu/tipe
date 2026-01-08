@@ -1,6 +1,8 @@
 from module.courbe_el_final import *
 from module.el_gamal import *
 from module.trouve_points_ordres import *
+import platform
+import subprocess
 
 '''
 CEstand = CourbeElliptique(2,0,2,49993)
@@ -19,6 +21,21 @@ P = point_ordre_max(l,CEstand)
 # Q = point_random(CEstand)
 # M = cryptage(pk,Q)
 # Md = crack_point_force_brute(M,pk)
+
+def crack_force_brute_subprocess(pk):
+    CE,P,B = pk
+    if platform.system() == "Linux":
+        cmd = "module/algo_crack/force_brute " + str(P.x) + " " + str(P.y) + " " + str(B.x) + " " + str(B.y) + " " + str(CE.b) + " " + str(CE.o)
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, shell=True, timeout=60)
+            try:
+                return int(result.stdout.strip())
+            except ValueError:
+                print(f"Pas reussi à capter ce qui était écrit: {result.stdout}")
+                if result.stderr:
+                    print(f"stderr: {result.stderr}")
+        except subprocess.TimeoutExpired:
+            print("J'ai pas réussi fréro pleure vazy")
 
 
 def crack_log_discret_force_brute(P,B,o):

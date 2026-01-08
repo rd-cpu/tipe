@@ -154,7 +154,7 @@ class Point:
 
        raise TypeError("a <Point> cannot be multiplied by something else than an <int> or a <Point>")
 
-
+    
    def etoile(self, other):
        if self.courbe_el != other.courbe_el:
            raise ValueError(f"{self} and {other} aren't part of the same curb, * isn't defined for each other")

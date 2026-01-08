@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <sys/types.h>
 #include "include/CE.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { // P.x P.y B.x B.y CE.a CE.p
     if (argc != 7) {
         fprintf(stderr, "Usage: %s Px Py Bx By a p\n", argv[0]);
         return 1;
@@ -15,11 +16,18 @@ int main(int argc, char** argv) {
     char *endptr;
     
     P.CE = B.CE = &CEstand;
-    P.x = strtoul(argv[1], &endptr, 10); P.y = strtoul(argv[2], &endptr, 10);
-    B.x = strtoul(argv[3], &endptr, 10); B.y = strtoul(argv[4], &endptr, 10);
-    CEstand.a = strtoul(argv[5], &endptr, 10); CEstand.p = strtoul(argv[6], &endptr, 10);
-    
-    Point P2 = plus(P, B);
-    printf("%lu,%lu\n", P2.x, P2.y);
+    P.x = strtoull(argv[1], &endptr, 10); P.y = strtoull(argv[2], &endptr, 10);
+    B.x = strtoull(argv[3], &endptr, 10); B.y = strtoull(argv[4], &endptr, 10);
+    CEstand.a = strtoull(argv[5], &endptr, 10); CEstand.p = strtoull(argv[6], &endptr, 10);
+    P.infini = 0;   
+    B.infini = 0;
+    Point R = P;
+    uint64_t s = 1;
+
+    while ((R.x != B.x) && (R.y != B.y))  {
+        R = plus(R,P);
+        s++;
+    }
+    printf("%lu",s);
     return 0;
 }

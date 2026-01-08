@@ -92,7 +92,11 @@ def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None, worker
 def crack_perfCE_csv(CE, algo, N=1000, progress_callback=None, workers=None, update_plot=True):
     temps_moyen, u_temps = duree_crack_monte_carlo(CE, algo, N, progress_callback=progress_callback, workers=workers)
 
-    with open(nom_perfcsv(algo), "a", newline='') as f:
+    os_type = platform.system()
+    if os_type == "Linux":
+        nom_fichier = nom_perfcsv_linux(algo)
+    else: nom_fichier = nom_perfcsv(algo)
+    with open(nom_fichier, "a", newline='') as f:
         writer = csv.writer(f)
         writer.writerow([repr(CE), str(CE.o), str(N), str(temps_moyen), str(u_temps)])
     # Update perf graph after CSV write (disabled if update_plot=False)
