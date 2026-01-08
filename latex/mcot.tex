@@ -64,7 +64,7 @@ décryption se doivent d'être rapides et peu coûteuse à mettre en place.\\
 est un protocole de cryptographie asymétrique largement utilisé et 
 construit sur le problème du logarithme discret. Cet algorithme permet 
 à deux parties d'échanger un message de manière sécurisée en utilisant 
-une paire de clés: une clé publique et une clé privée qui servent,
+une paire de clés: une clé publique et une clé privée qui servent
 respectivement à encrypter le message et à le décrypter.\\
 
     En effet les meilleurs algorithmes connus pour résoudre
@@ -85,7 +85,7 @@ que la réciproque de cette opération quand on opère sur un groupe cyclique.
 Dans le cadre des courbes elliptiques ce groupe utilisé est construit à partir 
 de l'ensemble des points d'une courbe elliptique dans le plan projectif 
 sur lesquels on applique un logarithme et auquels on ajoute un 
-point à l'infini qui va servir de neutre pour la loie de groupe.\\
+point à l'infini qui va servir de neutre pour la loie de groupe que l'on construit.\\
 
     Une première approche pour casser cette encryption serait d'essayer toutes les 
 valeurs possibles de la clé privée jusqu'à trouver la bonne, d'opérer en force brute.
@@ -100,13 +100,13 @@ des anniversaires et de la reconnaissance de cycle dans l'apparition des valeurs
 Il est nettement plus efficace pour résoudre le problème du logarithme discret, 
 il permet de trouver la clé privée en un temps approximativement proportionnel à la racine carrée
 de l'ordre du groupe.\\
+%    Dans le cadre des corps de nombres, le crible généralisé ....(si on a le temps d'investiguer cet algo mais ça semble compliqué à implémenter)
 
     Pour conclure, les courbes elliptiques offrent une sécurité supplémentaire
 comparé aux groupes cycliques usuels utilisés dans le cryptosystème d'El Gamal.
 Leur structure mathématique complexe et leur mise en place relativement aisée 
 offre une solution de cryptographie robuste et efficace, adaptée à l'échange de clés
 de sécurité dans des contextes de confidentialité très variés.
-%    Dans le cadre des corps de nombres, le crible généralisé 
 
 \section*{Problématique retenue}
 
