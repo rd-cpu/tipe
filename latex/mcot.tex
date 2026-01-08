@@ -55,19 +55,19 @@
 
 \section*{Bibliographie commentée}
 
-    De pars l'essort des flux d'informations sensibles qu'a apporté
-l'ère numérique, la cryptographe s'est révélée être un domaine 
+    De par l'essor des flux d'informations sensibles qu'a apporté
+l'ère numérique, la cryptographie s'est révélée être un domaine 
 essentiel à la sécurité des communications. De plus ces encrytions et 
-décryption se doivent d'être rapides et peu coûteuse à mettre en place.\\
+décryption se doivent d'être rapides et peu coûteuses à mettre en place.\\
 
     Un de ces systèmes, introduit en 1984 par Taher Elgamal, le cryptosystème d'ElGamal 
 est un protocole de cryptographie asymétrique largement utilisé et 
 construit sur le problème du logarithme discret. Cet algorithme permet 
 à deux parties d'échanger un message de manière sécurisée en utilisant 
-une paire de clés: une clé publique et une clé privée qui servent
+une paire de clés : une clé publique et une clé privée qui servent
 respectivement à encrypter le message et à le décrypter.\\
 
-    En effet les meilleurs algorithmes connus pour résoudre
+    En effet, les meilleurs algorithmes connus pour résoudre
 le problème du logarithme discret sur les corps de nombres tels que le 
 crible généralisé ont une complexité sous-exponentielle, tandis que les
 meilleurs algorithmes connus pour les courbes elliptiques, comme l'algorithme de
@@ -79,13 +79,13 @@ de cryptographie à clé publique, soulignant leur efficacité
 et leur sécurité accrues par rapport aux méthodes traditionnelles
 \cite{nsa2005}. \\
 
-    Le principe de l'encryptage par la méthode d'ElGamal repose donc sur le logarithme discret: il 
+    Le principe de l'encryptage par la méthode d'ElGamal repose donc sur le logarithme discret : il 
 est nettement plus facile de calculer le reste de la division euclidienne 
 que la réciproque de cette opération quand on opère sur un groupe cyclique.
 Dans le cadre des courbes elliptiques ce groupe utilisé est construit à partir 
 de l'ensemble des points d'une courbe elliptique dans le plan projectif 
-sur lesquels on applique un logarithme et auquels on ajoute un 
-point à l'infini qui va servir de neutre pour la loie de groupe que l'on construit.\\
+sur lesquels on applique un logarithme et auxquels on ajoute un 
+point à l'infini qui va servir de neutre pour la loi de groupe que l'on construit.\\
 
     Une première approche pour casser cette encryption serait d'essayer toutes les 
 valeurs possibles de la clé privée jusqu'à trouver la bonne, d'opérer en force brute.
@@ -94,18 +94,18 @@ impraticable car le nombre de possibilités serait astronomique. Pour des clés 
 il y aurait $2^{256}$ possibilités, ce qui est bien au-delà de la capacité de calcul 
 de n'importe quel ordinateur. \\
 
-    Pour réduire les temps de calculs au maximum, nous allons nous intéresser l'algorithme
+    Pour réduire les temps de calcul au maximum, nous allons nous intéresser à l'algorithme
 dit du "rho de Pollard" qui est un algorithme probabiliste qui repose sur le paradoxe 
-des anniversaires et de la reconnaissance de cycle dans l'apparition des valeurs. 
+des anniversaires et de la reconnaissance de cycles dans l'apparition des valeurs. 
 Il est nettement plus efficace pour résoudre le problème du logarithme discret, 
 il permet de trouver la clé privée en un temps approximativement proportionnel à la racine carrée
 de l'ordre du groupe.\\
 %    Dans le cadre des corps de nombres, le crible généralisé ....(si on a le temps d'investiguer cet algo mais ça semble compliqué à implémenter)
 
     Pour conclure, les courbes elliptiques offrent une sécurité supplémentaire
-comparé aux groupes cycliques usuels utilisés dans le cryptosystème d'El Gamal.
-Leur structure mathématique complexe et leur mise en place relativement aisée 
-offre une solution de cryptographie robuste et efficace, adaptée à l'échange de clés
+comparée aux groupes cycliques usuels utilisés dans le cryptosystème d'El Gamal.
+Leurs structures mathématiques complexes et leurs mises en place relativement aisées 
+offrent une solution de cryptographie robuste et efficace, adaptée à l'échange de clés
 de sécurité dans des contextes de confidentialité très variés.
 
 \section*{Problématique retenue}
