@@ -1,0 +1,143 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+\onehalfspacing
+
+\title{\textbf{Analyse, simulation numérique et expérimentation\\
+des oscillateurs de Van der Pol}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Liste des membres du groupe}
+\begin{itemize}
+    \item HARRACHE Gwevenn
+    \item COMMUNAL Hugo
+\end{itemize}
+
+\section*{Positionnements thématiques}
+\begin{itemize}
+    \item Physique (électronique)
+    \item Mathématiques (analyse, équations différentielles non linéaires)
+    \item Informatique (informatique pratique, Python)
+\end{itemize}
+
+\section*{Mots-clés}
+\begin{itemize}
+    \item Simulation numérique
+    \item Oscillateur non linéaire
+    \item Cycle limite
+    \item Amortissement négatif
+    \item Équation différentielle
+    \item Attracteur
+\end{itemize}
+
+\section*{Bibliographie commentée}
+
+Introduit par le physicien et ingénieur néerlandais Balthasar Van der Pol dans les années 1920, 
+l’oscillateur de Van der Pol est un système dynamique non linéaire emblématique permettant de 
+mettre en œuvre le théorème de Poincaré--Bendixson \cite{poincare}. Initialement conçu pour 
+modéliser des phénomènes électriques dans les circuits à lampe triode, cet oscillateur a par la 
+suite trouvé des applications dans des domaines tels que la biologie (modélisation du rythme 
+cardiaque), la mécanique, la sismologie ou encore les systèmes chaotiques.
+
+L’étude de ce système permet d’aborder les notions de non-linéarité, d’auto-oscillations et de 
+cycles limites.
+
+\subsection*{Équation de Van der Pol}
+
+L’équation différentielle dite de Van der Pol s’écrit :
+\[
+\frac{d^{2}x(t)}{dt^{2}}
+- \varepsilon \omega_{0} \left(1 - x^{2}(t)\right)\frac{dx(t)}{dt}
++ \omega_{0}^{2}x(t) = 0
+\]
+
+avec :
+\begin{itemize}
+    \item $\varepsilon$ : paramètre de non-linéarité modulant l’intensité de l’amortissement négatif,
+    \item $\omega_{0}$ : pulsation propre du système.
+\end{itemize}
+
+Cette équation n’étant pas résolvable analytiquement du fait du coefficient non constant du terme 
+d’ordre un, l’utilisation de simulations numériques est nécessaire afin d’obtenir des solutions 
+approchées de $x(t)$.
+
+L’existence des comportements limites de cet oscillateur peut être prouvée par le théorème de 
+Poincaré--Bendixson, qui stipule que soit $x(t)$ converge vers une limite, soit son comportement 
+asymptotique est une fonction périodique appelée \textit{cycle limite}. Ce phénomène constitue un 
+exemple typique d’oscillations auto-entretenues.
+
+\subsection*{Approche numérique et expérimentale}
+
+Il est possible de mettre en œuvre des systèmes électriques utilisant des amplificateurs 
+opérationnels, des condensateurs et des bobines, mais également de simuler ce comportement à 
+l’aide d’outils numériques. Une résolution utilisant des langages de programmation tels que 
+Python permet une approche simple et efficace du phénomène.
+
+Les simulations permettent notamment d’obtenir des résultats concernant :
+\begin{itemize}
+    \item les cycles limites,
+    \item la durée du régime transitoire,
+    \item la période des oscillations.
+\end{itemize}
+
+Une approche visuelle est également possible grâce aux diagrammes de phase représentant 
+$\frac{dx}{dt}$ en fonction de $x$. Le caractère attractif du cycle limite permet de prédire 
+certains comportements à partir des isoclines.
+
+\subsection*{Oscillateur de Van der Pol forcé}
+
+Une seconde version de l’équation, dite \textit{forcée}, s’écrit :
+\[
+\frac{d^{2}x(t)}{dt^{2}}
+- \varepsilon \omega_{0} \left(1 - x^{2}(t)\right)\frac{dx(t)}{dt}
++ \omega_{0}^{2}x(t)
+= \omega_{0}^{2}X\cos(\omega t)
+\]
+
+Cette version conduit à des comportements chaotiques, sensibles aux conditions initiales et 
+non prévisibles à long terme, étudiés dans le cadre de la théorie du chaos déterministe.
+
+\section*{Problématique retenue}
+
+Comment les oscillateurs de Van der Pol permettent-ils d’illustrer l’existence et les 
+caractéristiques de cycles limites dans des systèmes dynamiques non linéaires ?
+
+\section*{Objectifs du TIPE}
+\begin{itemize}
+    \item Simulations numériques pour différentes valeurs de paramètres
+    \item Mise en place d’un dispositif expérimental sous forme de circuit électrique
+    \item Interprétation et exploitation des résultats expérimentaux
+    \item Preuve de l’existence du cycle limite à l’aide du théorème de Poincaré--Bendixson
+\end{itemize}
+
+\section*{Références}
+\begin{thebibliography}{9}
+
+\bibitem{poincare}
+Théorème de Poincaré--Bendixson — Wikipédia
+
+\bibitem{gleick}
+J. Gleick, \textit{Chaos: Making a New Science}, Flammarion, 1988.
+
+\bibitem{vdp}
+B. Van der Pol, J. Van der Mark, \textit{The Heartbeat considered as a Relaxation Oscillation}, 
+Philosophical Magazine, 1928.
+
+\bibitem{moon}
+F. C. Moon, \textit{Chaotic Vibrations}, Wiley, 1992.
+
+\end{thebibliography}
+
+\end{document}
