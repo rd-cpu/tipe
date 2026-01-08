@@ -1,1 +1,7 @@
 main/pointsCEs/*.txt
+main/latex/*.aux
+main/latex/*.fdb_latexmk
+main/latex/*.fls
+main/latex/*.log
+main/latex/*.out
+main/latex/*.gz
