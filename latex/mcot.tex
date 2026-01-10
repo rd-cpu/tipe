@@ -62,18 +62,18 @@ l'ère numérique, la cryptographie s'est révélée être un domaine
 essentiel à la sécurité des communications. De plus ces encrytions et 
 décryptions se doivent d'être rapides et peu coûteuses à mettre en place.\\
 
-    Un de ces systèmes, introduit en 1984 par Taher Elgamal, le cryptosystème d'ElGamal 
+    Un de ces systèmes, introduit en 1984 par Taher Elgamal~\cite{elgamal} , le cryptosystème d'ElGamal 
 est un protocole de cryptographie asymétrique largement utilisé et 
-construit sur le problème du logarithme discret. Cet algorithme permet 
+construit sur le problème du logarithme discret \cite{dlp} . Cet algorithme permet 
 à deux parties d'échanger un message de manière sécurisée en utilisant 
 une paire de clés : une clé publique et une clé privée qui servent
 respectivement à encrypter le message et à le décrypter.\\
 
-    En effet, les meilleurs algorithmes connus pour résoudre
+    Cependant, les meilleurs algorithmes connus pour résoudre
 le problème du logarithme discret sur les corps de nombres tels que le 
-crible généralisé ont une complexité sous-exponentielle, tandis que les
-meilleurs algorithmes connus pour les courbes elliptiques, comme l'algorithme de
-rho de Pollard, ont une complexité exponentielle.\\
+crible généralisé ont une complexité sous-exponentielle \cite{inriawr} , tandis que les
+meilleurs algorithmes connus pour les groupes construits sur les courbes elliptiques \cite{CE} , comme l'algorithme de
+rho de Pollard \cite{rdp} , ont une complexité exponentielle.\\
 
     C'est pourquoi en 2005 la National Security Agency (NSA) des États-Unis a 
 recommandé l'utilisation de courbes elliptiques pour les systèmes
@@ -98,7 +98,7 @@ de n'importe quel ordinateur. \\
 
     Pour réduire les temps de calcul au maximum, nous allons nous intéresser à l'algorithme
 dit du "rho de Pollard" qui est un algorithme probabiliste qui repose sur le paradoxe 
-des anniversaires et de la reconnaissance de cycles dans l'apparition des valeurs. 
+des anniversaires \cite{anniversaires} et de la reconnaissance de cycles dans l'apparition des valeurs. 
 Il est nettement plus efficace pour résoudre le problème du logarithme discret, 
 il permet de trouver la clé privée en un temps approximativement proportionnel à la racine carrée
 de l'ordre du groupe.\\
@@ -125,9 +125,28 @@ En quoi les courbes elliptiques sont des objets mathématiques indispensables à
 %\section*{Références}
 \begin{thebibliography}{9}
 
+\bibitem{elgamal}
+ElGamal, T. (1985). A Public Key Cryptosystem and a Signature Scheme Based on Discrete Logarithms. In: Blakley, G.R., Chaum, D. (eds) Advances in Cryptology. CRYPTO 1984. Lecture Notes in Computer Science, vol 196. Springer, Berlin, Heidelberg.\href{https://doi.org/10.1007/3-540-39568-7_2}{DOI} 
+
+\bibitem{dlp}
+Aude LE GLUHER encadrée par Guénaël RENAULT 22 août 2015\href{https://perso.eleves.ens-rennes.fr/people/aude.legluher/fr/rapportl3.pdfURL}{Problème du logarithme discret appliqué à la
+cryptanalyse sur courbes elliptiques : algorithme MOV}
+
+\bibitem{inriawr}
+Fabrice Boudot, Pierrick Gaudry, Aurore Guillevic, Nadia Heninger, Emmanuel Thomé, et al.. Nouveaux records de factorisation et de calcul de logarithme discret. Techniques de l’Ingénieur, 2021,
+pp.17. ff10.51257/a-v2-in131ff. ffhal-03045666f \href{https://inria.hal.science/hal-03045666/document}{URL}
+
+\bibitem{CE}
+Elliptic Curves in cryptography, London Mathematical Society Lecture Notes Series 265, Cambridge university press \href{https://books.google.fr/books?id=0_vegzgyqGMC&printsec=frontcover&redir_esc=y#v=onepage&q&f=false}{URL}
+
+\bibitem{rdp}
+Pollard, J.M. A monte carlo method for factorization. BIT 15, 331–334 (1975). https://doi.org/10.1007/BF01933667
+
 \bibitem{nsa2005}
 National Security Agency (NSA). (2005). \textit{The Case for Elliptic Curve Cryptography}. Suite B Cryptography.
 
+\bibitem{anniversaires}
+wikipedia \href{https://fr.wikipedia.org/wiki/Paradoxe_des_anniversaires}{Paradoxe des anniversaires }
 
 \end{thebibliography}
 
