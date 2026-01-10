@@ -5,3 +5,10 @@ latex/*.fls
 latex/*.log
 latex/*.out
 latex/*.gz
+crack/*.pyc
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
