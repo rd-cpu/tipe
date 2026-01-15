@@ -1,0 +1,39 @@
+./cado-nfs.py 903776292920031216840021471017608581092473365490010906776
+import subprocess
+
+subprocess.run([
+    "wsl",
+    "bash", "-c",
+    "cd cado-nfs/ && ./cado-nfs.py 903776292920031216840021471017608581092473365490010906776"
+])
+
+subprocess.run([
+    "wsl",
+    "bash", "-c",
+    "cd cado-nfs/ && ./cado-nfs.py --dlp p=104729 g=2 h=12345"
+])
+
+
+import subprocess
+
+subprocess.run([
+    "wsl bash -c ",
+    "cd cado-nfs/ && ./cado-nfs.py 903776292920031216840021471017608581092473365490010906776"
+    shell=True]
+)
+
+import subprocess
+
+# Trouver x tel que g^x ≡ h (mod p)
+p = "your_prime_modulus"
+g = "generator"  # Base
+h = "target_value"  # Valeur cible
+
+subprocess.run([
+    "wsl", 
+    "bash", "-c",
+    f"cd cado-nfs/ && ./cado-nfs.py {p} --dlp -t all target={h} --log {g}"
+])
+
+
+cado-nfs/cado-nfs.py 262086107969265031 -dlp -ell 32760763496158129 -gfpext 2 --workdir=/data/cado-nfs/test
