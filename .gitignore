@@ -5,6 +5,31 @@ latex/*.fls
 latex/*.log
 latex/*.out
 latex/*.gz
+
+latex/diapo/*.aux
+latex/diapo/*.fdb_latexmk
+latex/diapo/*.fls
+latex/diapo/*.log
+latex/diapo/*.out
+latex/diapo/*.gz
+latex/diapo/*.nav
+latex/diapo/*.snm
+latex/diapo/*.toc
+latex/diapo/*.vrb
+latex/diapo/*.synctex(busy)
+
+latex/diapo 2/*.aux
+latex/diapo 2/*.fdb_latexmk
+latex/diapo 2/*.fls
+latex/diapo 2/*.log
+latex/diapo 2/*.out
+latex/diapo 2/*.gz
+latex/diapo 2/*.nav
+latex/diapo 2/*.snm
+latex/diapo 2/*.toc
+latex/diapo 2/*.vrb
+latex/diapo 2/*.synctex(busy)
+
 crack/*.pyc
 
 __pycache__/

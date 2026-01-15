@@ -1,0 +1,99 @@
+%%%%%%%% Title slide details %%%%%%%%%%%%%%
+
+
+% Background Image
+\newcommand{\myBackround}
+{
+    \includegraphics[width=\paperwidth]{Background 6.png}
+}
+
+% Title
+\newcommand{\myTitle}
+{
+    Cryptographie sur les courbes elliptiques
+}
+
+% Subtitle
+\newcommand{\mySubTitle}
+{
+    mise en place et analyse de performances
+}
+
+% Author
+\newcommand{\myAuthor}   
+{
+    COMMUNAL Hugo et DESNEUX Raphaël 
+}
+
+% Affiliation
+\newcommand{\myAffiliate}
+{
+Tipe 2025-2026, Lycée Chateaubriand, Rennes, MP
+}
+
+% Presentation Date
+\newcommand{\myDate}   
+{
+    \today
+}
+
+% Logo
+\newcommand{\myLogo}   
+{
+    \includegraphics[width=1cm]{Logo.png}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%% Title slide code %%%%%%%%%%%
+\begin{tikzpicture}[remember picture,overlay]
+
+% Background color
+
+\fill[white] (current page.south west) rectangle (current page.north east);
+% Background image
+\node[above right,inner sep=0pt] at (current page.south west)
+    {
+        \myBackround
+    };
+    
+% Title & Subtitle
+\node
+[
+    above=0.5cm,
+    align=center,
+    draw=black!50,
+    % rounded corners,
+    double,
+    double distance=0.1cm,
+    double=blue!10,
+    fill=yellow!10,
+    inner xsep=15pt,
+    inner ysep=10pt, 
+    minimum width=0.7\textwidth,
+    text width=0.6\textwidth
+] (title) at (current page.center)
+{
+    \LARGE \myTitle  \\[5pt]
+    \small \mySubTitle
+};
+
+% Author 
+\node[ below=0.5cm] (author) at (title.south){\myAuthor};
+
+% Author 
+\node[ below=0.25cm ](affiliate) at (author.south){\small \myAffiliate};
+
+% Date
+\node[below=0.25] (date) at (affiliate.south){\large \myDate};
+
+% Logo
+\node
+[
+    below =0.25cm
+] at (date.south)
+{
+    %\myLogo
+};
+
+\end{tikzpicture}

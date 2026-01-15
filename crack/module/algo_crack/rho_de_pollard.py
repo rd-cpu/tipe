@@ -81,7 +81,7 @@ def crack_point_rho_de_pollard(message_chiffre,pk):
 
 
 '''CEstand = CourbeElliptique(2,0,2,6482753)
-
+1000000363
 s = randint(0,CEstand.o - 1)
 print("clé secrète :",s)
 P = point_random(CEstand)
