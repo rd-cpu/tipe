@@ -83,8 +83,8 @@ et leur sécurité accrues par rapport aux méthodes traditionnelles
 
     Le principe de l'encryptage par la méthode d'ElGamal repose donc sur le logarithme discret : il 
 est nettement plus facile de calculer le reste de la division euclidienne 
-que la réciproque de cette opération quand on opère sur un groupe cyclique.
-Dans le cadre des courbes elliptiques ce groupe utilisé est construit à partir 
+que la réciproque de cette opération sur un groupe cyclique (fini et monogène).
+Dans le cadre des courbes elliptiques ce groupe est construit à partir 
 de l'ensemble des points d'une courbe elliptique dans le plan projectif 
 sur lesquels on applique un logarithme et auxquels on ajoute un 
 point à l'infini qui va servir de neutre pour la loi de groupe que l'on construit.\\
@@ -101,8 +101,7 @@ dit du "rho de Pollard" qui est un algorithme probabiliste qui repose sur le par
 des anniversaires \cite{anniversaires} et de la reconnaissance de cycles dans l'apparition des valeurs. 
 Il est nettement plus efficace pour résoudre le problème du logarithme discret, 
 il permet de trouver la clé privée en un temps approximativement proportionnel à la racine carrée
-du nombre de bits de l'ordre du groupe .\\
-%    Dans le cadre des corps de nombres, le crible généralisé ....(si on a le temps d'investiguer cet algo mais ça semble compliqué à implémenter)
+du nombre de bits de l'ordre du groupe, il offre donc une complexité réelle exponentielle.\\
 
     Pour conclure, les courbes elliptiques offrent une sécurité supplémentaire
 comparée aux groupes cycliques usuels utilisés dans le cryptosystème d'El Gamal.
