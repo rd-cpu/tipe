@@ -151,18 +151,23 @@ def lire_message_crypte(nom_fichier, CE):
     print(f"✅ Le message crypté a été chargé depuis '{nom_fichier}'")
     return message_crypte
 
-def envoyeur(message,cle_publique,CE):
+def envoyeur(message,cle_publique,CE,sauvarder=True):
     message = message.replace(" ", ";")
     nom_fichier = nom_fichier_message_crypte(CE)
     dico = lire_dictionnaire(nom_fichier_dico_direct(CE), CE)
     m2 = cryptage_liste(text_to_pts(message,dico), cle_publique)
-    sauvegarder_message_crypte(m2,CE)
+    if sauvarder:
+        sauvegarder_message_crypte(m2,CE)
+    return m2
 
-def receveur(CE,cle_secrete):
-    message_recu = nom_fichier_message_crypte(CE)
+def receveur(CE,cle_secrete, message_crypte=None):
     nom_dico_recip = nom_fichier_dico_recip(CE)
     dico_recip = lire_dictionnaire(nom_dico_recip, CEstand)
-    message_crypte = lire_message_crypte(message_recu, CEstand)
+    if message_crypte is None:
+        message_recu = nom_fichier_message_crypte(CE)
+        message_crypte = lire_message_crypte(message_recu, CEstand)
+    else :  
+        message_recu = message_crypte
     m4 = pts_to_text([str(p) for p in decryptage_liste(message_crypte,cle_secrete)], dico_recip)
     return m4.replace(";", " ")
 

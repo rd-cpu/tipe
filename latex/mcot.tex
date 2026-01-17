@@ -25,8 +25,8 @@
 
 \section*{Positionnements thématiques}
 \begin{itemize}
-    \item Mathématiques (Algèbre, Théorie des groupes, Coubres elliptiques)
-    \item Informatique (informatique théorique, Python)
+    \item Informatique (Python, informatique théorique, complexité algorithmique)
+    \item Mathématiques (Algèbre, Théorie des groupes, Courbes elliptiques)
 \end{itemize}
 \vspace{1em}
 
@@ -101,13 +101,18 @@ dit du "rho de Pollard" qui est un algorithme probabiliste qui repose sur le par
 des anniversaires \cite{anniversaires} et de la reconnaissance de cycles dans l'apparition des valeurs. 
 Il est nettement plus efficace pour résoudre le problème du logarithme discret, 
 il permet de trouver la clé privée en un temps approximativement proportionnel à la racine carrée
-du nombre de bits de l'ordre du groupe, il offre donc une complexité réelle exponentielle.\\
+du nombre de bits de l'ordre du groupe, il offre donc une complexité réelle exponentielle.
+Nous allons donc étudier la sécurité de ce cryptosystème en jouant le rôle d'un attanquant 
+qui cherche à retrouver le message encrypté, nous allons donc comparer le temps que nous 
+mettons à résoudre ce problème mathématique avec plusieurs algorithmes.\\
 
     Pour conclure, les courbes elliptiques offrent une sécurité supplémentaire
 comparée aux groupes cycliques usuels utilisés dans le cryptosystème d'El Gamal.
 Leurs structures mathématiques complexes et leurs mises en place relativement aisées 
 offrent une solution de cryptographie robuste et efficace, adaptée à l'échange de clés
-de sécurité dans des contextes de confidentialité très variés.
+de sécurité dans des contextes de confidentialité très variés.\\
+
+    Cependant, il est important de noter que la sécurité de ces 
 
 \section*{Problématique retenue}
 
