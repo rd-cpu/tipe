@@ -89,7 +89,7 @@ creationCE(b,c,o,ordre=None,nb_points=30000,cyclique=True, a = 0)
 
 Calcul des point d'une courbe elliptique d'ordre premier dans les bornes données : 
 ~~~
-trouve_CE_viable(a,b,min,max,nb_points=30000,cyclique=True)
+trouve_CE_viable(b,c,min,max,nb_points=30000,cyclique=True,a = 0)
 ~~~ 
 ## Utilisation rapide :
 
