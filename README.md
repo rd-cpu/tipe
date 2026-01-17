@@ -2,6 +2,18 @@
 
 # Messagerie 
 
+L'objectif de cette partie est de mettre en place un système complet d'encryption et de décryption utilisant le cryptosystème d'Elgamal avec un groupe cyclique construit sur des courbes elltiptiques 
+
+### Prérequis
+Modules python nécessaires : 
+* numpy
+* matplotlib 
+* pandas 
+* sympy 
+~~~
+pip install -r requirements.txt
+~~~
+
 ## Utilisation rapide : 
 Executer le fichier "messagerie\interface.py"
 
@@ -54,6 +66,8 @@ message_decrypté = receveur(CE,cle_secrete, message_crypte=None)
 
 # Attaque du système d'encryption 
 
+L'objectif de cette section est de quantifier la robustesse du sytème d'encryption mis en place plus tôt et de comparer différents algorithmes.
+
 ## Attaque d'un message :
 
 Algorithme de force brute 
@@ -64,9 +78,9 @@ Algorithme rho de Pollard
 ``` 
 P_décrypté = crack_point_rho_de_pollard(P_crypté,cle_publique)
 ``` 
-## Etude comparative des algorithmes :
+# Etude comparative des algorithmes :
 
-### Mise en place de nouvelles courbes :
+## Mise en place de nouvelles courbes :
 
 Calcul des points d'une nouvelle courbe elliptique ( o doit être premier)
 ~~~
@@ -77,11 +91,11 @@ Calcul des point d'une courbe elliptique d'ordre premier dans les bornes donnée
 ~~~
 trouve_CE_viable(a,b,min,max,nb_points=30000,cyclique=True)
 ~~~ 
-### Utilisation rapide :
+## Utilisation rapide :
 
 Lancer "crack\gui_cracker.py" dans un terminal 
 
-### Utilisation "à la main" : 
+## Utilisation "à la main" : 
 
 Mise en place de calculs de plusieurs attaques sur plusieurs thread. 
 
@@ -95,7 +109,7 @@ Même calcul mais on enregistre les résultats sous forme dans un fichier csv au
 temps_moyen, u_temps = crack_perfCE_csv(CE, algo, N, progress_callback=None, workers=None, update_plot=True)
 ~~~
 
-### Analyse des données 
+## Analyse des données 
 
 Mise à jour du graphique résumant les calculs 
 ~~~
@@ -111,3 +125,4 @@ Prédiction du temps de calcul
 ~~~
 predict_time_for_order(order, method='brute', script_dir=script_dir)
 ~~~
+
