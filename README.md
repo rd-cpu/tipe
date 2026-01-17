@@ -1,6 +1,6 @@
 # Cryptographie sur les courbes elliptiques
 
-Travail issu d'un TIPE réalisé en classe de MP au lycée Chateaubriand.
+Travail issu d'un TIPE réalisé en classe de MP au lycée Chateaubriand en 2025-2026 sur le thème "cycles et boucles".
 
 # Messagerie 
 
