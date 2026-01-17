@@ -1,5 +1,7 @@
 # Cryptographie sur les courbes elliptiques
 
+Travail issu d'un TIPE réalisé en classe de MP au lycée Chateaubriand en 2025-2026 sur le thème "cycles et boucles".
+
 # Messagerie 
 
 L'objectif de cette partie est de mettre en place un système complet d'encryption et de décryption utilisant le cryptosystème d'Elgamal avec un groupe cyclique construit sur des courbes elltiptiques.
