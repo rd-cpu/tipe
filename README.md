@@ -128,3 +128,13 @@ Prédiction du temps de calcul :
 predict_time_for_order(order, method='brute', script_dir=script_dir)
 ~~~
 
+Représentation graphique des courbes elliptiques :
+~~~
+plot_ce(CE,n=10000,save = True)
+~~~
+
+Représentation graphique des courbes elliptiques modulaires :
+~~~
+plot_ce_mod(CE,n=10000,save = True)
+~~~
+
