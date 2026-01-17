@@ -2,7 +2,7 @@
 
 # Messagerie 
 
-L'objectif de cette partie est de mettre en place un système complet d'encryption et de décryption utilisant le cryptosystème d'Elgamal avec un groupe cyclique construit sur des courbes elltiptiques 
+L'objectif de cette partie est de mettre en place un système complet d'encryption et de décryption utilisant le cryptosystème d'Elgamal avec un groupe cyclique construit sur des courbes elltiptiques.
 
 ### Prérequis
 Modules python nécessaires : 
@@ -21,8 +21,8 @@ Executer le fichier "messagerie\interface.py"
 
 Etape facultative car des dictionnaires sont déjà présents pour certaines courbes dans les dossier en question.
 
-* Calcul d'un nombre suffisants de points d'une courbe elliptique (ne fonctionne plus)
-* Création des dictionnaire dans le sens direct et réciproque 
+* Calcul d'un nombre suffisants de points d'une courbe elliptique (ne fonctionne plus).
+* Création des dictionnaire dans le sens direct et réciproque. 
 
 ```
 creation_dicos(CE)
@@ -70,11 +70,11 @@ L'objectif de cette section est de quantifier la robustesse du sytème d'encrypt
 
 ## Attaque d'un message :
 
-Algorithme de force brute 
+Algorithme de force brute :
 ``` 
 P_décrypté = crack_point_force_brute(P_crypté,cle_publique)
 ``` 
-Algorithme rho de Pollard  
+Algorithme rho de Pollard :
 ``` 
 P_décrypté = crack_point_rho_de_pollard(P_crypté,cle_publique)
 ``` 
@@ -82,18 +82,18 @@ P_décrypté = crack_point_rho_de_pollard(P_crypté,cle_publique)
 
 ## Mise en place de nouvelles courbes :
 
-Calcul des points d'une nouvelle courbe elliptique ( o doit être premier)
+Calcul des points d'une nouvelle courbe elliptique ( o doit être premier) : 
 ~~~
 creationCE(b,c,o,ordre=None,nb_points=30000,cyclique=True, a = 0)
 ~~~
 
-Calcul des point d'une courbe elliptique d'ordre premier dans les bornes données
+Calcul des point d'une courbe elliptique d'ordre premier dans les bornes données : 
 ~~~
 trouve_CE_viable(a,b,min,max,nb_points=30000,cyclique=True)
 ~~~ 
 ## Utilisation rapide :
 
-Lancer "crack\gui_cracker.py" dans un terminal 
+Lancer "crack\gui_cracker.py" dans un terminal.
 
 ## Utilisation "à la main" : 
 
@@ -111,17 +111,17 @@ temps_moyen, u_temps = crack_perfCE_csv(CE, algo, N, progress_callback=None, wor
 
 ## Analyse des données 
 
-Mise à jour du graphique résumant les calculs 
+Mise à jour du graphique résumant les calculs :
 ~~~
 chemin_graph = generate_perf_graph(show=False, output_path=None, verbose=True):
 ~~~
 
-Calcul de la loi d'évolutio du temps de calcul de la forme y = a * x^b 
+Calcul de la loi d'évolution du temps de calcul de la forme y = a * x^b :
 ~~~
 fit_log_power_law(x, y) 
 ~~~
 
-Prédiction du temps de calcul
+Prédiction du temps de calcul : 
 ~~~
 predict_time_for_order(order, method='brute', script_dir=script_dir)
 ~~~
