@@ -2,10 +2,6 @@
 
 Travail issu d'un TIPE réalisé en classe de MP au lycée Chateaubriand en 2025-2026 sur le thème "cycles et boucles".
 
-# Messagerie 
-
-L'objectif de cette partie est de mettre en place un système complet d'encryption et de décryption utilisant le cryptosystème d'Elgamal avec un groupe cyclique construit sur des courbes elltiptiques.
-
 ### Prérequis
 Modules python nécessaires : 
 * numpy
@@ -15,6 +11,10 @@ Modules python nécessaires :
 ~~~
 pip install -r requirements.txt
 ~~~
+
+# Messagerie 
+
+L'objectif de cette partie est de mettre en place un système complet d'encryption et de décryption utilisant le cryptosystème d'Elgamal avec un groupe cyclique construit sur des courbes elltiptiques.
 
 ## Utilisation rapide : 
 Executer le fichier "messagerie\interface.py"
