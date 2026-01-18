@@ -80,7 +80,7 @@ Algorithme rho de Pollard :
 ``` 
 P_décrypté = crack_point_rho_de_pollard(P_crypté,cle_publique)
 ``` 
-# Etude comparative des algorithmes :
+# Etude comparative des algorithmes 
 
 ## Mise en place de nouvelles courbes :
 
@@ -111,7 +111,7 @@ Même calcul mais on enregistre les résultats sous forme dans un fichier csv au
 temps_moyen, u_temps = crack_perfCE_csv(CE, algo, N, progress_callback=None, workers=None, update_plot=True)
 ~~~
 
-## Analyse des données 
+## Analyse des données :
 
 Mise à jour du graphique résumant les calculs :
 ~~~
