@@ -1,3 +1,5 @@
+% si compiler ne fonctionne pas : latexmk -C
+
 \documentclass[11pt,a4paper]{article}
 
 \usepackage[utf8]{inputenc}
@@ -19,7 +21,7 @@
 
 \section*{Liste des membres du groupe}
 \begin{itemize}
-    \item DESNEUX Raphaël(snif il s'en va....) 
+    \item DESNEUX Raphaël IL EST REVENU. IL EST DES NOTRES 
     \item COMMUNAL Hugo
 \end{itemize}
 
@@ -64,7 +66,7 @@ décryptions se doivent d'être rapides et peu coûteuses à mettre en place.\\
 
     Un de ces systèmes, introduit en 1984 par Taher Elgamal~\cite{elgamal} , le cryptosystème d'ElGamal 
 est un protocole de cryptographie asymétrique largement utilisé et 
-construit sur le problème du logarithme discret \cite{dlp} . Cet algorithme permet 
+construit sur le problème du logarithme discret \cite{dlp}. Cet algorithme permet 
 à deux parties d'échanger un message de manière sécurisée en utilisant 
 une paire de clés : une clé publique et une clé privée qui servent
 respectivement à encrypter le message et à le décrypter.\\
@@ -73,7 +75,7 @@ respectivement à encrypter le message et à le décrypter.\\
 le problème du logarithme discret sur les corps de nombres tels que le 
 crible généralisé ont une complexité sous-exponentielle \cite{inriawr} , tandis que les
 meilleurs algorithmes connus pour les groupes construits sur les courbes elliptiques \cite{CE} , comme l'algorithme de
-rho de Pollard \cite{rdp} , ont une complexité exponentielle.\\
+rho de Pollard \cite{rdp} , ont une complexité exponentielle en le nombre de bits de l'ordre du groupe.\\
 
     C'est pourquoi en 2005 la National Security Agency (NSA) des États-Unis a 
 recommandé l'utilisation de courbes elliptiques pour les systèmes
@@ -81,7 +83,8 @@ de cryptographie à clé publique, soulignant leur efficacité
 et leur sécurité accrues par rapport aux méthodes traditionnelles
 \cite{nsa2005}. \\
 
-    Le principe de l'encryptage par la méthode d'ElGamal repose donc sur le logarithme discret : il 
+    Le principe de l'encryptage par la méthode d'ElGamal repose sur un groupe cyclique 
+(fini et monogène) sur lequel on applique le problème du logarithme discret : il 
 est nettement plus facile de calculer le reste de la division euclidienne 
 que la réciproque de cette opération sur un groupe cyclique (fini et monogène).
 Dans le cadre des courbes elliptiques ce groupe est construit à partir 
