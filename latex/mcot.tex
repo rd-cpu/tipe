@@ -59,10 +59,10 @@
 
 \section*{Bibliographie commentée}
 
-    De par l'essor des flux d'informations sensibles qu'a apporté
+    De par l'essor des échanges d'information sensible qu'a apporté
 l'ère numérique, la cryptographie s'est révélée être un domaine 
-essentiel à la sécurité des communications. De plus ces encrytions et 
-décryptions se doivent d'être rapides et peu coûteuses à mettre en place.\\
+essentiel à la sécurité des communications. De plus ces chiffrement et 
+déchiffrement se doivent d'être rapides et peu coûteuses à mettre en place.\\
 
     Un de ces systèmes, introduit en 1984 par Taher Elgamal~\cite{elgamal} , le cryptosystème d'ElGamal 
 est un protocole de cryptographie asymétrique largement utilisé et 
@@ -71,11 +71,11 @@ construit sur le problème du logarithme discret \cite{dlp}. Cet algorithme perm
 une paire de clés : une clé publique et une clé privée qui servent
 respectivement à encrypter le message et à le décrypter.\\
 
-    Cependant, les meilleurs algorithmes connus pour résoudre
+    Les meilleurs algorithmes connus pour résoudre
 le problème du logarithme discret sur les corps de nombres tels que le 
-crible généralisé ont une complexité sous-exponentielle \cite{inriawr} , tandis que les
+crible généralisé ont une complexité sous-exponentielle \cite{inriawr} par rapport à la longueur des clés, tandis que les
 meilleurs algorithmes connus pour les groupes construits sur les courbes elliptiques \cite{CE} , comme l'algorithme de
-rho de Pollard \cite{rdp} , ont une complexité exponentielle en le nombre de bits de l'ordre du groupe.\\
+rho de Pollard \cite{rdp} , ont une complexité exponentielle.\\
 
     C'est pourquoi en 2005 la National Security Agency (NSA) des États-Unis a 
 recommandé l'utilisation de courbes elliptiques pour les systèmes
@@ -83,6 +83,10 @@ de cryptographie à clé publique, soulignant leur efficacité
 et leur sécurité accrues par rapport aux méthodes traditionnelles
 \cite{nsa2005}. \\
 
+
+% revoir le pourquoi du cryptosystème 
+% revoir le principe du logarithme 
+%revoir ce passage en entier 
     Le principe de l'encryptage par la méthode d'ElGamal repose sur un groupe cyclique 
 (fini et monogène) sur lequel on applique le problème du logarithme discret : il 
 est nettement plus facile de calculer le reste de la division euclidienne 
@@ -92,7 +96,7 @@ de l'ensemble des points d'une courbe elliptique dans le plan projectif
 sur lesquels on applique un logarithme et auxquels on ajoute un 
 point à l'infini qui va servir de neutre pour la loi de groupe que l'on construit.\\
 
-    Une première approche pour casser cette encryption serait d'essayer toutes les 
+    Une première approche pour casser ce codage serait d'essayer toutes les 
 valeurs possibles de la clé privée jusqu'à trouver la bonne, d'opérer en force brute.
 Cependant, la taille des clés utilisées dans les systèmes modernes rend cette approche
 impraticable car le nombre de possibilités serait astronomique. Pour des clés de 256 bits,
@@ -101,13 +105,14 @@ de n'importe quel ordinateur. \\
 
     Pour réduire les temps de calcul au maximum, nous allons nous intéresser à l'algorithme
 dit du "rho de Pollard" qui est un algorithme probabiliste qui repose sur le paradoxe 
-des anniversaires \cite{anniversaires} et de la reconnaissance de cycles dans l'apparition des valeurs. 
+des anniversaires \cite{anniversaires} et de la reconnaissance de cycles dans une suite récurrente. 
 Il est nettement plus efficace pour résoudre le problème du logarithme discret, 
 il permet de trouver la clé privée en un temps approximativement proportionnel à la racine carrée
 du nombre de bits de l'ordre du groupe, il offre donc une complexité réelle exponentielle.
-Nous allons donc étudier la sécurité de ce cryptosystème en jouant le rôle d'un attanquant 
+Nous allons donc étudier la sécurité de ce cryptosystème en jouant le rôle d'un attaquant 
 qui cherche à retrouver le message encrypté, nous allons donc comparer le temps que nous 
 mettons à résoudre ce problème mathématique avec plusieurs algorithmes.\\
+% homogénéiser les calculs de complexité : exponentielle en quoi 
 
     Cependant, il est important de noter que la sécurité de ce cryptosystème 
 sera compromis quand des ordinateurs quantiques suffisamment puissants seront développés,
@@ -115,8 +120,8 @@ car ils pourraient résoudre le problème du logarithme discret en temps polynom
 grâce à l'algorithme de Shor.\\
 
     Pour conclure, les courbes elliptiques offrent une sécurité supplémentaire
-comparée aux groupes cycliques usuels utilisés dans le cryptosystème d'El Gamal.
-Leurs structures mathématiques complexes et leurs mises en place relativement aisées 
+comparée aux groupes cycliques usuels utilisés dans le cryptosystème origniel d'El Gamal.
+Leurs structures mathématiques complexes et leur mise en place relativement aisée 
 offrent une solution de cryptographie robuste et efficace, adaptée à l'échange de clés
 de sécurité dans des contextes de confidentialité très variés.\\
 
