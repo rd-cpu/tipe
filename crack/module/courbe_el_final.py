@@ -1,9 +1,30 @@
-#from module.el_gamal import inv_mod
 from random import randint
 import subprocess
 import numbers
 import platform
-from module.el_gamal import inv_mod
+
+
+# Provide a local modular inverse to avoid circular imports.
+# Prefer the built-in `pow(..., -1, mod)` when available; fall back
+# to extended Euclid for older Python versions or if pow fails.
+def inv_mod(e, p):
+    e = e % p
+    try:
+        return pow(e, -1, p)
+    except TypeError:
+        # Python < 3.8, implement extended Euclidean algorithm
+        def egcd(a, b):
+            if b == 0:
+                return 1, 0, a
+            x, y, g = egcd(b, a % b)
+            return y, x - (a // b) * y, g
+        x, y, g = egcd(e, p)
+        if g != 1:
+            raise ValueError(f"{e} isn't invertible mod {p}")
+        return x % p
+    except ValueError:
+        # pow raised ValueError (non-invertible)
+        raise ValueError(f"{e} isn't invertible mod {p}")
 
 class CourbeElliptique:
     def __init__(self, a, b, c, o):

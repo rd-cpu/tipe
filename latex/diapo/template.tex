@@ -26,6 +26,11 @@
 
 \graphicspath{{Images/}{./}} % Specifies where to look for included images (trailing slash required)
 
+% Graphics and filename handling
+\usepackage{graphicx}
+\usepackage{grffile} % Better handling of file names with multiple dots and spaces
+\usepackage[utf8]{inputenc} % Accept UTF-8 in file names and source (use XeLaTeX/LuaLaTeX if issues remain)
+
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule for better rules in tables
 
 %----------------------------------------------------------------------------------------
@@ -142,15 +147,15 @@
 %	PRESENTATION INFORMATION
 %----------------------------------------------------------------------------------------
 
-\title[Short Title]{Full Presentation Title} % The short title in the optional parameter appears at the bottom of every slide, the full title in the main parameter is only on the title page
+\title[Short Title]{Mise en place d'un cryptosystème d'ElGamal sur les courbes elliptiques et étude de sa sécurité.} % The short title in the optional parameter appears at the bottom of every slide, the full title in the main parameter is only on the title page
 
-\subtitle{Optional Subtitle} % Presentation subtitle, remove this command if a subtitle isn't required
+%\subtitle{cryptographie et sécurité} % Presentation subtitle, remove this command if a subtitle isn't required
 
-\author[James Cook \and Roald Amundsen]{Capt. James Cook \and Roald Amundsen} % Presenter name(s), the optional parameter can contain a shortened version to appear on the bottom of every slide, while the main parameter will appear on the title slide
+%\author[James Cook \and Roald Amundsen]{Capt. James Cook \and Roald Amundsen} % Presenter name(s), the optional parameter can contain a shortened version to appear on the bottom of every slide, while the main parameter will appear on the title slide
 
-\institute[UC]{University of Cambridge \\ \smallskip \textit{james@LaTeXTemplates.com}} % Your institution, the optional parameter can be used for the institution shorthand and will appear on the bottom of every slide after author names, while the required parameter is used on the title slide and can include your email address or additional information on separate lines
+%\institute[UC]{University of Cambridge \\ \smallskip \textit{james@LaTeXTemplates.com}} % Your institution, the optional parameter can be used for the institution shorthand and will appear on the bottom of every slide after author names, while the required parameter is used on the title slide and can include your email address or additional information on separate lines
 
-\date[\today]{International Symposium of Explorers \\ \today} % Presentation date or conference/meeting name, the optional parameter can contain a shortened version to appear on the bottom of every slide, while the required parameter value is output to the title slide
+\date[\today]{TIPE \\ \today} % Presentation date or conference/meeting name, the optional parameter can contain a shortened version to appear on the bottom of every slide, while the required parameter value is output to the title slide
 
 %----------------------------------------------------------------------------------------
 
@@ -171,7 +176,7 @@
 % The table of contents outputs the sections and subsections that appear in your presentation, specified with the standard \section and \subsection commands. You may either display all sections and subsections on one slide with \tableofcontents, or display each section at a time on subsequent slides with \tableofcontents[pausesections]. The latter is useful if you want to step through each section and mention what you will discuss.
 
 \begin{frame}
-	\frametitle{Presentation Overview} % Slide title, remove this command for no title
+	\frametitle{Sommaire} % Slide title, remove this command for no title
 	
 	\tableofcontents % Output the table of contents (all sections on one slide)
 	%\tableofcontents[pausesections] % Output the table of contents (break sections up across separate slides)
@@ -181,102 +186,142 @@
 %	PRESENTATION BODY SLIDES
 %----------------------------------------------------------------------------------------
 
-\section{Text Examples} % Sections are added in order to organize your presentation into discrete blocks, all sections and subsections are automatically output to the table of contents as an overview of the talk but NOT output in the presentation as separate slides
+\section{Construction d'un groupe sur les courbes elliptiques} % Sections are added in order to organize your presentation into discrete blocks, all sections and subsections are automatically output to the table of contents as an overview of the talk but NOT output in the presentation as separate slides
 
 %------------------------------------------------
 
-\subsection{Paragraphs and Lists}
+\subsection{Les courbes elliptiques}
 
 \begin{frame}
-	\frametitle{Paragraphs of Text}
+	\frametitle{Les courbes elliptiques}
 	
-	Sed iaculis \alert{dapibus gravida}. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.
-	
-	\bigskip % Vertical whitespace
-	
-	% Quote example
-	\begin{quote}
-		Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio.\\
-		--- Someone, somewhere\ldots
-	\end{quote}
+	Une courbe elliptiques est l'ensemble des points de coordonnées $(x,y)$ vérifiant l'équation :
+	$$ax^3 + bx^2y + cxy^2 + dy^3 + ex^2 + fxy + gy^2 + hx + iy + j = 0$$
+	où $a,b,c,d,e,f,g,h,i,j \in \mathbb{R}$ et $x,y \in \mathbb{K}$ où $\mathbb{K}$ est un corps.  
 	
 	\bigskip % Vertical whitespace
-	
-	Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis.
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.8\linewidth,height=0.45\textheight,keepaspectratio]{\detokenize{Images/CE.png}}
+		\caption{Courbe elliptique $y^2 = x^3 - 2x + 2 $.}
+	\end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+\subsection{Plan projectif et point à l'infini}
+
+\begin{frame}
+	\frametitle{Plan projectif et point à l'infini}
+
+	\begin{definition}
+		Le \alert{plan projectif} $\mathbb{P}^2$ est l'ensemble des triplets de coordonnées homogènes $(x,y,z)$ 
+		où $(x,y,z) \in \mathbb{K}^3 \setminus \{(0,0,0)\}$.
+	\end{definition}	
+	\begin{definition}
+		Dans cette notation, les points admettant des coordonnées de la forme $(x , y , 0)$ forment la droite à l'infini.
+		Nous allons associer à la droite à l'infini un point particulier, appelé \alert{point à l'infini}.
+	\end{definition}
 \end{frame}
 
 %------------------------------------------------
 
+\subsection{Construction de la loi de groupe}
+
 \begin{frame}
-	\frametitle{Lists}
-	\framesubtitle{Bullet Points and Numbered Lists} % Optional subtitle
+	\frametitle{Construction de la loi de groupe}
 	
+	Nous allons définir une loi de groupe additive géométriquement sur les points d'une courbe elliptique.\\
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.8\linewidth,height=0.45\textheight,keepaspectratio]{\detokenize{Images/geogebra-export.png}}
+	\end{figure}
+		
+	Cette loi de group est définie de la mainière suivante :
 	\begin{itemize}
-		\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-		\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus
-		\begin{itemize}
-			\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-			\item Nam cursus est eget velit posuere pellentesque
-		\end{itemize}
-		\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
+		\item $ P * Q = R $ où $R$ est le troisième point d'intersection de la droit $(PQ)$ avec la courbe elliptique.
+		\item $ P + Q = P * Q * O $ où $O$ est le point à l'infini.
 	\end{itemize}
-	
-	\bigskip % Vertical whitespace
-	
-	\begin{enumerate}
-		\item Nam cursus est eget velit posuere pellentesque
-		\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida 
-	\end{enumerate}
+
+
+
 \end{frame}
 
 %------------------------------------------------
+%
+%\begin{frame}
+%	\frametitle{Lists}
+%	\framesubtitle{Bullet Points and Numbered Lists} % Optional subtitle
+%	
+%	\begin{itemize}
+%		\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
+%		\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus
+%		\begin{itemize}
+%			\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
+%			\item Nam cursus est eget velit posuere pellentesque
+%		\end{itemize}
+%		\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
+%	\end{itemize}
+%	
+%	\bigskip % Vertical whitespace
+%	
+%	\begin{enumerate}
+%		\item Nam cursus est eget velit posuere pellentesque
+%		\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida 
+%	\end{enumerate}
+%\end{frame}
 
-\subsection{Blocks}
+
+%------------------------------------------------
+
+
+
+\subsection{Formalisation des propriétés géométriques}
 
 \begin{frame}
-	\frametitle{Blocks of Highlighted Text}
+	\frametitle{Formalisation des propriétés géométriques}
 	
-	\begin{block}{Block Title}
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue.
-	\end{block}
+	\begin{block}{Forme de Weierstrass}
+		Les équation des courbes elliptiques définies sur $\mathbb{R}$ (ou $\mathbb{Q}$) peuvent s'écrire sous la forme :
+		$$y^2 = x^3 + ax + b$$
+		où $a,b \in \mathbb{R}$ (ou $\mathbb{Q}$).
+	\end{block}	
 	
-	\begin{exampleblock}{Example Block Title}
-		Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan.
-	\end{exampleblock}
+	\bigskip
 	
-	\begin{alertblock}{Alert Block Title}
-		Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-	\end{alertblock}
-	
-	\begin{block}{} % Block without title
-		Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci.
-	\end{block}
+	Pour P = $(x_1,y_1)$ et Q = $(x_2,y_2)$, en étudiant des égalités de polynômes, on obtient les formules suivantes :\\
+		P*Q = $(x_3,y_3)$ 
+		avec : $
+			\begin{cases}
+			x_3 = \lambda^2 - x_1 - x_2 \\
+			y_3 = \lambda (x_1 - x_3) - y_1		
+			\end{cases}
+			$\\
+		où $ \lambda = \frac{y_1 - y_2}{x_1 - x_2} \text{ et } \nu = y_1 - \lambda x_1 $
 \end{frame}
 
 %------------------------------------------------
 
-\subsection{Columns}
+
+\subsection{Construiction d'un groupe cyclique}
 
 \begin{frame}
-	\frametitle{Multiple Columns}
-	\framesubtitle{Subtitle} % Optional subtitle
-	
-	\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-		\begin{column}{0.45\textwidth} % Left column width
-			\textbf{Heading}
-			\begin{enumerate}
-				\item Statement
-				\item Explanation
-				\item Example
-			\end{enumerate}
-		\end{column}
-		\begin{column}{0.5\textwidth} % Right column width
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-		\end{column}
-	\end{columns}
+	\frametitle{Construiction d'un groupe cyclique}
+	\begin{definition}
+		Un \alert{groupe cyclique} est un groupe à la fois monogène et fini.
+		Il existe un élément $g$ du groupe tel que tous les éléments du groupe soient un multipel de $g$.
+	\end{definition}
+	Pour tout groupe cyclique $\mathbb{G}$ il existe $n \in \mathbb{N}$ tel que $\mathbb{G} ~ \mathbb{Z}/n\mathbb{Z} $.
+	\begin{block}{Application aux courbes elliptiques}
+		Pour chaqeu couple d'entiers $(x,y)$ vérifiant l'équation de la courbe elliptique, on applique un modulo à $x$ et à $y$.
+		L'équation de la courbe devient donc :
+		$$y^2 = x^3 + ax + b \mod n $$
+	\end{block}
 \end{frame}
 
 %------------------------------------------------
+
+
 
 \section{Table and Figure Examples}
 

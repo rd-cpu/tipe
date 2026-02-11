@@ -40,7 +40,7 @@ def plot_ce(CE, n=10000,min_x=-2,max_x=2,save = True):
     plt.scatter(tab_x_valid, tab_y_pos, s=1, color='blue')
     plt.scatter(tab_x_valid, tab_y_neg, s=1, color='blue')
 
-    plt.title(CE)
+    #plt.title(CE)
     plt.xlabel('x')
     plt.ylabel('y')
     plt.grid(True)
