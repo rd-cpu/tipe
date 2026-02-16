@@ -36,13 +36,21 @@ Initialiser une courbe elliptique de la forme y² = x³ + ax² + bx + c mod o :
 ```
 CE = CourbeElliptique( a, b, c, o)  
 ```
- Récupérer une liste de points d'une courbe :
+Récupérer une liste de points d'une courbe :
 ```
 l = find_points(CE)
 ```    
-Initialiser un points d'une courbe elliptique : 
+Initialiser un fichiers de points :
+```
+trouve_points(CE)
+```
+Initialiser un point d'une courbe elliptique : 
 ```
 P = Point(x,y,CE)
+```
+Récupérer un point au hasard : 
+```
+P = point_random(CE)
 ```
 Créer un clé publique :
 ```

@@ -1,8 +1,8 @@
-from crack.module.courbe_el_final import CourbeElliptique, Point, Infini
+from module.courbe_el_final import CourbeElliptique, Point, Infini
 from collections import Counter
 import csv
 import math
-from crack.module.noms_fichiers import *
+from module.noms_fichiers import *
 #from creer_dico import *
 from random import randint
 import sympy as sp

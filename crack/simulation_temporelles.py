@@ -1,5 +1,6 @@
 from module.algo_crack.crackEGEC import *
 from module.algo_crack.rho_de_pollard import *
+from module.algo_crack.kangourous import *
 import csv
 import time
 import platform
@@ -53,3 +54,13 @@ Md = crack_point_rho_de_pollard(M,pk)
 #duree_crack_monte_carlo(CE1,crack_rho_de_pollard)
 #crack_perfCE_csv(CE1,crack_rho_de_pollard,10)
 #crack_perfCE_csv(CE1,crack_force_brute,10)
+
+'''
+CEstand = CourbeElliptique(2,0,2,6482753)
+s = randint(0,CEstand.o - 1)
+P=point_random(CEstand)
+pk = generate_PK(s,P,CEstand)
+CE, P, B = pk
+r = kangourous(P,B,max(0,s-100000),s+100000,CEstand.o)
+print("s = ",s ,"r = ",r)
+print(s%CEstand.o==r)'''
