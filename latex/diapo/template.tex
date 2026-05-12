@@ -30,7 +30,8 @@
 \usepackage{graphicx}
 \usepackage{grffile} % Better handling of file names with multiple dots and spaces
 \usepackage[utf8]{inputenc} % Accept UTF-8 in file names and source (use XeLaTeX/LuaLaTeX if issues remain)
-
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule for better rules in tables
 
 %----------------------------------------------------------------------------------------
@@ -218,10 +219,18 @@
 		Le \alert{plan projectif} $\mathbb{P}^2$ est l'ensemble des triplets de coordonnées homogènes $(x,y,z)$ 
 		où $(x,y,z) \in \mathbb{K}^3 \setminus \{(0,0,0)\}$.
 	\end{definition}	
+
 	\begin{definition}
 		Dans cette notation, les points admettant des coordonnées de la forme $(x , y , 0)$ forment la droite à l'infini.
 		Nous allons associer à la droite à l'infini un point particulier, appelé \alert{point à l'infini}.
 	\end{definition}
+
+	\underline{Forme de Weierstrass} :
+	Les équation des courbes elliptiques définies sur $\mathbb{R}$ (ou $\mathbb{Q}$) peuvent s'écrire sous la forme suivante
+	$$\boxed{y^2 = x^3 + ax + b}$$ 
+	où $a,b \in \mathbb{R}$ (ou $\mathbb{Q}$) telles que $(4a^3 + 27b^2) \neq 0$ pour que la courbe soit non singulière.
+
+
 \end{frame}
 
 %------------------------------------------------
@@ -231,10 +240,10 @@
 \begin{frame}
 	\frametitle{Construction de la loi de groupe}
 	
-	Nous allons définir une loi de groupe additive géométriquement sur les points d'une courbe elliptique.\\
+	Nous allons définir une loi de groupe \alert{additive} géométriquement sur les points d'une courbe elliptique dans le plan projectif $(\mathbb{P}^2(\mathbb{E}),+)$.\\
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.8\linewidth,height=0.45\textheight,keepaspectratio]{\detokenize{Images/geogebra-export.png}}
+		\includegraphics[width=0.8\linewidth,height=0.42\textheight,keepaspectratio]{\detokenize{Images/geogebra-export.png}}
 	\end{figure}
 		
 	Cette loi de group est définie de la mainière suivante :
@@ -274,36 +283,38 @@
 
 %------------------------------------------------
 
-
-
-\subsection{Formalisation des propriétés géométriques}
-
 \begin{frame}
-	\frametitle{Formalisation des propriétés géométriques}
-	
-	\begin{block}{Forme de Weierstrass}
-		Les équation des courbes elliptiques définies sur $\mathbb{R}$ (ou $\mathbb{Q}$) peuvent s'écrire sous la forme :
-		$$y^2 = x^3 + ax + b$$
-		où $a,b \in \mathbb{R}$ (ou $\mathbb{Q}$).
-	\end{block}	
-	
-	\bigskip
-	
-	Pour P = $(x_1,y_1)$ et Q = $(x_2,y_2)$, en étudiant des égalités de polynômes, on obtient les formules suivantes :\\
-		P*Q = $(x_3,y_3)$ 
-		avec : $
-			\begin{cases}
-			x_3 = \lambda^2 - x_1 - x_2 \\
-			y_3 = \lambda (x_1 - x_3) - y_1		
-			\end{cases}
-			$\\
-		où $ \lambda = \frac{y_1 - y_2}{x_1 - x_2} \text{ et } \nu = y_1 - \lambda x_1 $
-\end{frame}
+\frametitle{Formalisation des propriétés géométriques}
 
+	Pour \(P=(x_1,y_1)\) et \(Q=(x_2,y_2)\), en étudiant des égalités de polynômes, on obtient les formules suivantes :
+
+	\[
+	\boxed{
+		\begin{array}{rcl}
+			P * Q &=& (x_3,y_3) \\
+			P * O &=& (x_1,-y_1)
+			\\
+			P + Q &=& (x_3,-y_3)
+			\\
+			-P &=& (x_1,-y_1)
+		\end{array}
+	}
+	\]
+
+	avec :
+	\bigskip
+	$ \begin{cases} 
+		x_3 = \lambda^2 - x_1 - x_2 \\ 
+		y_3 = \lambda (x_1 - x_3) - y_1 
+	\end{cases} $
+	où $ \lambda = \frac{y_1 - y_2}{x_1 - x_2} \text{ et } \nu = y_1 - \lambda x_1 $\\
+	\bigskip
+	Ce qui forme bien une loi de groupe associative, commutative avec pour neutre $O$ et qui pour tout point $P$ admet un inverse $-P$.	 
+
+\end{frame}
 %------------------------------------------------
 
-
-\subsection{Construiction d'un groupe cyclique}
+\subsection{Construction d'un groupe cyclique}
 
 \begin{frame}
 	\frametitle{Construiction d'un groupe cyclique}
@@ -321,15 +332,69 @@
 
 %------------------------------------------------
 
+\begin{frame}
+	\frametitle{Exemple de courbe elliptique}
+	L'exemple le plus courant d'utilisation des courbes elliptique est secp256k1, notamement utilisé dans le bitcoin pour vérifier que les fonds sont 
+	uniquement utilisés par leur propriétaire.\\
 
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.8\linewidth,height=0.42\textheight,keepaspectratio]{\detokenize{Images/secp256k1.png}}
+		\caption{Courbe elliptique $y^2 = x^3 + 7 $.}
+	\end{figure}
 
-\section{cryptosystème d'ElGamal}
+	avec $\mathbb{F}_p = \mathbb{Z}/p\mathbb{Z}$ et $p = 2^{256} - 2^{32} - 977$ qui est premier.	
+
+\end{frame}
+
+%------------------------------------------------
+
+\section{Cryptosystème d'ElGamal}
 
 \subsection{ElGamal}
 
 \begin{frame}
-	\frametitle{ElGamal}
+\frametitle{ElGamal}
 
+	\underline{Problème :} 
+	Bob veut envoyer un message à Alice de manière sécurisée sans avoir au préalable échangé une clé de déchiffrement secrète.
+
+	\bigskip
+
+	Pour résoudre ce problème, Taher Elgamal a proposé en 1984 un protocole qui contrairement à RSA (1977), est libre de droit.\\
+	De plus, il offre des clés de chiffrement plus courtes que RSA pour un même niveau de sécurité.
+
+\end{frame}
+
+%------------------------------------------------
+
+
+\begin{frame}
+	\frametitle{Cryptosystème d'ElGamal}
+	
+	Alice choisit une clé secrète \(s \in \mathbb{N}\).
+
+	Alice partage à Bob (en clair) :
+	\begin{itemize}
+		\item la donnée d'un groupe \(\mathbb{G}\)
+		\item un générateur \(G \in \mathbb{G}\) du groupe
+		\item la clé publique \(P = s \cdot G\)
+	\end{itemize}
+
+	\bigskip
+
+	Bob choisit un entier aléatoire \(k \in \mathbb{N}\) et un message sous la forme d'un point \(M \in \mathbb{G}\).
+
+	Bob partage à Alice :
+	\begin{itemize}
+		\item \(M_1 = k \cdot G\)
+		\item \(M_2 = M + k \cdot P\)
+	\end{itemize}
+
+	\bigskip
+
+	\underline{Déchiffrement :} \\
+	Alice calcule $M = M_2 - s \cdot M_1 = M + s \cdot k \cdot G\ - s \cdot k \cdot G$.
 \end{frame}
 
 %------------------------------------------------
@@ -338,6 +403,29 @@
 
 \begin{frame}
 	\frametitle{Logarithme discret}
+	
+	\begin{block}{Logarithme discret}
+		fonction \alert{réciproque} de l’exponentiation discrète :
+		\[
+		k \mapsto b^k \pmod n
+		\]
+		
+		Soient \(a,b \in \mathbb{Z}/n\mathbb{Z}\), \(k \in \mathbb{N}\) tels que \(k\) est le plus petit entier naturel vérifiant
+		\[
+		a = b^k,
+		\]
+		\(k\) est donc appelé le \textbf{logarithme discret} en base \(b\).
+	\end{block}
+
+	\bigskip
+
+	\textbf{Exemple :} Dans \(\mathbb{Z}/7\mathbb{Z}\) :
+
+	\[
+	\log_3(6) = 3
+	\quad \text{car} \quad
+	3^3 \bmod 7 = 27 \bmod 7 = 6
+	\]
 
 \end{frame}
 
@@ -349,6 +437,36 @@
 
 \begin{frame}
 	\frametitle{Attaque par force brute}
+	\textbf{Objectif :} trouver $s$ tel que $P = s \cdot G$
+
+
+	\vspace{0.3cm}
+
+	\begin{block}{Idée}
+	On additionne successivement le point $G$
+	jusqu'à obtenir $P$.
+	\end{block}
+
+	\vspace{0.3cm}
+
+	\begin{algorithmic}[1]
+	\State $s \gets 1$
+	\State $X \gets G$
+
+	\While{$X \neq P$}
+
+	    \If{$s \geq o$}
+	        \State retourner \texttt{None}
+	    \EndIf
+
+	    \State $X \gets X + G$
+	    \State $s \gets s + 1$
+
+	\EndWhile
+
+	\State retourner $s$
+
+	\end{algorithmic}
 
 \end{frame}
 
@@ -358,104 +476,192 @@
 \begin{frame}
 	\frametitle{Algorithme du rho de Pollard}
 	
-\end{frame}
-
-%------------------------------------------------
-\subsection{Pollard - kangourou}
-
-\begin{frame}
-	\frametitle{Equation}
-
-	\begin{equation}
-		\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
-	\end{equation}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-	\frametitle{Verbatim}
+	Soit une partition $\mathbb{G} = S_0 \cup S_1 \cup S_2$.
+ 
+	On définit une fonciton pseudo aléatoire $f : \mathbb{G} \to \mathbb{G}$ par
+	\[
+		f(x) =
+		\begin{cases}
+			P + x  & x \in S_0 \\
+			2x         & x \in S_1 \\
+			G + x & x \in S_2
+		\end{cases}
+	\]
 	
-	\begin{example}[Theorem Slide Code]
-		\begin{verbatim}
-			\begin{frame}
-				\frametitle{Theorem}
-				\begin{theorem}[Mass--energy equivalence]
-					$E = mc^2$
-				\end{theorem}
-		\end{frame}\end{verbatim} % Must be on the same line
-	\end{example}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-	Slide without title.
-\end{frame}
-
-%------------------------------------------------
-
-\section{Referencing}
-
-\begin{frame}
-	\frametitle{Citing References}
-	
-	An example of the \texttt{\textbackslash cite} command to cite within the presentation:
-	
-	\bigskip % Vertical whitespace
-	
-	This statement requires citation \cite{p1,p2}.
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame} % Use [allowframebreaks] to allow automatic splitting across slides if the content is too long
-	\frametitle{References}
-	
-	\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below, you may need to use multiple columns and/or reduce the font size further if you have many references
-		\footnotesize % Reduce the font size in the bibliography
-		
-		\bibitem[Smith, 2022]{p1}
-			John Smith (2022)
-			\newblock Publication title
-			\newblock \emph{Journal Name} 12(3), 45 -- 678.
-			
-		\bibitem[Kennedy, 2023]{p2}
-			Annabelle Kennedy (2023)
-			\newblock Publication title
-			\newblock \emph{Journal Name} 12(3), 45 -- 678.
-	\end{thebibliography}
-\end{frame}
-
-%----------------------------------------------------------------------------------------
-%	ACKNOWLEDGMENTS SLIDE
-%----------------------------------------------------------------------------------------
-
-\begin{frame}
-	\frametitle{Acknowledgements}
-	
-	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-		\begin{column}{0.45\textwidth} % Left column width
-			\textbf{Smith Lab}
-			\begin{itemize}
-				\item Alice Smith
-				\item Devon Brown
-			\end{itemize}
-			\textbf{Cook Lab}
-			\begin{itemize}
-				\item Margaret
-				\item Jennifer
-				\item Yuan
-			\end{itemize}
-		\end{column}		
-		\begin{column}{0.5\textwidth} % Right column width
-			\textbf{Funding}
-			\begin{itemize}
-				\item British Royal Navy
-				\item Norwegian Government
-			\end{itemize}
+	et les fonctions de $g : \mathbb{G} \times \mathbb{Z} \to \mathbb{Z}$
+	et $h : \mathbb{G} \times \mathbb{Z} \to \mathbb{Z}$ :
+  
+	\begin{columns}[t]
+		\begin{column}{0.48\textwidth}
+			\small
+			\[
+				g(x, a) =
+				\begin{cases}
+					a             & x \in S_0 \\
+					2a \pmod{n}   & x \in S_1 \\
+					a+1 \pmod{n}  & x \in S_2
+				\end{cases}
+			\]
+		\end{column}
+		\begin{column}{0.48\textwidth}
+			\small
+			\[
+				h(x, b) =
+				\begin{cases}
+					b+1 \pmod{n}  & x \in S_0 \\
+					2b \pmod{n}   & x \in S_1 \\
+					b             & x \in S_2
+				\end{cases}
+			\]
 		\end{column}
 	\end{columns}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Algorithme du rho de Pollard}
+
+	\textbf{Entrées :} $G$ générateur de $\mathbb{G}$,\; $P \in \mathbb{G}$\\
+	\textbf{Sortie :} $s$ tel que $P = s\cdot G$, ou \texttt{échec}
+
+	\vspace{0.2cm}
+
+	\scriptsize
+	\begin{algorithmic}[1]
+
+	\State $n \gets \text{ordre}(G)$
+	\State Tirer $a, b \xleftarrow{} \{0, \ldots, n-1\}$
+	\State $x \gets aG + bP$,\quad $X \gets x$,\quad $A \gets a$,\quad $B \gets b$
+
+	\vspace{0.1cm}
+
+	\While{\textbf{True}}
+		\State $(x,\, a,\, b) \gets \bigl(f(x),\; g(x, a),\; h(x, b)\bigr)$
+
+		\vspace{0.1cm}
+
+		\State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
+		\State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
+
+		\vspace{0.1cm}
+
+		\If{$x = X$} \Comment{collision ?}
+			\State $r \gets (b - B) \bmod n$
+			\If{$r = 0$}
+				\State \Return \texttt{échec}
+			\EndIf
+			\State \Return $r^{-1} \cdot (A - a) \bmod n$ \Comment{calcul de $s$}
+		\EndIf
+	\EndWhile
+
+	\end{algorithmic}
+\end{frame}
+%------------------------------------------------
+
+\subsection{Pollard's kangaroo}
+
+\begin{frame}
+	\frametitle{Pollard's kangaroo}
+	\footnotesize
+	\underline{intervalle de recherche} : on sait que $s\in [a,b]$, complexité en $O(\sqrt{b - a})$.
+
+	\footnotesize
+	\begin{algorithmic}[1]
+ 
+	\State $N \gets \lfloor\sqrt{b - a}\rfloor + 1$
+	\State $f(x) \gets (x.x + x.y) \bmod N + 1$ \Comment{fonction de saut}
+ 
+ 
+	\State $x \gets bG$,\quad $d_x \gets 0$  \Comment{kangourou apprivoisé}
+	\For{$i = 0$ \textbf{à} $N-1$}
+		\State $d_x \gets d_x + f(x)$
+		\State $x \gets x + f(x)\cdot G$
+	\EndFor
+ 
+ 	\State $y \gets P$,\quad $d_y \gets 0$\Comment{kangourou sauvage}
+	\For{$i = 0$ \textbf{à} $4N-1$}
+		\If{$y = x$} \Comment{les kangourous se rencontrent}
+			\State \Return $(b + d_x - d_y) \bmod n$
+		\EndIf
+		\State $d_y \gets d_y + f(y)$
+		\State $y \gets y + f(y)\cdot G$
+		\If{$d_y > b - a + d_x$}
+			\State \Return \texttt{échec}
+		\EndIf
+	\EndFor
+ 
+	\end{algorithmic}
+\end{frame}
+
+%------------------------------------------------
+
+\section{Comparaison des algorithmes}
+
+\begin{frame}
+	\begin{itemize}
+		\item Pourquoi le logarithme discret est-il considéré comme un problème difficile ?
+		\item Pourquoi utilise t-on les courbes elliptiques ?
+	\end{itemize}	
+	
+\end{frame}
+
+%------------------------------------------------
+\subsection{Analyse de la sécurité des courbes elliptiques}
+
+\begin{frame}
+	\frametitle{résultats expérimentaux}
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\linewidth,height=1\textheight,keepaspectratio]{\detokenize{Images/res_exp.png}}
+	\end{figure}
+	
+\end{frame}
+
+%------------------------------------------------
+\subsection{$\mathbb{Z}/p\mathbb{Z}$ vs courbes elliptiques}
+
+\begin{frame}
+	\frametitle{Comparaison des sécurités}
+	\begin{center}
+	\footnotesize
+	\begin{tabular}{|l|c|c|}
+		\hline
+		\textbf{Groupe} & $\mathbb{Z}/p\mathbb{Z}$ & $\mathbb{G}$ \\
+		\hline
+		\textbf{Meilleur algorithme} & Crible algébrique (NFS) & rho de Pollard \\
+		\hline
+		\textbf{Complexité} & $O\!\left(\exp((\log p)^{1/3}(\log\log p)^{2/3})\right)$ & $O\!\left(\exp(\frac{n}{2})\right)$ \\
+		\hline
+	\end{tabular}
+	\end{center}
+	
+	
+	\begin{block}{Avantage des courbes elliptiques}
+		Nfs n'est pas applicable aux courbes elliptiques car cet algorithme repose sur de la factorisation,
+		ce qui n'existe pas avec les groupes construits sur une courbe elliptique.
+	\end{block}
+
+	Pour des clés de 256 bits:
+	\begin{itemize}
+		\item 2.575e+64 années-cœurs pour la force brute
+		\item 1.656e+24 années-cœurs pour rho de Pollard
+		\item 3177 années-cœurs pour NFS
+	\end{itemize}	
+\end{frame}
+%------------------------------------------------
+
+
+\begin{frame}
+	Les courbes elliptiques permettent :
+	\begin{itemize}
+		\item Le cryptosystème d'ElGamal qui permet des communications sécurisés 
+		\item Des calculs plus performants pour une sécurité maximale par rapport à d'autres systèmes
+	\end{itemize}
+	\bigskip
+	Cependant, il est important de continuer de développer de nouveaux algorithmes car l'algorithme de Shor, qui se base
+	sur les propriétés d'ordinateurs quantiques, permet de résoudre le problème du logarithme discret en temps polynomial, donc de casser la sécurité des courbes elliptiques.
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -464,14 +670,20 @@
 
 \begin{frame}[plain] % The optional argument 'plain' hides the headline and footline
 	\begin{center}
-		{\Huge The End}
-		
-		\bigskip\bigskip % Vertical whitespace
-		
-		{\LARGE Questions? Comments?}
+		{\Huge Fin}\\
+		 \bigskip
+		{\LARGE Merci pour votre attention.}
 	\end{center}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
-
+%\section{Annexes}
+%
+%\begin{frame}
+%	\frametitle{Objectif}
+%		
+%	
+%\end{frame}
+%
+%------------------------------------------------
 \end{document} 

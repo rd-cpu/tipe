@@ -331,6 +331,13 @@ if __name__ == '__main__':
     # Example for a very large order (shows years)
     try:
         big = predict_time_for_order(2**256, method='brute')
-        print(f"\nPrediction example: order=2**256 -> {big['years_str']} years (seconds: {'inf' if not np.isfinite(big['seconds']) else f'{big['seconds']:.3e}'})")
+        seconds_str = 'inf' if not np.isfinite(big['seconds']) else f"{big['seconds']:.3e}"
+        print(f"\nPrediction example for brute : order=2**256 -> {big['years_str']} years (seconds: {seconds_str})")
+    except Exception as e:
+        print(f"Prediction example for 2**256 failed: {e}")
+    try:
+        big = predict_time_for_order(2**256, method='rho')
+        seconds_str = 'inf' if not np.isfinite(big['seconds']) else f"{big['seconds']:.3e}"
+        print(f"\nPrediction example for rho: order=2**256 -> {big['years_str']} years (seconds: {seconds_str})")
     except Exception as e:
         print(f"Prediction example for 2**256 failed: {e}")

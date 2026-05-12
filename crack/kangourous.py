@@ -69,3 +69,5 @@ print(s%CEstand.o==r)
 
 
 #def kangourous_meute(alpha: Point ,beta: Point):
+
+
