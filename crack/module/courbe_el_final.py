@@ -12,7 +12,6 @@ def inv_mod(e, p):
     try:
         return pow(e, -1, p)
     except TypeError:
-        # Python < 3.8, implement extended Euclidean algorithm
         def egcd(a, b):
             if b == 0:
                 return 1, 0, a
@@ -23,7 +22,6 @@ def inv_mod(e, p):
             raise ValueError(f"{e} isn't invertible mod {p}")
         return x % p
     except ValueError:
-        # pow raised ValueError (non-invertible)
         raise ValueError(f"{e} isn't invertible mod {p}")
 
 class CourbeElliptique:
@@ -65,11 +63,10 @@ class CourbeElliptique:
             rhs = (self.f(x)) % self.o
             ls = self.legendre_symbol(rhs)
             if ls == 1:
-                count += 2  # deux solutions pour y
+                count += 2 
             elif ls == 0:
-                count += 1  # une solution pour y
-            # ls == -1 => aucune solution
-        return count + 1  # ajouter le point à l'infini
+                count += 1  
+        return count + 1  
     
     
     def nombre_points_subprocess(self):

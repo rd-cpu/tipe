@@ -17,12 +17,8 @@ def generate_PK(cle_secrete, P, CE):
     if isinstance(cle_secrete,numbers.Integral):
         B = cle_secrete * P  # entier * point
         return CE, P, B      
-    # elif isinstance(cle_secrete,np.ndarray) and isinstance(P,Point):
-    #     return np.array([generate_PK(s,P,CE) for s in cle_secrete])
     elif isinstance(cle_secrete,np.ndarray) and isinstance(P,np.ndarray):
         return np.array([generate_PK(cle_secrete[i],P[i],CE) for i in range(len(cle_secrete))])
-
-
 
 
 

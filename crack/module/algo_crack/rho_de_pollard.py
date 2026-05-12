@@ -8,7 +8,6 @@ def rho_de_pollard_CE(alpha, beta):
         raise ValueError("ordre(alpha) = 0 (point à l'infini)")
 
     n = ordre(alpha.CE)
-    #n = alpha.CE
     
 
     a = randint(0, n-1)
