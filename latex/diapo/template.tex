@@ -33,6 +33,8 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule for better rules in tables
+\usepackage{tikz}
+\usetikzlibrary{tikzmark}
 
 %----------------------------------------------------------------------------------------
 %	SELECT LAYOUT THEME
@@ -196,7 +198,7 @@
 \begin{frame}
 	\frametitle{Les courbes elliptiques}
 	
-	Une courbe elliptiques est l'ensemble des points de coordonnées $(x,y)$ vérifiant l'équation :
+	Une courbe elliptique est l'ensemble des points de coordonnées $(x,y)$ vérifiant l'équation :
 	$$ax^3 + bx^2y + cxy^2 + dy^3 + ex^2 + fxy + gy^2 + hx + iy + j = 0$$
 	où $a,b,c,d,e,f,g,h,i,j \in \mathbb{R}$ et $x,y \in \mathbb{K}$ où $\mathbb{K}$ est un corps.  
 	
@@ -226,7 +228,7 @@
 	\end{definition}
 
 	\underline{Forme de Weierstrass} :
-	Les équation des courbes elliptiques définies sur $\mathbb{R}$ (ou $\mathbb{Q}$) peuvent s'écrire sous la forme suivante
+	Les équations des courbes elliptiques définies sur $\mathbb{R}$ (ou $\mathbb{Q}$) peuvent s'écrire sous la forme suivante
 	$$\boxed{y^2 = x^3 + ax + b}$$ 
 	où $a,b \in \mathbb{R}$ (ou $\mathbb{Q}$) telles que $(4a^3 + 27b^2) \neq 0$ pour que la courbe soit non singulière.
 
@@ -246,7 +248,7 @@
 		\includegraphics[width=0.8\linewidth,height=0.42\textheight,keepaspectratio]{\detokenize{Images/geogebra-export.png}}
 	\end{figure}
 		
-	Cette loi de group est définie de la mainière suivante :
+	Cette loi de groupe est définie de la manière suivante :
 	\begin{itemize}
 		\item $ P * Q = R $ où $R$ est le troisième point d'intersection de la droit $(PQ)$ avec la courbe elliptique.
 		\item $ P + Q = P * Q * O $ où $O$ est le point à l'infini.
@@ -255,31 +257,6 @@
 
 
 \end{frame}
-
-%------------------------------------------------
-%
-%\begin{frame}
-%	\frametitle{Lists}
-%	\framesubtitle{Bullet Points and Numbered Lists} % Optional subtitle
-%	
-%	\begin{itemize}
-%		\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-%		\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus
-%		\begin{itemize}
-%			\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
-%			\item Nam cursus est eget velit posuere pellentesque
-%		\end{itemize}
-%		\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
-%	\end{itemize}
-%	
-%	\bigskip % Vertical whitespace
-%	
-%	\begin{enumerate}
-%		\item Nam cursus est eget velit posuere pellentesque
-%		\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida 
-%	\end{enumerate}
-%\end{frame}
-
 
 %------------------------------------------------
 
@@ -320,7 +297,7 @@
 	\frametitle{Construiction d'un groupe cyclique}
 	\begin{definition}
 		Un \alert{groupe cyclique} est un groupe à la fois monogène et fini.
-		Il existe un élément $g$ du groupe tel que tous les éléments du groupe soient un multipel de $g$.
+		Il existe un élément $g$ du groupe tel que tous les éléments du groupe soient un multiple de $g$.
 	\end{definition}
 	Pour tout groupe cyclique $\mathbb{G}$ il existe $n \in \mathbb{N}$ tel que $\mathbb{G}  \sim \mathbb{Z}/n\mathbb{Z} $.
 	\begin{block}{Application aux courbes elliptiques}
@@ -334,7 +311,7 @@
 
 \begin{frame}
 	\frametitle{Exemple de courbe elliptique}
-	L'exemple le plus courant d'utilisation des courbes elliptique est secp256k1, notamement utilisé dans le bitcoin pour vérifier que les fonds sont 
+	L'exemple le plus courant d'utilisation des courbes elliptique est secp256k1, notamment utilisé dans le bitcoin pour vérifier que les fonds soient
 	uniquement utilisés par leur propriétaire.\\
 
 	\begin{figure}
@@ -343,7 +320,7 @@
 		\caption{Courbe elliptique $y^2 = x^3 + 7 $.}
 	\end{figure}
 
-	avec $\mathbb{F}_p = \mathbb{Z}/p\mathbb{Z}$ et $p = 2^{256} - 2^{32} - 977$ qui est premier.	
+	avec $\mathbb{F}_p = \mathbb{Z}/p\mathbb{Z}$ ou $p = 2^{256} - 2^{32} - 977$ qui est premier.	
 
 \end{frame}
 
@@ -361,7 +338,7 @@
 
 	\bigskip
 
-	Pour résoudre ce problème, Taher Elgamal a proposé en 1984 un protocole qui contrairement à RSA (1977), est libre de droit.\\
+	Pour résoudre ce problème, Taher Elgamal a proposé en 1984 un protocole qui, contrairement à RSA (1977), est libre de droit.\\
 	De plus, il offre des clés de chiffrement plus courtes que RSA pour un même niveau de sécurité.
 
 \end{frame}
@@ -376,14 +353,14 @@
 
 	Alice partage à Bob (en clair) :
 	\begin{itemize}
-		\item la donnée d'un groupe \(\mathbb{G}\)
-		\item un générateur \(G \in \mathbb{G}\) du groupe
+		\item la donnée d'un groupe \((\mathbb{G},+)\)
+		\item un générateur \(G \in \mathbb{(\mathbb{G},+)}\) du groupe
 		\item la clé publique \(P = s \cdot G\)
 	\end{itemize}
 
 	\bigskip
 
-	Bob choisit un entier aléatoire \(k \in \mathbb{N}\) et un message sous la forme d'un point \(M \in \mathbb{G}\).
+	Bob choisit un entier aléatoire \(k \in \mathbb{N}\) et un message sous la forme d'un point \(M \in \mathbb{(\mathbb{G},+)}\).
 
 	Bob partage à Alice :
 	\begin{itemize}
@@ -414,21 +391,22 @@
 	\frametitle{Logarithme discret}
 	
 	\begin{block}{Logarithme discret}
-		fonction \alert{réciproque} de l’exponentiation discrète :
+		Soient \(P,G \in (\mathbb{Z}/n\mathbb{Z},x)\), \(s \in \mathbb{N}\),\\
+		le logarithme discret est la fonction \alert{réciproque} de l’exponentiation discrète :
 		\[
-		k \mapsto b^k \pmod n
+		s \mapsto G^s \pmod n
 		\]
 		
-		Soient \(a,b \in \mathbb{Z}/n\mathbb{Z}\), \(k \in \mathbb{N}\) tels que \(k\) est le plus petit entier naturel vérifiant
+		\(s\) est le plus petit entier naturel vérifiant
 		\[
-		a = b^k,
+		P = G^s,
 		\]
-		\(k\) est donc appelé le \textbf{logarithme discret} en base \(b\).
+		\(s\) est donc appelé le \textbf{logarithme discret} en base \(G\).
 	\end{block}
 
 	\bigskip
 
-	\textbf{Exemple :} Dans \(\mathbb{Z}/7\mathbb{Z}\) :
+	\textbf{Exemple :} Dans \((\mathbb{Z}/7\mathbb{Z},x)\) :
 
 	\[
 	\log_3(6) = 3
@@ -446,17 +424,12 @@
 
 \begin{frame}
 	\frametitle{Attaque par force brute}
-	\textbf{Objectif :} trouver $s$ tel que $P = s \cdot G$
-
-
-	\vspace{0.3cm}
+	\textbf{Objectif :} trouver $s$ tel que $P = s \cdot G$ (en notation multiplicative on a $P = G^s$ )
 
 	\begin{block}{Idée}
 	On additionne successivement le point $G$
 	jusqu'à obtenir $P$.
 	\end{block}
-
-	\vspace{0.3cm}
 
 	\begin{algorithmic}[1]
 	\State $s \gets 1$
@@ -464,7 +437,7 @@
 
 	\While{$X \neq P$}
 
-	    \If{$s \geq o$}
+	    \If{$s \geq o$} \Comment{où o est l'ordre du groupe}
 	        \State retourner \texttt{None}
 	    \EndIf
 
@@ -484,10 +457,10 @@
 
 \begin{frame}
 	\frametitle{Algorithme du rho de Pollard}
-	
+
 	Soit une partition $\mathbb{G} = S_0 \cup S_1 \cup S_2$.
  
-	On définit une fonciton pseudo aléatoire $f : \mathbb{G} \to \mathbb{G}$ par
+	On définit une fonction pseudo-aléatoire $f : \mathbb{G} \to \mathbb{G}$ par
 	\[
 		f(x) =
 		\begin{cases}
@@ -530,49 +503,56 @@
 %------------------------------------------------
 
 \begin{frame}
-	\frametitle{Algorithme du rho de Pollard}
+    \frametitle{Algorithme du rho de Pollard}
 
-	\textbf{Entrées :} $G$ générateur de $\mathbb{G}$,\; $P \in \mathbb{G}$\\
-	\textbf{Sortie :} $s$ tel que $P = s\cdot G$, ou \texttt{échec}
+    \textbf{Entrées :}\tikzmark{entrees} $G$ générateur de $(\mathbb{G},+)$,\; $P \in \mathbb{G}$\\
+    \textbf{Sortie :} $s$ tel que $P = s\cdot G$, ou \texttt{échec}
 
-	\vspace{0.2cm}
+    \begin{tikzpicture}[remember picture, overlay]
+        \coordinate (entreepos) at ({pic cs:entrees});
+        \node[anchor=north east, inner sep=8pt]
+            at ([xshift=-4mm]entreepos -| current page.east)
+            {\includegraphics[width=4cm]{Images/rho2.png}};
+    \end{tikzpicture}
 
-	\scriptsize
-	\begin{algorithmic}[1]
+    \vspace{0.2cm}
 
-	\State $n \gets \text{ordre}(G)$
-	\State Tirer $a, b \xleftarrow{} \{0, \ldots, n-1\}$
-	\State $x \gets aG + bP$,\quad $X \gets x$,\quad $A \gets a$,\quad $B \gets b$
+    \scriptsize
+    \begin{algorithmic}[1]
 
-	\vspace{0.1cm}
+    \State $n \gets \text{ordre}(G)$
+    \State Tirer $a, b \xleftarrow{} \{0, \ldots, n-1\}$
+    \State $x \gets aG + bP$,\quad $X \gets x$,\quad $A \gets a$,\quad $B \gets b$
 
-	\While{\textbf{True}}
-		\State $(x,\, a,\, b) \gets \bigl(f(x),\; g(x, a),\; h(x, b)\bigr)$
+    \vspace{0.1cm}
 
-		\vspace{0.1cm}
+    \While{\textbf{True}}
+        \State $(x,\, a,\, b) \gets \bigl(f(x),\; g(x, a),\; h(x, b)\bigr)$
 
-		\State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
-		\State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
+        \vspace{0.1cm}
 
-		\vspace{0.1cm}
+        \State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
+        \State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
 
-		\If{$x = X$} \Comment{collision ?}
-			\State $r \gets (b - B) \bmod n$
-			\If{$r = 0$}
-				\State \Return \texttt{échec}
-			\EndIf
-			\State \Return $r^{-1} \cdot (A - a) \bmod n$ \Comment{calcul de $s$}
-		\EndIf
-	\EndWhile
+        \vspace{0.1cm}
 
-	\end{algorithmic}
+        \If{$x = X$} \Comment{collision ?}
+            \State $r \gets (b - B) \bmod n$
+            \If{$r = 0$}
+                \State \Return \texttt{échec}
+            \EndIf
+            \State \Return $r^{-1} \cdot (A - a) \bmod n$ \Comment{calcul de $s$}
+        \EndIf
+    \EndWhile
+
+    \end{algorithmic}
 \end{frame}
 %------------------------------------------------
 
-\subsection{Pollard's kangaroo}
+\subsection{Les kangourous de Pollard}
 
 \begin{frame}
-	\frametitle{Pollard's kangaroo}
+	\frametitle{Les kangourous de Pollard}
 	\footnotesize
 	\underline{intervalle de recherche} : on sait que $s\in [a,b]$, complexité en $O\!\left(\exp(\frac{b-a}{2})\right)$.
 
@@ -658,7 +638,7 @@
 	
 	
 	\begin{block}{Avantage des courbes elliptiques}
-		Nfs n'est pas applicable aux courbes elliptiques car cet algorithme repose sur de la factorisation,
+		NFS n'est pas applicable aux courbes elliptiques car cet algorithme repose sur de la factorisation,
 		ce qui n'existe pas avec les groupes construits sur une courbe elliptique.
 	\end{block}
 

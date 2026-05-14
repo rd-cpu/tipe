@@ -78,7 +78,7 @@ def duree_crack_monte_carlo(CE, algo_crack, N=20, progress_callback=None, worker
         for i, elapsed_time in enumerate(pool.map(worker_temps_crack, args), 1):
             tab_temps.append(elapsed_time)
             if progress_callback:
-                progress_callback(f"Cracked: {i}/{N} ({elapsed_time:.4f}s)\n")
+                progress_callback(f"Cracké : {i}/{N} ({elapsed_time:.4f}s)\n")
 
     if progress_callback:
         progress_callback("Calcul parallèle terminé\n")

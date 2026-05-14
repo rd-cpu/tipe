@@ -13,7 +13,7 @@ class CryptoApp:
         self.root.geometry("600x500")
 
         # Frame pour l'envoyeur
-        self.frame_envoyeur = tk.LabelFrame(root, text="Envoyeur", padx=10, pady=10)
+        self.frame_envoyeur = tk.LabelFrame(root, text="Emetteur", padx=10, pady=10)
         self.frame_envoyeur.pack(padx=10, pady=10, fill="both")
 
         tk.Label(self.frame_envoyeur, text="Message à envoyer :").grid(row=0, column=0, sticky="w")
@@ -33,7 +33,7 @@ class CryptoApp:
         self.fichier_sortie_entry.insert(0, chemin_fichier_message_crypte)
         tk.Button(self.frame_envoyeur, text="Parcourir", command=self.browse_fichier_sortie).grid(row=2, column=2, padx=5)
 
-        tk.Button(self.frame_envoyeur, text="Envoyer (Chiffrer)", command=self.envoyer).grid(row=3, column=0, columnspan=3, pady=10)
+        tk.Button(self.frame_envoyeur, text="Emettre (Chiffrer)", command=self.envoyer).grid(row=3, column=0, columnspan=3, pady=10)
 
         # Frame pour le receveur
         self.frame_receveur = tk.LabelFrame(root, text="Receveur", padx=10, pady=10)

@@ -49,7 +49,7 @@ def read_curves(csv_path=CE_CSV):
 class CrackerGUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title('Elliptic Curve DLP – Cracker GUI')
+        self.title('DLP Cracker pour Courbes Elliptiques')
         self.geometry('700x600')
         self.resizable(True, True)
 
@@ -61,14 +61,14 @@ class CrackerGUI(tk.Tk):
         pad = 8
 
         # Algorithm selection
-        ttk.Label(self, text='Algorithm:').grid(column=0, row=0, sticky='w', padx=pad, pady=pad)
+        ttk.Label(self, text='Algorithme :').grid(column=0, row=0, sticky='w', padx=pad, pady=pad)
         self.algo_var = tk.StringVar(value='rho')
         algo_menu = ttk.Combobox(self, textvariable=self.algo_var, state='readonly')
         algo_menu['values'] = ('rho', 'force', 'tous les algorithmes')
         algo_menu.grid(column=1, row=0, sticky='ew', padx=pad)
 
         # Curve selection
-        ttk.Label(self, text='Elliptic Curve:').grid(column=0, row=1, sticky='w', padx=pad, pady=pad)
+        ttk.Label(self, text='Courbe Elliptique :').grid(column=0, row=1, sticky='w', padx=pad, pady=pad)
         self.curve_var = tk.StringVar()
         curve_menu = ttk.Combobox(self, textvariable=self.curve_var, state='readonly', width=80)
         curve_menu['values'] = [c[0] for c in self.curves]
@@ -85,18 +85,18 @@ class CrackerGUI(tk.Tk):
         n_spin = ttk.Spinbox(sim_frame, from_=1, to=10000, textvariable=self.n_var, width=10)
         n_spin.pack(side='left')
 
-        ttk.Label(sim_frame, text='   Workers:').pack(side='left', padx=(8, 0))
+        ttk.Label(sim_frame, text='   Thread :').pack(side='left', padx=(8, 0))
         default_workers = os.cpu_count() or 2
         self.workers_var = tk.IntVar(value=default_workers)
         w_spin = ttk.Spinbox(sim_frame, from_=1, to=256, textvariable=self.workers_var, width=6)
         w_spin.pack(side='left', padx=(4, 0))
 
         # Start button
-        self.start_btn = ttk.Button(self, text='Start', command=self.start)
+        self.start_btn = ttk.Button(self, text='Début', command=self.start)
         self.start_btn.grid(column=0, row=3, padx=pad, pady=20)
 
         # Predict Time button
-        self.predict_btn = ttk.Button(self, text='Predict Time', command=self.predict_time)
+        self.predict_btn = ttk.Button(self, text='Prédire le Temps', command=self.predict_time)
         self.predict_btn.grid(column=3, row=3, sticky='w', padx=pad, pady=20)
 
         # Progress / status
@@ -104,7 +104,7 @@ class CrackerGUI(tk.Tk):
         self.status_label.grid(column=1, row=3, sticky='w')
         
         # Global timer label (next to status)
-        self.timer_label = ttk.Label(self, text='Elapsed: 00:00:00')
+        self.timer_label = ttk.Label(self, text='Temps de calcul: 00:00:00')
         self.timer_label.grid(column=2, row=3, sticky='w', padx=8)
 
         # Progress bar and counter frame
@@ -175,7 +175,7 @@ class CrackerGUI(tk.Tk):
 
         if chosen_ce is not None:
             CE = CourbeElliptique(*chosen_ce)
-            self._append_result(f"Using points file: {chosen_file} (curve {chosen_ce})\n")
+            self._append_result(f"fichier de points utilisés: {chosen_file} (courbe {chosen_ce})\n")
         else:
             # No ready points file found for that modulus — inform the user and abort
             messagebox.showerror('Missing points file',
@@ -193,7 +193,7 @@ class CrackerGUI(tk.Tk):
         if algo == 'tous les algorithmes':
             self._append_result(f'Exécution de tous les algorithmes sur la courbe {curve_idx} pour N={n}\n')
         else:
-            self._append_result(f'Running {algo} on curve {curve_idx} for N={n}\n')
+            self._append_result(f'Algorithme : {algo}. Sur la courbe {curve_idx} pour N={n}\n')
 
         # run in background thread
         self.progress_bar['value'] = 0
@@ -215,8 +215,8 @@ class CrackerGUI(tk.Tk):
         try:
             # Create a callback that updates progress bar and counter
             def progress_with_bar(msg):
-                # Extract counter from msg (e.g., "Cracked: 3/5...")
-                if "Cracked:" in msg:
+                # Extract counter from msg (e.g., "Cracké : 3/5...")
+                if "Cracké:" in msg or "Cracked:" in msg:
                     parts = msg.split()
                     for part in parts:
                         if '/' in part:
@@ -226,8 +226,8 @@ class CrackerGUI(tk.Tk):
                 self._append_result(msg)
             
             mean, u = crack_perfCE_csv(CE, algo_func, N=n, progress_callback=progress_with_bar, workers=workers)
-            self._append_result(f'\n✓ Finished: mean={mean:.6f}s ± {u:.6f}s\n')
-            self.status_label.config(text='Done')
+            self._append_result(f'\n✓ Calcul fini : moyenne={mean:.6f}s ± {u:.6f}s\n')
+            self.status_label.config(text='calcul terminé')
             self.progress_bar['value'] = 100
         except Exception as e:
             self._append_result(f'Error during run: {e}\n')
@@ -241,15 +241,15 @@ class CrackerGUI(tk.Tk):
         try:
             algos = [('rho', crack_rho_de_pollard), ('force', crack_force_brute)]
             for name, func in algos:
-                self._append_result(f'\n=== Running {name} ===\n')
+                self._append_result(f'\n=== {name} ===\n')
                 self.status_label.config(text=f'Running {name}')
                 # reset progress for each algorithm
                 self.progress_bar['value'] = 0
                 self.counter_label.config(text=f'0/{n}')
 
                 def progress_with_bar(msg, prefix=name):
-                    # Extract counter from msg (e.g., "Cracked: 3/5...")
-                    if "Cracked:" in msg:
+                    # Extract counter from msg (e.g., "Cracké : 3/5...")
+                    if "Cracké:" in msg or "Cracked:" in msg:
                         parts = msg.split()
                         for part in parts:
                             if '/' in part:
@@ -259,7 +259,7 @@ class CrackerGUI(tk.Tk):
                     self._append_result(f'[{name}] {msg}')
 
                 mean, u = crack_perfCE_csv(CE, func, N=n, progress_callback=progress_with_bar, workers=workers, update_plot=False)
-                self._append_result(f'\n✓ Finished {name}: mean={mean:.6f}s ± {u:.6f}s\n')
+                self._append_result(f'\n✓ Calcul fini pour {name}: moyenne ={mean:.6f}s ± {u:.6f}s\n')
 
             # try to generate combined perf graph once at the end
             try:
@@ -269,7 +269,7 @@ class CrackerGUI(tk.Tk):
                 self._append_result(f'Warning: generate_perf_graph failed: {e}\n')
 
             self._append_result('\nTous les algorithmes terminés\n')
-            self.status_label.config(text='Done')
+            self.status_label.config(text='calcul terminé')
             self.progress_bar['value'] = 100
         except Exception as e:
             self._append_result(f'Error during run: {e}\n')
