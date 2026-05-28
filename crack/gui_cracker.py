@@ -336,7 +336,7 @@ class CrackerGUI(tk.Tk):
         elapsed = time.perf_counter() - getattr(self, '_start_time', time.perf_counter())
         hrs, rem = divmod(int(elapsed), 3600)
         mins, secs = divmod(rem, 60)
-        self.timer_label.config(text=f'Elapsed: {hrs:02d}:{mins:02d}:{secs:02d}')
+        self.timer_label.config(text=f'Temps de calcul: {hrs:02d}:{mins:02d}:{secs:02d}')
         self.after(200, self._update_timer)
 
     def _append_result(self, text):

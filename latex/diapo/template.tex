@@ -249,7 +249,10 @@
 	Les équations des courbes elliptiques définies sur $\mathbb{R}$ (ou $\mathbb{Q}$) peuvent s'écrire sous la forme suivante
 	$$\boxed{(\frac{Y}{Z})^2 = (\frac{X}{Z})^3 + a(\frac{X}{Z}) + b}$$ 
 	où $a,b \in \mathbb{R}$ (ou $\mathbb{Q}$) telles que $(4a^3 + 27b^2) \neq 0$ pour que la courbe soit non singulière.\\
-	(pour qu'on puisse définir une tangeante à chaque endroit de la courbe)
+	(pour qu'on puisse définir une tangeante à chaque endroit de la courbe)\\
+	\bigskip
+	Pour simplifier les notations, dans le plan $\mathbb{K}^2$, on note $x = \frac{X}{Z}$ et $y = \frac{Y}{Z}$, l'équation de la courbe elliptique devient alors :
+	$$y^2 = x^3 + ax + b$$
 
 \end{frame}
 
@@ -638,15 +641,15 @@
  	\State $y \gets P$,\quad $d_y \gets 0$\Comment{kangourou sauvage}
 	\For{$i = 0$ \textbf{à} $4N-1$}
 		\If{$y = x$} \Comment{les kangourous se rencontrent}
-			\State \Return $(b + d_x - d_y) \bmod n$
+			\State \Return $(b + d_x - d_y) \bmod n$ \Comment{on remonte le chemin parcouru}
 		\EndIf
-		\State $d_y \gets d_y + f(y)$
-		\State $y \gets y + f(y)\cdot G$
+		\State $d_y \gets d_y + f(y)$ \Comment{on garde une trace de la distance parcourue}
+		\State $y \gets y + f(y)\cdot G$ \Comment{on continue le parcours}
 		\If{$d_y > b - a + d_x$}
 			\State \Return \texttt{échec}
 		\EndIf
 	\EndFor
- 
+
 	\end{algorithmic}
 \end{frame}
 
