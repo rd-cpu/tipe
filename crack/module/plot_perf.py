@@ -234,7 +234,7 @@ def generate_perf_graph(show=False, output_path=None, verbose=True):
             y_fit = fit_rho['a'] * (x_fit ** fit_rho['b'])
             ax.plot(x_fit, y_fit, '--', color='red', linewidth=1.5, label=f"Fit Rho: y≈{fit_rho['a']:.3e} x^{fit_rho['b']:.2f} (R²={fit_rho['r2']:.3f})")
 
-    ax.set_xlabel('Ordre de la Courbe Elliptique', fontsize=12)
+    ax.set_xlabel('Ordre de la Courbe Elliptique (le cardinal du groupe)', fontsize=12)
     ax.set_ylabel('Temps Moyen (secondes)', fontsize=12)
     ax.set_title('Temps de Craquage en Fonction de l\'Ordre de la Courbe', fontsize=14, fontweight='bold')
 
