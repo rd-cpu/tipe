@@ -225,12 +225,12 @@
 \subsection{Plan projectif et point à l'infini}
 
 \begin{frame}
-	\frametitle{Plan projectif et point à l'infini}
+	\frametitle{Plan projectif}
 
 	\begin{definition}
 		Le \alert{plan projectif} $\mathbb{P}^2$ est l'ensemble des droites vectorielles de $\mathbb{K}^3$.
-		Cet ensembles est identifiable aux classes d'équivalence de la relation sur $\mathbb{R}^3$ définie par:\\
-		$(X,Y,Z) \mathcal{R} (X',Y',Z') \Leftrightarrow \exists k \in \mathbb{R}^* : (X',Y',Z') = k(X,Y,Z)$ .
+		Cet ensemble est identifiable aux classes d'équivalence de la relation sur $\mathbb{K}^3\backslash\{0,0,0\}$ définie par:\\
+		$(X,Y,Z) \mathcal{R} (X',Y',Z') \Leftrightarrow \exists k \in \mathbb{K}^* : (X',Y',Z') = k(X,Y,Z)$ .
 	\end{definition}	
 
 	\begin{definition}
@@ -238,8 +238,25 @@
 		Nous allons associer cette droite à un \alert{point à l'infini}.
 	\end{definition}
 
+	L'intéret de cette construction est que toute droite coupe la courbe en exactement trois points (comptés avec multiplicité). 
+
 
 \end{frame}
+
+%------------------------------------------------
+%\begin{frame}
+%	\frametitle{Forme de weierstrass}
+%	
+%	\underline{Forme de Weierstrass} :
+%	Les équations des courbes elliptiques définies sur $\mathbb{R}$ (ou $\mathbb{Q}$) peuvent s'écrire sous la forme suivante
+%	$$\boxed{ZY^2 = X^3 + aZ^2X + bZ^3}$$ 
+%	où $a,b \in \mathbb{R}$ (ou $\mathbb{Q}$) telles que $(4a^3 + 27b^2) \neq 0$ pour que la courbe soit non singulière.\\
+%	(pour qu'on puisse définir une tangeante à chaque endroit de la courbe)\\
+%	\bigskip
+%	Pour simplifier les notations, dans le plan $\mathbb{K}^2$, on note $x = \frac{X}{Z}$ et $y = \frac{Y}{Z}$, l'équation de la courbe elliptique devient alors :
+%	$$y^2 = x^3 + ax + b$$
+%
+%\end{frame}
 
 %------------------------------------------------
 \begin{frame}
@@ -247,20 +264,22 @@
 	
 	\underline{Forme de Weierstrass} :
 	Les équations des courbes elliptiques définies sur $\mathbb{R}$ (ou $\mathbb{Q}$) peuvent s'écrire sous la forme suivante
-	$$\boxed{(\frac{Y}{Z})^2 = (\frac{X}{Z})^3 + a(\frac{X}{Z}) + b}$$ 
+	$$\boxed{y^2 = x^3 + ax + b}$$ 
 	où $a,b \in \mathbb{R}$ (ou $\mathbb{Q}$) telles que $(4a^3 + 27b^2) \neq 0$ pour que la courbe soit non singulière.\\
 	(pour qu'on puisse définir une tangeante à chaque endroit de la courbe)\\
 	\bigskip
-	Pour simplifier les notations, dans le plan $\mathbb{K}^2$, on note $x = \frac{X}{Z}$ et $y = \frac{Y}{Z}$, l'équation de la courbe elliptique devient alors :
-	$$y^2 = x^3 + ax + b$$
+	Pour s'assurer que les droites coupent la courbe trois fois, dans le plan $\mathbb{K}^2$, on note $x = \frac{X}{Z}$ et $y = \frac{Y}{Z}$, et on multiplie par $Z^3$, on a alors :
+	$$ZY^2 = X^3 + aZ^2X + bZ^3$$\\
+	On a donc $O = (0,1,0)$ qui est un point à l'infini
+	et qui est solution de l'équation
 
 \end{frame}
 
 %------------------------------------------------
-\subsection{Construction de la loi de groupe}
+\subsection{Construction d'une loi de groupe}
 
 \begin{frame}
-	\frametitle{Construction de la loi de groupe}
+	\frametitle{Construction d'une loi de groupe}
 	
 	Nous allons définir une loi \alert{additive} géométriquement sur les points d'une courbe elliptique dans le plan projectif $(\mathbb{P}^2(\mathbb{E}),+)$.\\
 	\begin{figure}
@@ -319,8 +338,6 @@
 \end{frame}
 %------------------------------------------------
 
-\subsection{Construction d'un groupe cyclique}
-
 \begin{frame}
 	\frametitle{Construction d'un groupe cyclique}
 	\begin{definition}
@@ -329,19 +346,17 @@
 	\end{definition}
 	Pour tout groupe cyclique $\mathbb{G}$ il existe $o \in \mathbb{N}$ tel que $\mathbb{G}  \sim \mathbb{Z}/o\mathbb{Z} $.
 	\begin{block}{Application aux courbes elliptiques}
-		Pour chaque couple d'entiers $(x,y)$ vérifiant l'équation de la courbe elliptique, on applique un modulo à $x$ et à $y$.
-		L'équation de la courbe devient donc :
-		$y^2 = x^3 + ax + b \mod o $
+		Dans le cas de ce tipe, on s'intéresse à des courbes elliptiques définies sur des corps finis $\mathbb{Z}/p\mathbb{Z}$ 
 	\end{block}
-	Dans ce cas le plan projectif est fini, donc les courbes
-	elliptiques le sont aussi. Et on peut obtenir un groupe monogène donc cyclique.
+	Le plan projectif est ici fini, donc l'ensemble des points de la courbes
+	elliptiques l'est aussi. On peut par ailleurs obtenir un groupe monogène donc cyclique.
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}
 	\frametitle{Exemple de courbe elliptique}
-	L'exemple le plus courant d'utilisation des courbes elliptiques est secp256k1, notamment utilisé dans le bitcoin pour vérifier que les fonds soient
+	L'exemple le plus courant d'utilisation des courbes elliptiques est \underline{secp256k1}, notamment utilisé dans le \alert{bitcoin} pour vérifier que les fonds soient
 	uniquement utilisés par leur propriétaire.\\
 
 	\begin{figure}
@@ -444,14 +459,6 @@
 	"\(s\)" est donc appelé le \textbf{logarithme discret} en base \(G\).\\
 	On remarque d'ailleurs que la classe de congruence de \(s\) modulo \(o\) est aussi solution.
 
-	\bigskip
-
-	\textbf{Exemple :} Dans \((\mathbb{Z}/7\mathbb{Z},x)^*\) :
-	$\log_3(6) = 3
-	\quad \text{car} \quad
-	3^3 \bmod 7 = 27 \bmod 7 = 6$
-	
-
 \end{frame}
 
 %------------------------------------------------
@@ -465,8 +472,6 @@
 	\end{center}
 \end{frame}
 
-
-
 %------------------------------------------------
 \subsection{Attaque par force brute}
 
@@ -474,29 +479,17 @@
 	\frametitle{Attaque par force brute}
 	\textbf{Objectif :} trouver $s$ tel que $P = s \cdot G$ (en notation multiplicative on a $P = G^s$ )
 
+	\bigskip
+	
 	\begin{block}{Idée}
 	On additionne successivement le point $G$
-	jusqu'à obtenir $P$.
+	jusqu'à obtenir $P$ et le nombre d'itérations donne $s$.
 	\end{block}
+	
+	\bigskip
 
-	\begin{algorithmic}[1]
-	\State $s \gets 1$
-	\State $X \gets G$
-
-	\While{$X \neq P$}
-
-	    \If{$s \geq o$} \Comment{où o est l'ordre du groupe}
-	        \State retourner \texttt{None}
-	    \EndIf
-
-	    \State $X \gets X + G$
-	    \State $s \gets s + 1$
-
-	\EndWhile
-
-	\State retourner $s$
-
-	\end{algorithmic}
+	La complexité de cette attaque est en $\mathcal{O} (e^{n})$ où n est le nombre de bits de $s$. \\
+	On peut aussi l'exprimer en fonction de l'ordre du groupe $o$ : $\mathcal{O} (o)$.  
 
 \end{frame}
 
@@ -508,7 +501,7 @@
 
 	Soit une partition $\mathbb{G} = S_0 \cup S_1 \cup S_2$.
  
-	On définit une fonction pseudo-aléatoire $f : \mathbb{G} \to \mathbb{G}$ par
+	On définit une fonction pseudo-aléatoire \underline{$f : \mathbb{G} \to \mathbb{G}$} par
 	\[
 		f(x) =
 		\begin{cases}
@@ -518,8 +511,8 @@
 		\end{cases}
 	\]
 	
-	et les fonctions de $g : \mathbb{G} \times \mathbb{Z} \to \mathbb{Z}$
-	et $h : \mathbb{G} \times \mathbb{Z} \to \mathbb{Z}$ :
+	et les fonctions de \underline{$g : \mathbb{G} \times \mathbb{Z} \to \mathbb{Z}$}
+	et \underline{$h : \mathbb{G} \times \mathbb{Z} \to \mathbb{Z}$} :
   
 	\begin{columns}[t]
 		\begin{column}{0.48\textwidth}
@@ -552,54 +545,14 @@
 
 \begin{frame}
     \frametitle{Algorithme du rho de Pollard}
-
+	
     \textbf{Entrées :}\tikzmark{entrees} $G$ générateur de $(\mathbb{G},+)$,\; $P \in \mathbb{G}$\\
     \textbf{Sortie :} $s$ tel que $P = s\cdot G$, ou \texttt{échec}
+    
 
-    \begin{tikzpicture}[remember picture, overlay]
-        \coordinate (entreepos) at ({pic cs:entrees});
-        \node[anchor=north east, inner sep=8pt]
-            at ([xshift=-4mm]entreepos -| current page.east)
-            {\includegraphics[width=4cm]{Images/rho2.png}};
-    \end{tikzpicture}
 
     \vspace{0.2cm}
 
-    \scriptsize
-    \begin{algorithmic}[1]
-
-    \State $n \gets \text{ordre}(G)$
-    \State Tirer $a, b \xleftarrow{} \{0, \ldots, n-1\}$
-    \State $x \gets aG + bP$,\quad $X \gets x$,\quad $A \gets a$,\quad $B \gets b$
-
-    \vspace{0.1cm}
-
-    \While{\textbf{True}}
-        \State $(x,\, a,\, b) \gets \bigl(f(x),\; g(x, a),\; h(x, b)\bigr)$
-
-        \vspace{0.1cm}
-
-        \State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
-        \State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
-
-        \vspace{0.1cm}
-
-        \If{$x = X$} \Comment{collision ?}
-            \State $r \gets (b - B) \bmod n$
-            \If{$r = 0$}
-                \State \Return \texttt{échec}
-            \EndIf
-            \State \Return $r^{-1} \cdot (A - a) \bmod n$ \Comment{calcul de $s$}
-        \EndIf
-    \EndWhile
-
-    \end{algorithmic}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}
-    \frametitle{Algorithme du rho de Pollard : collision}
 	Durant la boucle on a :\\
 	\[
 	x = aG + bP \quad\text{et}\quad X = AG + BP	
@@ -607,53 +560,21 @@
 	a (resp. A) est incrémenté par la fonction g et b (resp. B) par la fonction h.\\
 	
 	\bigskip
-	Lorsque $x = X$ (condition d'arrêt), on a \\
-	\begin{align*}
-		&aG + bP = AG + BP \\
-		&(a - A)G = (B - b)P \\
-		&(a - A)G = (B - b)sG \\
-		&s = (a - A)(B - b)^{-1} \bmod n
-	\end{align*}
+	Lorsque $x = X$ (condition d'arrêt), on a \tikzmark{entrees} \\
+	
+	$aG + bP = AG + BP$ \\
+	$(a - A)G = (B - b)P$ \\
+	$(a - A)G = (B - b)sG$\\
+	$s = (a - A)(B - b)^{-1} \bmod n$
+
+	\vfill
+	\vspace{-3cm}
+	\begin{flushright}
+	    \includegraphics[width=0.35\linewidth,height=0.35\textheight,keepaspectratio]{\detokenize{Images/rho2.png}}
+	\end{flushright}
 \end{frame}
 
-%------------------------------------------------
 
-\subsection{Les kangourous de Pollard}
-
-\begin{frame}
-	\frametitle{Les kangourous de Pollard}
-	\footnotesize
-	\underline{intervalle de recherche} : on sait que $s\in [a,b]$, complexité en $O\!\left(\exp(\frac{b-a}{2})\right)$.
-
-	\footnotesize
-	\begin{algorithmic}[1]
- 
-	\State $N \gets \lfloor\sqrt{b - a}\rfloor + 1$
-	\State $f(x) \gets (x.x + x.y) \bmod N + 1$ \Comment{fonction de saut}
- 
- 
-	\State $x \gets bG$,\quad $d_x \gets 0$  \Comment{kangourou apprivoisé}
-	\For{$i = 0$ \textbf{à} $N-1$}
-		\State $d_x \gets d_x + f(x)$
-		\State $x \gets x + f(x)\cdot G$
-	\EndFor
- 
- 	\State $y \gets P$,\quad $d_y \gets 0$\Comment{kangourou sauvage}
-	\For{$i = 0$ \textbf{à} $4N-1$}
-		\If{$y = x$} \Comment{les kangourous se rencontrent}
-			\State \Return $(b + d_x - d_y) \bmod n$ \Comment{on remonte le chemin parcouru}
-		\EndIf
-		\State $d_y \gets d_y + f(y)$ \Comment{on garde une trace de la distance parcourue}
-		\State $y \gets y + f(y)\cdot G$ \Comment{on continue le parcours}
-		\If{$d_y > b - a + d_x$}
-			\State \Return \texttt{échec}
-		\EndIf
-	\EndFor
-
-	\end{algorithmic}
-\end{frame}
-
-%------------------------------------------------
 
 \section{Comparaison des algorithmes}
 %------------------------------------------------
@@ -699,7 +620,7 @@
 \end{frame}
 
 %------------------------------------------------
-\subsection{$\mathbb{Z}/p\mathbb{Z}$ vs courbes elliptiques}
+\subsection{$\mathbb{Z}/p\mathbb{Z}$ et courbes elliptiques} 
 
 \begin{frame}
 	\frametitle{Comparaison des sécurités}
@@ -711,11 +632,11 @@
 		\hline
 		\textbf{Meilleur algorithme} & Crible algébrique (NFS) & rho de Pollard \\
 		\hline
-		\textbf{Complexité} & $O\!\left(\exp((\log p)^{1/3}(\log\log p)^{2/3})\right)$ & $O\!\left(\exp(\frac{n}{2})\right)$ \\
+		\textbf{Complexité*} & $O\!\left(\exp((\log n)^{1/3}(\log(\log n))^{2/3})\right)$ & $O\!\left(\exp(\frac{n}{2})\right)$ \\
 		\hline
 	\end{tabular}
 	\end{center}
-	
+	* : n est le nombre de bits de la clé secrète $s$.
 	
 	\begin{block}{Avantage des courbes elliptiques}
 		NFS n'est pas applicable aux courbes elliptiques car cet algorithme repose sur de la factorisation,
@@ -757,11 +678,150 @@
 \appendix
 \section*{Annexes}
 
+
 \begin{frame} % The optional argument 'plain' hides the headline and footline
 	\begin{center}
 		{\LARGE 5- Annexes}
 	\end{center}
 \end{frame}
+
+%----------------------------------------------------------------------------------------
+
+
+\subsection{Attaque par force brute}
+
+
+\begin{frame}
+	\frametitle{Attaque par force brute}
+	\textbf{Objectif :} trouver $s$ tel que $P = s \cdot G$ (en notation multiplicative on a $P = G^s$ )
+
+
+	\begin{block}{Idée}
+	On additionne successivement le point $G$
+	jusqu'à obtenir $P$.
+	\end{block}
+
+
+	\begin{algorithmic}[1]
+	\State $s \gets 1$
+	\State $X \gets G$
+
+	\While{$X \neq P$}
+
+
+	    \If{$s \geq o$} \Comment{où o est l'ordre du groupe}
+	        \State retourner \texttt{None}
+	    \EndIf
+
+
+	    \State $X \gets X + G$
+	    \State $s \gets s + 1$
+
+
+	\EndWhile
+
+
+	\State retourner $s$
+	\end{algorithmic}
+\end{frame}
+%----------------------------------------------------------------------------------------
+
+\begin{frame}
+    \frametitle{Algorithme du rho de Pollard}
+
+
+    \textbf{Entrées :}\tikzmark{entrees2} $G$ générateur de $(\mathbb{G},+)$,\; $P \in \mathbb{G}$\\
+    \textbf{Sortie :} $s$ tel que $P = s\cdot G$, ou \texttt{échec}
+
+
+    \begin{tikzpicture}[remember picture, overlay]
+        \coordinate (entreepos) at ({pic cs:entrees2});
+        \node[anchor=north east, inner sep=8pt]
+            at ([xshift=-4mm]entreepos -| current page.east)
+            {\includegraphics[width=4cm]{Images/rho2.png}};
+    \end{tikzpicture}
+
+
+    \vspace{0.2cm}
+
+    \scriptsize
+    \begin{algorithmic}[1]
+
+
+    \State $n \gets \text{ordre}(G)$
+    \State Tirer $a, b \xleftarrow{} \{0, \ldots, n-1\}$
+    \State $x \gets aG + bP$,\quad $X \gets x$,\quad $A \gets a$,\quad $B \gets b$
+
+
+    \vspace{0.1cm}
+
+
+    \While{\textbf{True}}
+        \State $(x,\, a,\, b) \gets \bigl(f(x),\; g(x, a),\; h(x, b)\bigr)$
+
+
+        \vspace{0.1cm}
+
+
+        \State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
+        \State $(X,\, A,\, B) \gets \bigl(f(X),\; g(X, A),\; h(X, B)\bigr)$
+
+
+        \vspace{0.1cm}
+
+
+        \If{$x = X$} \Comment{collision ?}
+            \State $r \gets (b - B) \bmod n$
+            \If{$r = 0$}
+                \State \Return \texttt{échec}
+            \EndIf
+            \State \Return $r^{-1} \cdot (A - a) \bmod n$ \Comment{calcul de $s$}
+        \EndIf
+    \EndWhile
+
+
+    \end{algorithmic}
+\end{frame}
+%----------------------------------------------------------------------------------------
+
+
+
+
+\begin{frame}
+	\frametitle{Les kangourous de Pollard}
+	\footnotesize
+	\underline{intervalle de recherche} : on sait que $s\in [a,b]$, complexité en $O\!\left(\exp(\frac{b-a}{2})\right)$.
+
+
+	\footnotesize
+	\begin{algorithmic}[1]
+ 
+	\State $N \gets \lfloor\sqrt{b - a}\rfloor + 1$
+	\State $f(x) \gets (x.x + x.y) \bmod N + 1$ \Comment{fonction de saut}
+ 
+ 
+	\State $x \gets bG$,\quad $d_x \gets 0$  \Comment{kangourou apprivoisé}
+	\For{$i = 0$ \textbf{à} $N-1$}
+		\State $d_x \gets d_x + f(x)$
+		\State $x \gets x + f(x)\cdot G$
+	\EndFor
+ 
+ 	\State $y \gets P$,\quad $d_y \gets 0$\Comment{kangourou sauvage}
+	\For{$i = 0$ \textbf{à} $4N-1$}
+		\If{$y = x$} \Comment{les kangourous se rencontrent}
+			\State \Return $(b + d_x - d_y) \bmod n$ \Comment{on remonte le chemin parcouru}
+		\EndIf
+		\State $d_y \gets d_y + f(y)$ \Comment{on garde une trace de la distance parcourue}
+		\State $y \gets y + f(y)\cdot G$ \Comment{on continue le parcours}
+		\If{$d_y > b - a + d_x$}
+			\State \Return \texttt{échec}
+		\EndIf
+	\EndFor
+
+	\end{algorithmic}
+\end{frame}
+%----------------------------------------------------------------------------------------
+
 
 
 \begin{frame}

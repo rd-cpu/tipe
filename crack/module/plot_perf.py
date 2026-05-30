@@ -234,13 +234,27 @@ def generate_perf_graph(show=False, output_path=None, verbose=True):
             y_fit = fit_rho['a'] * (x_fit ** fit_rho['b'])
             ax.plot(x_fit, y_fit, '--', color='red', linewidth=1.5, label=f"Fit Rho: y≈{fit_rho['a']:.3e} x^{fit_rho['b']:.2f} (R²={fit_rho['r2']:.3f})")
 
-    ax.set_xlabel('Ordre de la Courbe Elliptique (le cardinal du groupe)', fontsize=12)
+    ax.set_xlabel('Ordre du groupe ( nombre de bits de la clé secrète)', fontsize=12)
     ax.set_ylabel('Temps Moyen (secondes)', fontsize=12)
-    ax.set_title('Temps de Craquage en Fonction de l\'Ordre de la Courbe', fontsize=14, fontweight='bold')
+    ax.set_title('Temps de calcul pour la résolution du logarithme discret', fontsize=14, fontweight='bold')
 
     if (not force_grouped.empty) or (not rho_grouped.empty):
         ax.set_xscale('log')
         ax.set_yscale('log')
+
+        def x_tick_formatter(x, pos):
+            if x <= 0 or np.isnan(x):
+                return ''
+            power = math.log10(x)
+            bits = math.log(x, 2)
+            if abs(power - round(power)) < 1e-8:
+                exp_label = f"10^{int(round(power))}"
+            else:
+                exp_label = f"{x:.0e}"
+            label = f"{exp_label}\n({bits:.1f} bits)"
+            return label
+
+        ax.xaxis.set_major_formatter(FuncFormatter(x_tick_formatter))
 
     ax.grid(True, which='both', alpha=0.3, linestyle='--')
 
